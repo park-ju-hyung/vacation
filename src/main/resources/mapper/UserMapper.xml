@@ -4,7 +4,31 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.vacation.mvc.mapper.UserMapper">
-	<select id="selectUsernames" resultType="java.lang.String">
-		SELECT username FROM users
-	</select>
+	<insert id="insertUser" parameterType="com.example.vacation.mvc.dto.UserDTO">
+		INSERT INTO user (
+						   user_id
+						 , user_passwd
+						 , user_name
+						 , user_phone
+						 , user_h_phone
+						 , user_email
+						 , user_comp
+						 , user_dept
+						 , user_position
+						 , news_receive
+						 , reg_date
+		) VALUES (
+				   #{userId}
+				 , #{userPasswd}
+				 , #{userName}
+				 , #{userPhone}
+				 , #{userHPhone}
+				 , #{userEmail}
+				 , #{userComp}
+				 , #{userDept}
+				 , #{userPosition}
+				 , #{newsReceive}
+				 , NOW()
+				 )
+	</insert>
 </mapper>
