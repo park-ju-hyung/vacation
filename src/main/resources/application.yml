@@ -45,7 +45,7 @@ spring:
     use-code-as-default-message: false
 
 server:
-  port: 8892
+  port: 9922
   servlet:
     context-path: /
     session:
@@ -82,7 +82,7 @@ log:
 
 app:
   site:
-    url: http://localhost:8892
+    url: http://localhost:9922
   email:
     info: admin@kitech.re.kr
 
