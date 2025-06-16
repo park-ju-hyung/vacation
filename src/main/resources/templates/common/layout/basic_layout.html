@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<!-- meta -->
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<meta name="description" content="" />
+<meta name="author" content="" />
+<meta th:if="${_csrf}" name="_csrf_param" th:content="${_csrf.parameterName}"/>
+<meta th:unless="${_csrf}" name="_csrf_param" content=""/>
+<meta th:if="${_csrf}" name="_csrf" th:content="${_csrf.token}"/>
+<meta th:unless="${_csrf}" name="_csrf" content=""/>
+<meta th:if="${_csrf}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta th:unless="${_csrf}" name="_csrf_header" content=""/>
+
+<!-- title -->
+<title th:text="|석유대체 친환경 화학기술 플랫폼-관리자 :: ${p_documentTitle}|">석유대체 친환경 화학기술 플랫폼-관리자</title>
+
+<!-- css -->
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/admin.css}"> -->
+<link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/datepicker3.css}">
+<link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}">
+
+<!--  -->
+<link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/app.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/style.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/iconly.css}">
+
+
+<script type="text/javascript" th:src="@{/res/mngr/lib/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/lib/jquery/jquery.fileDownload.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/lib/jquery-serialize-object/2.5.0/jquery.serialize-object.min.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/js/moment.min.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/js/bootstrap-datepicker.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/js/bootstrap-datepicker.kr.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/js/bootstrap-datetimepicker.min.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/js/mngr-ajax-util.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/js/mngr-attached-file.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/js/ckeditor5-build-document/ckeditor.js}"></script>
+<script type="text/javascript" th:src="@{/res/mngr/lib/jquery-easing/jquery.easing.min.js}"></script>
+
+
+
+
+
+
+
+</head>
+<!--
+<th:block th:replace="mngr/common/fragment/basic_script :: common-util"></th:block>
+<th:block layout:fragment="script"></th:block>
+-->
+<body>
+	<div style="display: flex;">
+		<th:block th:replace="~{mngr/common/fragment/basic_aside :: aside}"></th:block>
+		<th:block layout:fragment="content">
+			<div class="content">
+				<!--상단-->
+				<div class="login">
+					<ul>
+						<!--관리자 아이디 표시-->
+						<li>
+							<a href="#">
+								<span>admin</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span>로그아웃</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!--content-->
+				<div class="content-box">
+
+
+
+				</div>
+			</div>
+		</th:block>
+	</div>
+	<!--
+	<script type="text/javascript" th:src="@{/res/mngr/lib/bootstrap/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/res/mngr/js/app.js}"></script>
+    -->
+</body>
+</html>

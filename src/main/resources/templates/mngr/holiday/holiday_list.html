@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--경로 다시 수정해야함-->
+    <link rel="stylesheet" type="text/css" href="../../css/admin.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <title>공휴일 관리 - 목록</title>
+
+</head>
+
+<body>
+
+    <div style="display: flex;">
+        <!--sidebar-->
+        <div class="sidebar">
+            <div class="sidebar-title">
+                ini protect
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="#">
+                        <span>직원 관리 및 등록</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span>퇴직자 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>특별휴가</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>병가</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <span>공휴일 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>연차현황 조회</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!--content-->
+        <div class="content">
+            <!--상단-->
+            <div class="login">
+                <ul>
+                    <!--관리자 아이디 표시-->
+                    <li>
+                        <a href="#">
+                            <span>admin</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span>로그아웃</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--content-->
+            <div class="content-box">
+                <!--경로-->
+                <div class="current-site-path">
+                    <ul>
+                        <li>
+                            <span>
+                                공휴일 관리
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                목록
+                            </span>
+                        </li>
+
+                    </ul>
+                </div>
+                <!--검색영역-->
+                <div class="search-box">
+                    <p>검색영역</p>
+                    <div class="search-content">
+                        <div>
+                            <select name="searchField" class="form-select w120">
+                                <option value="">전체</option>
+                                <option value="">아이디</option>
+                                <option value="">이름</option>
+                                <option value="">부서</option>
+                            </select>
+                            <input type="text" style="width: 300px;" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <!--검색버튼-->
+                <div class="search-button">
+                    <button type="button" class="btn btn-primary w75">검색</button>
+                </div>
+
+                <!--content-table-->
+                <div class="list-table">
+                    <table>
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>E-MAIL</th>
+                                <th>뉴스레터 수신동의</th>
+                                <th>가입일자</th>
+                                <th>수정일자</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>19</td>
+                                <td><span class="mv-view pointer" data-userid="impnet">impnet</span></td>
+                                <td><span class="mv-view pointer" data-userid="impnet">김재상</span></td>
+                                <td>impnet@hanmail.net</td>
+                                <td>N</td>
+                                <td>2024-03-13</td>
+                                <td>2024-03-13</td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td><span class="mv-view pointer" data-userid="jmj1030">jmj1030</span></td>
+                                <td><span class="mv-view pointer" data-userid="jmj1030">조민지</span></td>
+                                <td>whalswl1030@nate.com</td>
+                                <td>N</td>
+                                <td>2022-10-05</td>
+                                <td>2023-12-28</td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td><span class="mv-view pointer" data-userid="test02">test02</span></td>
+                                <td><span class="mv-view pointer" data-userid="test02">테스트유저1</span></td>
+                                <td>thswodn1234@naver.com</td>
+                                <td>N</td>
+                                <td>2022-05-17</td>
+                                <td>2023-12-28</td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td><span class="mv-view pointer" data-userid="test01">test01</span></td>
+                                <td><span class="mv-view pointer" data-userid="test01">테스트유저1</span></td>
+                                <td>nus2008@hanmail.net</td>
+                                <td>Y</td>
+                                <td>2022-05-17</td>
+                                <td>2023-12-26</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td><span class="mv-view pointer" data-userid="test09">test09</span></td>
+                                <td><span class="mv-view pointer" data-userid="test09">테스트유저1</span></td>
+                                <td>votiveodst@nate.com</td>
+                                <td>N</td>
+                                <td>2022-05-17</td>
+                                <td>2022-12-26</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td><span class="mv-view pointer" data-userid="test_hong">test_hong</span></td>
+                                <td><span class="mv-view pointer" data-userid="test_hong">홍아무개</span></td>
+                                <td>votiveodst@nate.com</td>
+                                <td>N</td>
+                                <td>2024-07-30</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td><span class="mv-view pointer" data-userid="test07">test07</span></td>
+                                <td><span class="mv-view pointer" data-userid="test07">테스트유저1</span></td>
+                                <td>abcd7@abc.com</td>
+                                <td>N</td>
+                                <td>2022-05-17</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td><span class="mv-view pointer" data-userid="test03">test03</span></td>
+                                <td><span class="mv-view pointer" data-userid="test03">테스트유저1</span></td>
+                                <td>abcd3@abc.com</td>
+                                <td>N</td>
+                                <td>2022-05-17</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td><span class="mv-view pointer" data-userid="test08">test08</span></td>
+                                <td><span class="mv-view pointer" data-userid="test08">테스트유저1</span></td>
+                                <td>abcd8@abc.com</td>
+                                <td>N</td>
+                                <td>2022-05-17</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><span class="mv-view pointer" data-userid="test04">test04</span></td>
+                                <td><span class="mv-view pointer" data-userid="test04">테스트유저1</span></td>
+                                <td>abcd4@abc.com</td>
+                                <td>N</td>
+                                <td>2022-05-17</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--등록-->
+                <div class="search-button">
+                    <button id="btn-search" type="button" class="btn btn-regist w75">등록</button>
+                </div>
+
+
+
+
+
+                <!--페이지네이션-->
+                <div class="pagination">
+                    <div class="pageNo-group">
+                        <span class="pageNo prev" data-pageno="1">&lt;</span>
+                        <span class="pageNo pg-active">1</span>
+                        <span class="pageNo" data-pageno="2">2</span>
+                        <span class="pageNo next" data-pageno="2">&gt;</span>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const pageNumbers = document.querySelectorAll(".pagination .pageNo");
+
+                        pageNumbers.forEach(page => {
+                            page.addEventListener("click", function () {
+                                // 모든 페이지 번호에서 pg-active 클래스 제거
+                                pageNumbers.forEach(p => p.classList.remove("pg-active"));
+
+                                // 클릭한 페이지 번호에 pg-active 클래스 추가
+                                this.classList.add("pg-active");
+                            });
+                        });
+                    });
+                </script>
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+</body>
+
+</html>

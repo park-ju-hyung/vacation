@@ -14,20 +14,10 @@ public class MultiSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())  // 일단 CSRF도 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login2", "/css/**", "/js/**").permitAll() // 로그인 페이지는 인증 제외
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login2")                 // ✅ 내가 만든 로그인 페이지 연결
-                        .loginProcessingUrl("/doLogin")      // ✅ 로그인 폼의 action
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                )
-                .csrf(csrf -> csrf.disable()); // 개발 초기에는 비활성화
+                        .anyRequest().permitAll()  // 모두 접근 가능하게 열어두기
+                );
 
         return http.build();
     }
