@@ -4,13 +4,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>휴가 신청 - 상세보기</title>
+    <title>연차현황조회 - 상세보기</title>
 
 </head>
 
 <body>
-    <th:block layout:fragment="content">
-        <div style="display: flex;">
+<th:block layout:fragment="content">
+    <div style="display: flex;">
         <!--sidebar-->
         <th:block th:replace="~{site/common/fragment/basic_aside :: aside}"></th:block>
 
@@ -38,7 +38,7 @@
                     <ul>
                         <li>
                             <span>
-                                휴가 신청
+                                연차현황 조회
                             </span>
                         </li>
                         <li>
@@ -91,6 +91,46 @@
                         </tr>
                         <tr>
                             <th>
+                                입사일
+                            </th>
+                            <td>
+                                입사일
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부여연차
+                            </th>
+                            <td>
+                                부여연차
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사용일수
+                            </th>
+                            <td>
+                                사용일수
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                잔여일수
+                            </th>
+                            <td>
+                                잔여일수
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사용기간
+                            </th>
+                            <td>
+                                사용기간
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
                                 신청일
                             </th>
                             <td>
@@ -99,26 +139,10 @@
                         </tr>
                         <tr>
                             <th>
-                                부여휴가일수
+                                상태
                             </th>
                             <td>
-                                부여휴가일수
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                잔여휴가일수
-                            </th>
-                            <td>
-                                잔여휴가일수
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                휴가기간
-                            </th>
-                            <td>
-                                휴가기간
+                                상태
                             </td>
                         </tr>
                         <tr>
@@ -126,10 +150,9 @@
                                 반려사유
                             </th>
                             <td>
-                                <textarea name="" id="" class="form-control" style="height: 300px;"></textarea>
+                                반려사유
                             </td>
                         </tr>
-
 
 
 
@@ -141,14 +164,33 @@
 
                 <!--버튼-->
                 <div class="search-button">
-                    <button id="btn-search" type="button" class="btn btn-regist w75">승인</button>
-                    <button id="btn-search" type="button" class="btn btn-danger w75">반려</button>
+                    <button id="btn-search" type="button" class="btn btn-sucess w75">승인</button>
+                    <button id="btn-search" type="button" class="btn btn-regist w75">반려</button>
                     <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
                 </div>
+
+
+
+
+
+
+
+
+
+
             </div>
+
         </div>
+
+
+
+
+
+
+
+
     </div>
-    </th:block>
+</th:block>
 
 
 

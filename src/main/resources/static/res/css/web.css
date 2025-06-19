@@ -1,0 +1,276 @@
+/**common**/
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+ul {
+  padding: 0px;
+  margin: 0px;
+}
+
+ul li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+p {
+  margin: 0px;
+}
+
+/**sidebar**/
+.sidebar {
+  background-color: #fff;
+  height: 100vh;
+  width: 300px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar-title {
+  font-size: 19px;
+  font-weight: 600;
+  padding: 1rem 2rem 1rem;
+}
+
+.menu {
+  margin: 0 2rem;
+}
+
+.menu li {
+  margin-top: 25px;
+}
+
+.menu li:hover > a {
+  color: #435ebe;
+}
+
+.menu li.active > a {
+  color: #435ebe;
+}
+
+.menu > li > a {
+  font-weight: 600;
+  display: block;
+}
+
+/**content**/
+.content {
+  width: 100%;
+  background-color: #f3f7fe;
+}
+
+/**계정 정보 상단**/
+.account {
+  padding: 16px 0px;
+  background-color: #435ebe;
+}
+
+.account ul {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.account ul li {
+  margin-right: 15px;
+}
+
+.account ul li a {
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.account ul li::after {
+  content: "";
+  position: absolute;
+  top: 24px;
+  right: 72px;
+  width: 0.5px;
+  height: 12px;
+  background: #ccc;
+}
+
+/**content-box**/
+.content-box {
+  padding: 0.5rem 2rem;
+  margin-top: 1rem !important;
+}
+
+/** 경로 **/
+.current-site-path ul li {
+  position: relative;
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: -0.325px;
+  color: #000;
+  vertical-align: top;
+  line-height: 1.3;
+}
+
+.current-site-path ul li:not(:last-child)::after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 4px 6px 0 7px;
+  background: url(../img/loc_arrow.png) 0 / 100% no-repeat;
+  vertical-align: top;
+}
+
+/* 전체 테이블 기본 세팅 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  background-color: #fff;
+  font-size: 14px;
+}
+
+.view-table,
+.list-table {
+  background-color: #fff;
+  padding: 20px 15px;
+  margin-top: 13px;
+}
+
+.view-table th,
+.view-table td,
+.list-table th,
+.list-table td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: middle;
+  color: #333;
+}
+.list-table td {
+  text-align: center !important;
+}
+
+.view-table th,
+.list-table th {
+  text-align: center;
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.view-table tr:first-child,
+.list-table tr:first-child {
+  border-top: 0.5px solid #333;
+}
+
+.view-table tr:not(:first-child),
+.list-table tr:not(:first-child) {
+  border-top: 1px solid #ddd;
+}
+
+.view-table tr:last-child,
+.list-table tr:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+/* 버튼 */
+.search-button {
+  text-align: right !important;
+  margin-top: 20px;
+}
+
+.btn {
+  color: #fff;
+  margin: 0px 5px 0px 0px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border: none;
+}
+
+.btn-regist {
+  color: #fff;
+  background-color: #337ab7;
+}
+
+.btn-regist:hover {
+  color: #fff;
+  background-color: #2e59d9;
+  border-color: #2653d4;
+}
+
+.btn-view {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-view:hover {
+  color: #fff;
+  background-color: #157347;
+  border-color: #146c43;
+}
+
+/** 검색영역 **/
+
+.search-box {
+  padding: 30px 24px;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.search-box > P {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+.search-content {
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+}
+.search-content > div {
+  display: flex;
+  margin-left: 30px;
+}
+
+/* 기본 컨테이너 정렬 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* 페이지 번호 그룹 */
+.pageNo-group {
+  display: flex;
+}
+
+/* 공통 스타일 */
+.pageNo {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  color: #435ebe;
+  padding: 0.375rem 0.75rem;
+  font-size: 16px;
+  border-radius: 0px;
+}
+.pg-active {
+  background-color: #435ebe !important;
+  border-color: #435ebe;
+  box-shadow: 0 2px 5px rgb(67 94 190 / 30%);
+  color: #fff !important;
+  font-weight: 600;
+}
+.pageNo:hover {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  color: #000;
+}

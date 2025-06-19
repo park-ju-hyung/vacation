@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>휴가 신청 - 신청</title>
+    <title>개인정보 - 수정</title>
 
 </head>
 
@@ -38,12 +38,7 @@
                     <ul>
                         <li>
                             <span>
-                                휴가 신청
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                신청
+                                개인정보 수정
                             </span>
                         </li>
                     </ul>
@@ -67,18 +62,18 @@
                         </tr>
                         <tr>
                             <th>
-                                사번
+                                생년월일
                             </th>
                             <td>
-                                사번
+                                생년월일
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                부서
+                                사번
                             </th>
                             <td>
-                                부서
+                                사번
                             </td>
                         </tr>
                         <tr>
@@ -91,49 +86,104 @@
                         </tr>
                         <tr>
                             <th>
-                                신청일
+                                부서
                             </th>
                             <td>
-                                신청일
+                                부서
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                부여휴가일수
+                                입사일
                             </th>
                             <td>
-                                부여휴가일수
+                                입사일
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                잔여휴가일수
+                                상태
                             </th>
                             <td>
-                                잔여휴가일수
+                                상태
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                신청기간
+                                비밀번호 변경
                             </th>
                             <td>
-                                <input type="date" class="form-control w20p" id="start-date" name="start-date"
-                                       required>
-                                ~
-                                <input type="date" class="form-control w20p" id="end-date" name="end-date" required>
+                                <input type="text" class="form-control w20p">
+                                <p style="margin-top: 10px;">영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_?)</p>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                사유
+                                비밀번호 확인
                             </th>
                             <td>
-                                <textarea class="form-control" name="" id="" style="height: 300px;"></textarea>
+                                <input type="text" class="form-control w20p">
+                                <p style="margin-top: 10px;">값이 일치하지 않습니다.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                이메일
+                            </th>
+                            <td>
+                                <input type="text" name="email1" class="form-control w20p">
+                                <span>@</span>
+                                <input type="text" name="email2" class="form-control w20p">
+                                <select name="domain" class="form-select w20p">
+                                    <option value="">직접선택</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="nate.com">nate.com</option>
+                                    <option value="gmail.com">gmail.com</option>
+                                    <option value="kakao.com">kakao.com</option>
+                                </select>
                             </td>
                         </tr>
 
-
+                        <tr>
+                            <th>
+                                연락처1
+                            </th>
+                            <td>
+                                <input type="text" class="form-control w20p" placeholder="010">
+                                <span>-</span>
+                                <input type="text" class="form-control w20p">
+                                <span>-</span>
+                                <input type="text" class="form-control w20p">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                연락처2
+                            </th>
+                            <td>
+                                <input type="text" class="form-control w20p" placeholder="010">
+                                <span>-</span>
+                                <input type="text" class="form-control w20p">
+                                <span>-</span>
+                                <input type="text" class="form-control w20p">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                은행명
+                            </th>
+                            <td>
+                                <input type="text" class="form-control w20p">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                계좌번호
+                            </th>
+                            <td>
+                                <input type="text" class="form-control w20p">
+                            </td>
+                        </tr>
 
 
                         </tbody>
@@ -142,9 +192,9 @@
                 </div>
 
 
-                <!--버튼-->
+                <!--검색버튼-->
                 <div class="search-button">
-                    <button id="btn-search" type="button" class="btn btn-regist w75">신청</button>
+                    <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
                     <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
                 </div>
 
@@ -169,6 +219,7 @@
 
 
     </div>
+
 </th:block>
 
 

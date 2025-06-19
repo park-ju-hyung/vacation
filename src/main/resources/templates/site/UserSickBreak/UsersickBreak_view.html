@@ -1,63 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--경로 다시 수정해야함-->
-    <link rel="stylesheet" type="text/css" href="../../css/admin.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
-    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <title>병가 신청 - 상세보기</title>
 
 </head>
 
 <body>
-
+<th:block layout:fragment="content">
     <div style="display: flex;">
         <!--sidebar-->
-        <div class="sidebar">
-            <div class="sidebar-title">
-                ini protect
-            </div>
-            <ul class="menu">
-                <li>
-                    <a href="#">
-                        <span>개인정보 수정</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>휴가신청</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>휴가승인</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>특별휴가 신청</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="#">
-                        <span>병가 신청</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>연차현황 조회</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <th:block th:replace="~{site/common/fragment/basic_aside :: aside}"></th:block>
 
         <!--content-->
         <div class="content">
             <!--상단-->
-            <div class="login">
+            <div class="account">
                 <ul>
                     <li>
                         <a href="#">
@@ -97,71 +57,71 @@
                             <col>
                         </colgroup>
                         <tbody>
-                            <tr>
-                                <th>
-                                    이름
-                                </th>
-                                <td>
-                                    이름
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    사번
-                                </th>
-                                <td>
-                                    사번
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    부서
-                                </th>
-                                <td>
-                                    부서
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    직급
-                                </th>
-                                <td>
-                                    직급
-                                </td>
-                            </tr>
+                        <tr>
+                            <th>
+                                이름
+                            </th>
+                            <td>
+                                이름
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사번
+                            </th>
+                            <td>
+                                사번
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부서
+                            </th>
+                            <td>
+                                부서
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                직급
+                            </th>
+                            <td>
+                                직급
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <th>
-                                    신청일자
-                                </th>
-                                <td>
-                                    신청일자
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    사유
-                                </th>
-                                <td>
-                                    사유
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    첨부파일
-                                </th>
-                                <td>
-                                    첨부파일
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    병가 일수
-                                </th>
-                                <td>
-                                    병가 일수
-                                </td>
-                            </tr>
+                        <tr>
+                            <th>
+                                신청일자
+                            </th>
+                            <td>
+                                신청일자
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사유
+                            </th>
+                            <td>
+                                사유
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                첨부파일
+                            </th>
+                            <td>
+                                첨부파일
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                병가 일수
+                            </th>
+                            <td>
+                                병가 일수
+                            </td>
+                        </tr>
 
 
                         </tbody>
@@ -197,6 +157,8 @@
 
 
     </div>
+</th:block>
+
 
 
 </body>

@@ -4,13 +4,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>휴가 신청 - 상세보기</title>
+    <title>휴가 신청 - 수정</title>
 
 </head>
 
 <body>
-    <th:block layout:fragment="content">
-        <div style="display: flex;">
+<th:block layout:fragment="content">
+    <div style="display: flex;">
         <!--sidebar-->
         <th:block th:replace="~{site/common/fragment/basic_aside :: aside}"></th:block>
 
@@ -43,7 +43,7 @@
                         </li>
                         <li>
                             <span>
-                                상세보기
+                                수정
                             </span>
                         </li>
                     </ul>
@@ -115,18 +115,21 @@
                         </tr>
                         <tr>
                             <th>
-                                휴가기간
+                                신청기간
                             </th>
                             <td>
-                                휴가기간
+                                <input type="date" class="form-control w20p" id="start-date" name="start-date"
+                                       required>
+                                ~
+                                <input type="date" class="form-control w20p" id="end-date" name="end-date" required>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                반려사유
+                                사유
                             </th>
                             <td>
-                                <textarea name="" id="" class="form-control" style="height: 300px;"></textarea>
+                                <textarea class="form-control" name="" id="" style="height: 300px;"></textarea>
                             </td>
                         </tr>
 
@@ -141,14 +144,33 @@
 
                 <!--버튼-->
                 <div class="search-button">
-                    <button id="btn-search" type="button" class="btn btn-regist w75">승인</button>
-                    <button id="btn-search" type="button" class="btn btn-danger w75">반려</button>
+                    <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
                     <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
                 </div>
+
+
+
+
+
+
+
+
+
+
             </div>
+
         </div>
+
+
+
+
+
+
+
+
     </div>
-    </th:block>
+</th:block>
+
 
 
 

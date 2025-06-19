@@ -1,128 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--경로 다시 수정해야함-->
-    <link rel="stylesheet" type="text/css" href="../../css/admin.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
-    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-    <title>연차현황조회 - 목록</title>
+    <title>퇴직자 관리 - 목록</title>
 
 </head>
 
 <body>
+    <!-- layout에 삽입될 본문 fragment -->
+    <th:block layout:fragment="content">
+        <div style="display: flex;">
+            <!--sidebar-->
+            <th:block th:replace="~{mngr/common/fragment/basic_aside :: aside}"></th:block>
 
-    <div style="display: flex;">
-        <!--sidebar-->
-        <div class="sidebar">
-            <div class="sidebar-title">
-                ini protect
-            </div>
-            <ul class="menu">
-                <li>
-                    <a href="#">
-                        <span>개인정보 수정</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>휴가신청</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>휴가승인</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>특별휴가 신청</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>병가 신청</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="#">
-                        <span>연차현황 조회</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!--content-->
-        <div class="content">
-            <!--상단-->
-            <div class="login">
-                <ul>
-                    <!--관리자 아이디 표시-->
-                    <li>
-                        <a href="#">
-                            <span>admin</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>로그아웃</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
             <!--content-->
-            <div class="content-box">
-                <!--경로-->
-                <div class="current-site-path">
+            <div class="content">
+                <!--상단-->
+                <div class="account">
                     <ul>
+                        <!--관리자 아이디 표시-->
                         <li>
-                            <span>
-                                연차현황조회
-                            </span>
+                            <a href="#">
+                                <span>admin</span>
+                            </a>
                         </li>
                         <li>
+                            <a href="#">
+                                <span>로그아웃</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--content-->
+                <div class="content-box">
+                    <!--경로-->
+                    <div class="current-site-path">
+                        <ul>
+                            <li>
+                            <span>
+                                퇴직자 관리
+                            </span>
+                            </li>
+                            <li>
                             <span>
                                 목록
                             </span>
-                        </li>
+                            </li>
 
-                    </ul>
-                </div>
-                <!--검색영역-->
-                <div class="search-box">
-                    <p>검색영역</p>
-                    <div class="search-content">
-                        <div>
-                            <select name="searchField" class="form-select w120">
-                                <option value="">전체</option>
-                                <option value="">아이디</option>
-                                <option value="">이름</option>
-                                <option value="">부서</option>
-                            </select>
-                            <input type="text" style="width: 300px;" class="form-control">
+                        </ul>
+                    </div>
+                    <!--검색영역-->
+                    <div class="search-box">
+                        <p>검색영역</p>
+                        <div class="search-content">
+                            <div>
+                                <select name="searchField" class="form-select w120">
+                                    <option value="">전체</option>
+                                    <option value="">아이디</option>
+                                    <option value="">이름</option>
+                                    <option value="">부서</option>
+                                </select>
+                                <input type="text" style="width: 300px; margin-left: 10px;" class="form-control">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!--검색버튼-->
-                <div class="search-button">
-                    <button type="button" class="btn btn-sucess w120">엑셀 다운로드</button>
-                    <button type="button" class="btn btn-primary w75">검색</button>
-                </div>
+                    <!--검색버튼-->
+                    <div class="search-button">
+                        <button type="button" class="btn btn-primary w75">검색</button>
+                    </div>
 
-                <!--content-table-->
-                <div class="list-table">
-                    <table>
-                        <colgroup>
-                            <col>
-                            <col>
-                            <col>
-                            <col>
-                            <col>
-                            <col>
-                        </colgroup>
-                        <thead>
+                    <!--content-table-->
+                    <div class="list-table">
+                        <table>
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
                             <tr>
                                 <th>번호</th>
                                 <th>아이디</th>
@@ -132,8 +92,8 @@
                                 <th>가입일자</th>
                                 <th>수정일자</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             <tr>
                                 <td>19</td>
                                 <td><span class="mv-view pointer" data-userid="impnet">impnet</span></td>
@@ -224,41 +184,36 @@
                                 <td>2022-05-17</td>
                                 <td>-</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
-                </div>
-
-
-
-
-
-
-
-                <!--페이지네이션-->
-                <div class="pagination">
-                    <div class="pageNo-group">
-                        <span class="pageNo prev" data-pageno="1">&lt;</span>
-                        <span class="pageNo pg-active">1</span>
-                        <span class="pageNo" data-pageno="2">2</span>
-                        <span class="pageNo next" data-pageno="2">&gt;</span>
                     </div>
-                </div>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const pageNumbers = document.querySelectorAll(".pagination .pageNo");
 
-                        pageNumbers.forEach(page => {
-                            page.addEventListener("click", function () {
-                                // 모든 페이지 번호에서 pg-active 클래스 제거
-                                pageNumbers.forEach(p => p.classList.remove("pg-active"));
 
-                                // 클릭한 페이지 번호에 pg-active 클래스 추가
-                                this.classList.add("pg-active");
+                    <!--페이지네이션-->
+                    <div class="pagination">
+                        <div class="pageNo-group">
+                            <span class="pageNo prev" data-pageno="1">&lt;</span>
+                            <span class="pageNo pg-active">1</span>
+                            <span class="pageNo" data-pageno="2">2</span>
+                            <span class="pageNo next" data-pageno="2">&gt;</span>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const pageNumbers = document.querySelectorAll(".pagination .pageNo");
+
+                            pageNumbers.forEach(page => {
+                                page.addEventListener("click", function () {
+                                    // 모든 페이지 번호에서 pg-active 클래스 제거
+                                    pageNumbers.forEach(p => p.classList.remove("pg-active"));
+
+                                    // 클릭한 페이지 번호에 pg-active 클래스 추가
+                                    this.classList.add("pg-active");
+                                });
                             });
                         });
-                    });
-                </script>
+                    </script>
 
 
 
@@ -268,19 +223,21 @@
 
 
 
+
+                </div>
 
             </div>
 
+
+
+
+
+
+
+
         </div>
+    </th:block>
 
-
-
-
-
-
-
-
-    </div>
 
 
 

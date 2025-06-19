@@ -1,104 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--경로 다시 수정해야함-->
-    <link rel="stylesheet" type="text/css" href="../../css/admin.css" />
-    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
-    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <title>직원 등록 - 수정</title>
-
 </head>
 
 <body>
 
-    <div style="display: flex;">
-        <!--sidebar-->
-        <div class="sidebar">
-            <div class="sidebar-title">
-                ini protect
-            </div>
-            <ul class="menu">
-                <li class="active">
-                    <a href="#">
-                        <span>직원 관리 및 등록</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <span>퇴직자 관리</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>특별휴가</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>병가</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>공휴일 관리</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>연차현황 조회</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!--content-->
-        <div class="content">
-            <!--상단-->
-            <div class="login">
-                <ul>
-                    <li>
-                        <a href="#">
-                            <span>admin</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>로그아웃</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <th:block layout:fragment="content">
+        <div style="display: flex;">
+            <!--sidebar-->
+            <th:block th:replace="~{mngr/common/fragment/basic_aside :: aside}"></th:block>
             <!--content-->
-            <div class="content-box">
-                <!--경로-->
-                <div class="current-site-path">
+            <div class="content">
+                <!--상단-->
+                <div class="account">
                     <ul>
                         <li>
+                            <a href="#">
+                                <span>admin</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>로그아웃</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--content-->
+                <div class="content-box">
+                    <!--경로-->
+                    <div class="current-site-path">
+                        <ul>
+                            <li>
                             <span>
                                 직원등록
                             </span>
-                        </li>
-                        <li>
+                            </li>
+                            <li>
                             <span>
                                 수정
                             </span>
-                        </li>
+                            </li>
 
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-                <!--content-table-->
-                <div class="view-table">
-                    <table>
-                        <colgroup>
-                            <col width="12%">
-                            <col>
-                        </colgroup>
-                        <tbody>
+                    <!--content-table-->
+                    <div class="view-table">
+                        <table>
+                            <colgroup>
+                                <col width="12%">
+                                <col>
+                            </colgroup>
+                            <tbody>
                             <tr>
                                 <th>
                                     이름
@@ -152,10 +111,10 @@
                                     이메일
                                 </th>
                                 <td>
-                                    <input type="text" name="email1" class="form-control w20p">
-                                    <span>@</span>
-                                    <input type="text" name="email2" class="form-control w20p">
-                                    <select name="domain" class="form-select w20p">
+                                    <input type="text" name="email1" class="form-control w20p dib">
+                                    <span class="dib">@</span>
+                                    <input type="text" name="email2" class="form-control w20p dib">
+                                    <select name="domain" class="form-select w20p dib">
                                         <option value="">직접선택</option>
                                         <option value="naver.com">naver.com</option>
                                         <option value="nate.com">nate.com</option>
@@ -174,39 +133,33 @@
                             </tr>
 
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                    <!--검색버튼-->
+                    <div class="search-button">
+                        <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
+                        <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
+                    </div>
+
+
+
+
+
+
+
+
+
 
                 </div>
-
-
-                <!--검색버튼-->
-                <div class="search-button">
-                    <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
-                    <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
-                </div>
-
-
-
-
-
-
-
-
-
 
             </div>
-
         </div>
+    </th:block>
 
-
-
-
-
-
-
-
-    </div>
 
 
 </body>

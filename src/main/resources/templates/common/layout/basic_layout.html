@@ -26,9 +26,8 @@
 <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}">
 
 <!--  -->
-<link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/app.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/style.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/res/mngr/css/iconly.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/res/css/common.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/res/css/web.css}">
 
 
 <script type="text/javascript" th:src="@{/res/mngr/lib/jquery/jquery.min.js}"></script>
@@ -55,35 +54,33 @@
 <th:block layout:fragment="script"></th:block>
 -->
 <body>
-	<div style="display: flex;">
-		<th:block th:replace="~{mngr/common/fragment/basic_aside :: aside}"></th:block>
-		<th:block layout:fragment="content">
-			<div class="content">
-				<!--상단-->
-				<div class="login">
-					<ul>
-						<!--관리자 아이디 표시-->
-						<li>
-							<a href="#">
-								<span>admin</span>
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<span>로그아웃</span>
-							</a>
-						</li>
-					</ul>
-				</div>
-				<!--content-->
-				<div class="content-box">
+
+<th:block layout:fragment="content">
+	<div class="content">
+		<!--상단-->
+		<div class="account">
+			<ul>
+				<!--관리자 아이디 표시-->
+				<li>
+					<a href="#">
+						<span>admin</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span>로그아웃</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<!--content-->
+		<div class="content-box">
 
 
 
-				</div>
-			</div>
-		</th:block>
+		</div>
 	</div>
+</th:block>
 	<!--
 	<script type="text/javascript" th:src="@{/res/mngr/lib/bootstrap/js/bootstrap.js}"></script>
     <script type="text/javascript" th:src="@{/res/mngr/js/app.js}"></script>

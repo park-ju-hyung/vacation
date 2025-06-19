@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout/basic_layout.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
     <meta charset="UTF-8">
@@ -10,99 +9,99 @@
 
 <body>
 
-<!-- layout에 삽입될 본문 fragment -->
-<th:block layout:fragment="content">
-    <div style="display: flex;">
-
-        <!--content-->
-        <div class="content">
-            <!--상단-->
-            <div class="login">
-                <ul>
-                    <li><a href="#"><span>admin</span></a></li>
-                    <li><a href="#"><span>로그아웃</span></a></li>
-                </ul>
-            </div>
-
+    <!-- layout에 삽입될 본문 fragment -->
+    <th:block layout:fragment="content">
+        <div style="display: flex;">
+            <th:block th:replace="~{mngr/common/fragment/basic_aside :: aside}"></th:block>
             <!--content-->
-            <div class="content-box">
-                <!-- 경로 -->
-                <div class="current-site-path">
+            <div class="content">
+                <!--상단-->
+                <div class="account">
                     <ul>
-                        <li><span>연차현황조회</span></li>
-                        <li><span>목록</span></li>
+                        <li><a href="#"><span>admin</span></a></li>
+                        <li><a href="#"><span>로그아웃</span></a></li>
                     </ul>
                 </div>
 
-                <!-- 검색영역 -->
-                <div class="search-box">
-                    <p>검색영역</p>
-                    <div class="search-content">
-                        <div>
-                            <select name="searchField" class="form-select w120">
-                                <option value="">전체</option>
-                                <option value="">아이디</option>
-                                <option value="">이름</option>
-                                <option value="">부서</option>
-                            </select>
-                            <input type="text" style="width: 300px;" class="form-control">
+                <!--content-->
+                <div class="content-box">
+                    <!-- 경로 -->
+                    <div class="current-site-path">
+                        <ul>
+                            <li><span>연차현황조회</span></li>
+                            <li><span>목록</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- 검색영역 -->
+                    <div class="search-box">
+                        <p>검색영역</p>
+                        <div class="search-content">
+                            <div>
+                                <select name="searchField" class="form-select w120">
+                                    <option value="">전체</option>
+                                    <option value="">아이디</option>
+                                    <option value="">이름</option>
+                                    <option value="">부서</option>
+                                </select>
+                                <input type="text" style="width: 300px;" class="form-control">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 검색버튼 -->
-                <div class="search-button">
-                    <button type="button" class="btn btn-sucess w120">엑셀 다운로드</button>
-                    <button type="button" class="btn btn-primary w75">검색</button>
-                </div>
-
-                <!-- 테이블 -->
-                <div class="list-table">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>E-MAIL</th>
-                            <th>뉴스레터 수신동의</th>
-                            <th>가입일자</th>
-                            <th>수정일자</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!-- 데이터 rows -->
-                        <!-- 생략된 부분은 원래 코드 그대로 삽입 -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- 페이지네이션 -->
-                <div class="pagination">
-                    <div class="pageNo-group">
-                        <span class="pageNo prev" data-pageno="1">&lt;</span>
-                        <span class="pageNo pg-active">1</span>
-                        <span class="pageNo" data-pageno="2">2</span>
-                        <span class="pageNo next" data-pageno="2">&gt;</span>
+                    <!-- 검색버튼 -->
+                    <div class="search-button">
+                        <button type="button" class="btn btn-sucess w120">엑셀 다운로드</button>
+                        <button type="button" class="btn btn-primary w75">검색</button>
                     </div>
-                </div>
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const pageNumbers = document.querySelectorAll(".pagination .pageNo");
+                    <!-- 테이블 -->
+                    <div class="list-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>아이디</th>
+                                    <th>이름</th>
+                                    <th>E-MAIL</th>
+                                    <th>뉴스레터 수신동의</th>
+                                    <th>가입일자</th>
+                                    <th>수정일자</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 데이터 rows -->
+                                <!-- 생략된 부분은 원래 코드 그대로 삽입 -->
+                            </tbody>
+                        </table>
+                    </div>
 
-                        pageNumbers.forEach(page => {
-                            page.addEventListener("click", function () {
-                                pageNumbers.forEach(p => p.classList.remove("pg-active"));
-                                this.classList.add("pg-active");
+                    <!-- 페이지네이션 -->
+                    <div class="pagination">
+                        <div class="pageNo-group">
+                            <span class="pageNo prev" data-pageno="1">&lt;</span>
+                            <span class="pageNo pg-active">1</span>
+                            <span class="pageNo" data-pageno="2">2</span>
+                            <span class="pageNo next" data-pageno="2">&gt;</span>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const pageNumbers = document.querySelectorAll(".pagination .pageNo");
+
+                            pageNumbers.forEach(page => {
+                                page.addEventListener("click", function () {
+                                    pageNumbers.forEach(p => p.classList.remove("pg-active"));
+                                    this.classList.add("pg-active");
+                                });
                             });
                         });
-                    });
-                </script>
+                    </script>
+                </div>
             </div>
         </div>
-    </div>
-</th:block>
+    </th:block>
 
 </body>
 

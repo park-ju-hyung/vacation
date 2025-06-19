@@ -4,13 +4,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>병가 - 상세보기</title>
+    <title>공휴일 관리 - 상세보기</title>
 
 </head>
 
 <body>
-
-    <!-- layout에 삽입될 본문 fragment -->
     <th:block layout:fragment="content">
         <div style="display: flex;">
             <!--sidebar-->
@@ -40,7 +38,7 @@
                         <ul>
                             <li>
                             <span>
-                                병가
+                                공휴일 관리
                             </span>
                             </li>
                             <li>
@@ -61,67 +59,18 @@
                             <tbody>
                             <tr>
                                 <th>
-                                    이름
+                                    공휴일명
                                 </th>
                                 <td>
-                                    이름
+                                    공휴일명
                                 </td>
                             </tr>
                             <tr>
                                 <th>
-                                    사번
+                                    공휴일 날짜
                                 </th>
                                 <td>
-                                    사번
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    부서
-                                </th>
-                                <td>
-                                    부서
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    직급
-                                </th>
-                                <td>
-                                    직급
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th>
-                                    신청일자
-                                </th>
-                                <td>
-                                    신청일자
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    사유
-                                </th>
-                                <td>
-                                    사유
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    첨부파일
-                                </th>
-                                <td>
-                                    첨부파일
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    특별휴가 일수
-                                </th>
-                                <td>
-                                    <input type="text" class="form-control w20p">
+                                    공휴일 날짜
                                 </td>
                             </tr>
 
@@ -132,10 +81,9 @@
                     </div>
 
 
-                    <!--버튼-->
+                    <!--검색버튼-->
                     <div class="search-button">
-                        <button id="btn-search" type="button" class="btn btn-sucess w75">승인</button>
-                        <button id="btn-search" type="button" class="btn btn-regist w75">반려</button>
+                        <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
                         <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
                     </div>
 
@@ -160,8 +108,6 @@
 
 
         </div>
-
-
     </th:block>
 
 

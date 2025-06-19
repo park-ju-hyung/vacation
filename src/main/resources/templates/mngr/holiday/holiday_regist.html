@@ -4,16 +4,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>직원 등록 - 등록</title>
+    <title>공휴일 관리 - 등록</title>
 
 </head>
 
 <body>
-
     <th:block layout:fragment="content">
         <div style="display: flex;">
             <!--sidebar-->
             <th:block th:replace="~{mngr/common/fragment/basic_aside :: aside}"></th:block>
+
             <!--content-->
             <div class="content">
                 <!--상단-->
@@ -38,7 +38,7 @@
                         <ul>
                             <li>
                             <span>
-                                직원등록
+                                공휴일 관리
                             </span>
                             </li>
                             <li>
@@ -60,7 +60,7 @@
                             <tbody>
                             <tr>
                                 <th>
-                                    이름
+                                    공휴일명
                                 </th>
                                 <td>
                                     <input type="text" class="form-control w20p">
@@ -68,67 +68,10 @@
                             </tr>
                             <tr>
                                 <th>
-                                    생년월일
+                                    공휴일 날짜
                                 </th>
                                 <td>
                                     <input type="date" class="form-control w20p" placeholder="YYYY-MM-DD">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    사번
-                                </th>
-                                <td>
-                                    <input type="text" class="form-control w20p">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    직급
-                                </th>
-                                <td>
-                                    <input type="text" class="form-control w20p">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    부서
-                                </th>
-                                <td>
-                                    <input type="text" class="form-control w20p">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    입사일
-                                </th>
-                                <td>
-                                    <input type="text" class="form-control w20p">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    이메일
-                                </th>
-                                <td>
-                                    <input type="text" name="email1" class="form-control w20p dib">
-                                    <span class="dib">@</span>
-                                    <input type="text" name="email2" class="form-control w20p dib">
-                                    <select name="domain" class="form-select w20p dib">
-                                        <option value="">직접선택</option>
-                                        <option value="naver.com">naver.com</option>
-                                        <option value="nate.com">nate.com</option>
-                                        <option value="gmail.com">gmail.com</option>
-                                        <option value="kakao.com">kakao.com</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    상태
-                                </th>
-                                <td>
-                                    <input type="text" class="form-control w20p">
                                 </td>
                             </tr>
 
@@ -157,6 +100,14 @@
                 </div>
 
             </div>
+
+
+
+
+
+
+
+
         </div>
     </th:block>
 
