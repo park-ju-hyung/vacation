@@ -36,6 +36,9 @@
 .w120 {
   width: 120px;
 }
+.w350{
+  width: 350px;
+}
 /** width % **/
 .w20p {
   width: 20%;
@@ -48,3 +51,45 @@
 .w20p {
   width: 20%;
 }
+
+/* 버튼 */
+.search-button {
+  text-align: right !important;
+  margin-top: 20px;
+}
+
+.btn {
+  color: #fff;
+  margin: 0px 5px 0px 0px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border: none;
+}
+
+.btn-regist {
+  color: #fff;
+  background-color: #337ab7;
+}
+
+.btn-regist:hover {
+  color: #fff;
+  background-color: #2e59d9;
+  border-color: #2653d4;
+}
+
+.btn-view {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-view:hover {
+  color: #fff;
+  background-color: #157347;
+  border-color: #146c43;
+}
+
+
+
+

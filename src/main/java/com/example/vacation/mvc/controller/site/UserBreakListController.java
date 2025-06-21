@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserBreakListController {
 
     /** 연차현황조회 list**/
-    @GetMapping("/UserBreakList_list")
+    @GetMapping("/site/UserBreakList/UserBreakList_list")
     public String BreakListPage() {
         return "site/UserBreakList/UserBreakList_list";
     }
 
     /** 연차현황조회 view **/
-    @GetMapping("/UserBreakList_view")
+    @GetMapping("/site/UserBreakList/UserBreakList_view")
     public String BreakViewPage() {
         return "site/UserBreakList/UserBreakList_view";
     }

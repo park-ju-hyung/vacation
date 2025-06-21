@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SickBreakController {
 
     /**병가 list**/
-    @GetMapping("/sickBreak_list")
+    @GetMapping("mngr/sickBreak/sickBreak_list")
     public String SickBreakListPage() {
         return "mngr/sickBreak/sickBreak_list";
     }
 
     /**병가 view**/
-    @GetMapping("/sickBreak_view")
+    @GetMapping("mngr/sickBreak/sickBreak_view")
     public String SickBreakViewPage() {
         return "mngr/sickBreak/sickBreak_view";
     }

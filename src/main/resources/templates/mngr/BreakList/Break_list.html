@@ -3,7 +3,6 @@
     layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
-    <meta charset="UTF-8">
     <title>연차현황조회 - 목록</title>
 </head>
 
@@ -12,7 +11,7 @@
     <!-- layout에 삽입될 본문 fragment -->
     <th:block layout:fragment="content">
         <div style="display: flex;">
-            <th:block th:replace="~{mngr/common/fragment/basic_aside :: aside}"></th:block>
+            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
             <!--content-->
             <div class="content">
                 <!--상단-->

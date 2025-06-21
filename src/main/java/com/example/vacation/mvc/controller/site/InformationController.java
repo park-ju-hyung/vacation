@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class InformationController {
 
     /** 정보 수정 modify**/
-    @GetMapping("/Information_modify")
+    @GetMapping("/site/informodify/Information_modify")
     public String InformationModifyPage() {
         return "site/informodify/Information_modify";
     }

@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RetireController {
 
     /**퇴직자 관리 list**/
-    @GetMapping("/retired_list")
+    @GetMapping("/mngr/retire/retired_list")
     public String RetiredListPage() {
         return "mngr/retire/retired_list";
     }
 
     /**퇴직자 관리 view**/
-    @GetMapping("/retired_view")
+    @GetMapping("/mngr/retire/retired_view")
     public String RetiredViewPage() {
         return "mngr/retire/retired_view";
     }

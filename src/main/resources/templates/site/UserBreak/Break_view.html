@@ -3,52 +3,16 @@
       layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
-    <meta charset="UTF-8">
     <title>휴가 신청 - 상세보기</title>
 
 </head>
 
 <body>
-
+<th:block layout:fragment="content">
     <div style="display: flex;">
         <!--sidebar-->
-        <div class="sidebar">
-            <div class="sidebar-title">
-                ini protect
-            </div>
-            <ul class="menu">
-                <li>
-                    <a href="#">
-                        <span>개인정보 수정</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="#">
-                        <span>휴가신청</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>휴가승인</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>특별휴가 신청</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>병가 신청</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>연차현황 조회</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <th:block th:replace="~{site/fragment/basic_aside :: aside}"></th:block>
+
 
         <!--content-->
         <div class="content">
@@ -93,78 +57,78 @@
                             <col>
                         </colgroup>
                         <tbody>
-                            <tr>
-                                <th>
-                                    이름
-                                </th>
-                                <td>
-                                    이름
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    사번
-                                </th>
-                                <td>
-                                    사번
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    부서
-                                </th>
-                                <td>
-                                    부서
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    직급
-                                </th>
-                                <td>
-                                    직급
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    신청일
-                                </th>
-                                <td>
-                                    신청일
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    부여휴가일수
-                                </th>
-                                <td>
-                                    부여휴가일수
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    잔여휴가일수
-                                </th>
-                                <td>
-                                    잔여휴가일수
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    휴가기간
-                                </th>
-                                <td>
-                                    휴가기간
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    반려사유
-                                </th>
-                                <td>
-                                    반려사유
-                                </td>
-                            </tr>
+                        <tr>
+                            <th>
+                                이름
+                            </th>
+                            <td>
+                                이름
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사번
+                            </th>
+                            <td>
+                                사번
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부서
+                            </th>
+                            <td>
+                                부서
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                직급
+                            </th>
+                            <td>
+                                직급
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                신청일
+                            </th>
+                            <td>
+                                신청일
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부여휴가일수
+                            </th>
+                            <td>
+                                부여휴가일수
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                잔여휴가일수
+                            </th>
+                            <td>
+                                잔여휴가일수
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                휴가기간
+                            </th>
+                            <td>
+                                휴가기간
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                반려사유
+                            </th>
+                            <td>
+                                반려사유
+                            </td>
+                        </tr>
 
 
 
@@ -202,6 +166,8 @@
 
 
     </div>
+</th:block>
+
 
 
 </body>

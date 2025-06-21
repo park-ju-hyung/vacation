@@ -7,25 +7,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserBreakController {
 
     /** 휴가 신청 list**/
-    @GetMapping("/Break_list")
+    @GetMapping("/site/UserBreak/Break_list")
     public String UserBreakListPage() {
         return "site/UserBreak/Break_list";
     }
 
     /** 휴가 신청 view **/
-    @GetMapping("/Break_view")
+    @GetMapping("/site/UserBreak/Break_view")
     public String UserBreakViewPage() {
         return "site/UserBreak/Break_view";
     }
 
     /** 휴가 신청 regist **/
-    @GetMapping("/Break_regist")
+    @GetMapping("/site/UserBreak/Break_regist")
     public String UserBreakRegistPage() {
         return "site/UserBreak/Break_regist";
     }
 
     /** 휴가 신청 modify **/
-    @GetMapping("/Break_modify")
+    @GetMapping("/site/UserBreak/Break_modify")
     public String UserBreakModifyPage() {
         return "site/UserBreak/Break_modify";
     }

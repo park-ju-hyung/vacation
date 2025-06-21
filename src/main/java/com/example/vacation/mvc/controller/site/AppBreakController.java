@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AppBreakController {
 
     /** 휴가 신청 **/
-    @GetMapping("/AppBreak_list")
+    @GetMapping("/site/UserAppBreak/AppBreak_list")
     public String AppBreakListPage() {
         return "site/UserAppBreak/AppBreak_list";
     }
 
     /** 휴가 승인 **/
-    @GetMapping("/AppBreak_view")
+    @GetMapping("/site/UserAppBreak/AppBreak_view")
     public String AppBreakViewPage() {
         return "site/UserAppBreak/AppBreak_view";
     }

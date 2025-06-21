@@ -7,25 +7,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HoildayController {
 
     /**공휴일 관리 list**/
-    @GetMapping("/holiday_list")
+    @GetMapping("mngr/holiday/holiday_list")
     public String HolidayListPage() {
         return "mngr/holiday/holiday_list";
     }
 
     /**공휴일 관리 view**/
-    @GetMapping("/holiday_view")
+    @GetMapping("mngr/holiday/holiday_view")
     public String HolidayViewPage() {
         return "mngr/holiday/holiday_view";
     }
 
     /**공휴일 관리 regist**/
-    @GetMapping("/holiday_regist")
+    @GetMapping("mngr/holiday/holiday_regist")
     public String HolidayRegistPage() {
         return "mngr/holiday/holiday_regist";
     }
 
     /**공휴일 관리 modify**/
-    @GetMapping("/holiday_modify")
+    @GetMapping("mngr/holiday/holiday_modify")
     public String HolidayModifyPage() {
         return "mngr/holiday/holiday_modify";
     }
