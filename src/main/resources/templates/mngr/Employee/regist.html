@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
+<head>
+    <title>직원 등록 - 등록</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefault();
+                registEvent();
+            });
+
+            const dtPickerJSON = {
+                format: "yyyy-mm-dd",
+                startView: 3,
+                todayBtn:"linked",
+                language: "kr",
+                orientation: "top auto",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            };
+
+            const csrf = { 'header' : null, 'value' : null };
+
+            const button = { 'list' : null, 'regist' : null };
+
+            const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                // configEditor(false);
+                button.list = document.querySelector('.btn-view');
+                button.regist = document.querySelector('.btn-regist');
+
+                $('input[name="userBirth"]').datepicker(dtPickerJSON);
+            };
+
+            const registEvent = function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
+                });
+
+                button.regist.addEventListener('click', regist);
+            };
+
+            const isEmpty = (value) => {
+                if(value == null || typeof value == 'undefined' || value == '')
+                    return true;
+                else
+                    return false;
+            };
+
+            const validator = function(formData) {
+                if (isEmpty(formData['userName'])) {
+                    alert('이름을 입력하여 주십시오.'); return true;
+                }
+                if (isEmpty(formData['userBirth'])) {
+                    alert('생년월일을 입력하여 주십시오.'); return true;
+                }
+                if (isEmpty(formData['empNo'])) {
+                    alert('사번을 입력하여 주십시오.'); return true;
+                }
+                if (isEmpty(formData['position'])) {
+                    alert('직급을 입력하여 주십시오.'); return true;
+                }
+                if (isEmpty(formData['department'])) {
+                    alert('부서를 입력하여 주십시오.'); return true;
+                }
+                if (isEmpty(formData['hireDate'])) {
+                    alert('입사일을 입력하여 주십시오.'); return true;
+                }
+                if (isEmpty(formData['email'])) {
+                    alert('이메일을 입력하여 주십시오.'); return true;
+                }
+                if (isEmpty(formData['status'])) {
+                    alert('상태를 입력하여 주십시오.'); return true;
+                }
+
+                return false;
+            };
+
+
+            async function regist() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
+                let formData = {
+                    'userName' : document.querySelector('input[name="userName"]').value,
+                    'userBirth' : document.querySelector('input[name="userBirth"]').value,
+                    'empNo' : document.querySelector('input[name="empNo"]').value,
+                    'position' : document.querySelector('input[name="position"]').value,
+                    'department' : document.querySelector('input[name="department"]').value,
+                    'hireDate' : document.querySelector('input[name="hireDate"]').value,
+                    'email' : document.querySelector('input[name="email"]').value,
+                    'status' : document.querySelector('input[name="status"]').value,
+                };
+
+                if(validator(formData)) {
+                    return;
+                };
+
+                startLoading();
+
+                await fetch('/employee/regist', {
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        'X-CSRF-TOKEN' : csrf.token
+                    },
+                    body : JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        endLoading();
+
+                        if (data.result === 'SUCCESS') {
+                            alert('등록 성공');
+                            window.location.replace('/employee/list?' + getQueryStr(searchData));
+                        } else {
+                            alert('등록 실패');
+                        }
+                    })
+                    .catch(error => {
+                        endLoading();
+                        alert('오류가 발생했습니다.');
+                        console.log(error);
+                    });
+            };
+        </script>
+    </th:block>
+</head>
+
+<body>
+
+    <th:block layout:fragment="content">
+        <!-- 검색 form -->
+        <form name="searchForm" method="post" onsubmit="return false;">
+            <input type="hidden" name="userName" th:value="${employeeDTO.userName}">
+            <input type="hidden" name="userBirth" th:value="${employeeDTO.userBirth}">
+            <input type="hidden" name="empNo" th:value="${employeeDTO.empNo}">
+            <input type="hidden" name="position" th:value="${employeeDTO.position}">
+            <input type="hidden" name="department" th:value="${employeeDTO.department}">
+            <input type="hidden" name="hireDate" th:value="${employeeDTO.hireDate}">
+            <input type="hidden" name="email" th:value="${employeeDTO.email}">
+            <input type="hidden" name="status" th:value="${employeeDTO.status}">
+
+            <!--페이지 네이션-->
+            <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+            <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+
+
+        </form>
+
+        <div style="display: flex;">
+            <!--sidebar-->
+            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+            <!--content-->
+            <div class="content">
+                <!--상단-->
+                <div class="account">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <span>admin</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>로그아웃</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--content-->
+                <div class="content-box">
+                    <!--경로-->
+                    <div class="current-site-path">
+                        <ul>
+                            <li>
+                            <span>
+                                직원등록
+                            </span>
+                            </li>
+                            <li>
+                            <span>
+                                등록
+                            </span>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!--content-table-->
+                    <div class="view-table">
+                        <table>
+                            <colgroup>
+                                <col width="12%">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th>
+                                    이름
+                                </th>
+                                <td>
+                                    <input type="text" name="userName" class="form-control w20p">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    생년월일
+                                </th>
+                                <td>
+                                    <input type="date" name="userBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    사번
+                                </th>
+                                <td>
+                                    <input type="text" name="empNo" class="form-control w20p">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    직급
+                                </th>
+                                <td>
+                                    <input type="text" name="position" class="form-control w20p">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    부서
+                                </th>
+                                <td>
+                                    <input type="text" name="department" class="form-control w20p">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    입사일
+                                </th>
+                                <td>
+                                    <input type="text" name="hireDate" class="form-control w20p">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    이메일
+                                </th>
+                                <td>
+                                    <!-- 최종 email 조합 hidden input -->
+                                    <input type="hidden" name="email">
+
+                                    <input type="text" name="email1" class="form-control w20p dib">
+                                    <span class="dib">@</span>
+                                    <input type="text" name="email2" class="form-control w20p dib">
+
+                                    <select name="domain" class="form-select w20p dib">
+                                        <option value="">직접선택</option>
+                                        <option value="naver.com">naver.com</option>
+                                        <option value="nate.com">nate.com</option>
+                                        <option value="gmail.com">gmail.com</option>
+                                        <option value="kakao.com">kakao.com</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    상태
+                                </th>
+                                <td>
+                                    <select name="status" class="form-select w20p dib">
+                                        <option value="">직접선택</option>
+                                        <option value="재직">재직</option>
+                                        <option value="휴직">휴직</option>
+                                        <option value="퇴사">퇴사</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                    <!--검색버튼-->
+                    <div class="search-button">
+                        <button type="button" class="btn-regist btn w75">등록</button>
+                        <button type="button" class="btn-view btn w75">목록</button>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </th:block>
+
+
+
+</body>
+
+</html>

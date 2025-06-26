@@ -8,22 +8,36 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<meta name="description" content="" />
+<meta name="author" content="" />
+<meta th:if="${_csrf}" name="_csrf_param" th:content="${_csrf.parameterName}"/>
+<meta th:unless="${_csrf}" name="_csrf_param" content=""/>
+<meta th:if="${_csrf}" name="_csrf" th:content="${_csrf.token}"/>
+<meta th:unless="${_csrf}" name="_csrf" content=""/>
+<meta th:if="${_csrf}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta th:unless="${_csrf}" name="_csrf_header" content=""/>
+
 <!-- title -->
 <title>휴가관리</title>
 
 <!-- css -->
 <link rel="stylesheet" type="text/css" th:href="@{/res/css/common.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/res/css/web.css}">
-
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 <!--js-->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/res/js/site-ajax-util.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<th:block th:replace="~{common/layout/basic_script :: common-util}"></th:block>
 <script th:src="@{/res/js/common.js}"></script>
 
+
+
 </head>
-<!--
-<th:block th:replace="mngr/common/fragment/basic_script :: common-util"></th:block>
-<th:block layout:fragment="script"></th:block>
--->
+
+
+
 <body>
 
 <th:block layout:fragment="content">
