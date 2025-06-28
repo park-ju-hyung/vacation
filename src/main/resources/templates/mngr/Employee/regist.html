@@ -9,12 +9,23 @@
             document.addEventListener('DOMContentLoaded', () => {
                 setDefault();
                 registEvent();
+                $('input[name="userBirth"]').datepicker(dtPickerJSON);
+            });
+            
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('select[name="domain"]').addEventListener('change', function () {
+                    const selectedValue = this.value;
+                    const email2Input = document.querySelector('input[name="email2"]');
+
+                    email2Input.value = selectedValue;
+                    email2Input.readOnly = selectedValue !== "";
+                });
             });
 
             const dtPickerJSON = {
-                format: "yyyy-mm-dd",
+                format: "yy-mm-dd",
                 startView: 3,
-                todayBtn:"linked",
+                todayBtn: "linked",
                 language: "kr",
                 orientation: "top auto",
                 keyboardNavigation: false,
@@ -23,11 +34,11 @@
                 todayHighlight: true
             };
 
-            const csrf = { 'header' : null, 'value' : null };
+            const csrf = {'header': null, 'value': null};
 
-            const button = { 'list' : null, 'regist' : null };
+            const button = {'list': null, 'regist': null};
 
-            const setDefault = function() {
+            const setDefault = function () {
                 csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
                 csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 
@@ -38,7 +49,7 @@
                 $('input[name="userBirth"]').datepicker(dtPickerJSON);
             };
 
-            const registEvent = function() {
+            const registEvent = function () {
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
 
                 button.list.addEventListener('click', () => {
@@ -49,39 +60,59 @@
             };
 
             const isEmpty = (value) => {
-                if(value == null || typeof value == 'undefined' || value == '')
+                if (value == null || typeof value == 'undefined' || value == '')
                     return true;
                 else
                     return false;
             };
 
-            const validator = function(formData) {
+            const validator = function (formData) {
                 if (isEmpty(formData['userName'])) {
-                    alert('이름을 입력하여 주십시오.'); return true;
+                    alert('이름을 입력하여 주십시오.');
+                    return true;
                 }
                 if (isEmpty(formData['userBirth'])) {
-                    alert('생년월일을 입력하여 주십시오.'); return true;
+                    alert('생년월일을 입력하여 주십시오.');
+                    return true;
                 }
                 if (isEmpty(formData['empNo'])) {
-                    alert('사번을 입력하여 주십시오.'); return true;
+                    alert('사번을 입력하여 주십시오.');
+                    return true;
                 }
                 if (isEmpty(formData['position'])) {
-                    alert('직급을 입력하여 주십시오.'); return true;
+                    alert('직급을 입력하여 주십시오.');
+                    return true;
                 }
                 if (isEmpty(formData['department'])) {
-                    alert('부서를 입력하여 주십시오.'); return true;
+                    alert('부서를 입력하여 주십시오.');
+                    return true;
                 }
                 if (isEmpty(formData['hireDate'])) {
-                    alert('입사일을 입력하여 주십시오.'); return true;
+                    alert('입사일을 입력하여 주십시오.');
+                    return true;
                 }
                 if (isEmpty(formData['email'])) {
-                    alert('이메일을 입력하여 주십시오.'); return true;
+                    alert('이메일을 입력하여 주십시오.');
+                    return true;
                 }
                 if (isEmpty(formData['status'])) {
-                    alert('상태를 입력하여 주십시오.'); return true;
+                    alert('상태를 입력하여 주십시오.');
+                    return true;
                 }
 
                 return false;
+            };
+
+            function getEmail() {
+                let email1 = document.querySelector('input[name="email1"]').value;
+                let email2 = document.querySelector('input[name="email2"]').value;
+                let email = '';
+
+                if (email1 != '' && email2 != '') {
+                    email = email1 + '@' + document.querySelector('input[name="email2"]').value;
+                }
+
+                return email;
             };
 
 
@@ -89,33 +120,35 @@
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
 
                 let formData = {
-                    'userName' : document.querySelector('input[name="userName"]').value,
-                    'userBirth' : document.querySelector('input[name="userBirth"]').value,
-                    'empNo' : document.querySelector('input[name="empNo"]').value,
-                    'position' : document.querySelector('input[name="position"]').value,
-                    'department' : document.querySelector('input[name="department"]').value,
-                    'hireDate' : document.querySelector('input[name="hireDate"]').value,
-                    'email' : document.querySelector('input[name="email"]').value,
-                    'status' : document.querySelector('input[name="status"]').value,
+                    'userName': document.querySelector('input[name="userName"]').value,
+                    'userBirth': document.querySelector('input[name="userBirth"]').value,
+                    'empNo': document.querySelector('input[name="empNo"]').value,
+                    'position': document.querySelector('input[name="position"]').value,
+                    'department': document.querySelector('input[name="department"]').value,
+                    'hireDate': document.querySelector('input[name="hireDate"]').value,
+                    'email': getEmail(),
+                    'status': document.querySelector('select[name="status"]').value
                 };
+                console.log(formData);
 
-                if(validator(formData)) {
+                if (validator(formData)) {
                     return;
-                };
+                }
+                ;
 
-                startLoading();
+                // startLoading();
 
                 await fetch('/employee/regist', {
-                    method : 'POST',
-                    headers : {
-                        'Content-Type' : 'application/json',
-                        'X-CSRF-TOKEN' : csrf.token
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf.token
                     },
-                    body : JSON.stringify(formData)
+                    body: JSON.stringify(formData)
                 })
                     .then(response => response.json())
                     .then(data => {
-                        endLoading();
+                        // endLoading();
 
                         if (data.result === 'SUCCESS') {
                             alert('등록 성공');
@@ -125,47 +158,41 @@
                         }
                     })
                     .catch(error => {
-                        endLoading();
-                        alert('오류가 발생했습니다.');
+                        // endLoading();
+                        alert('오류가 발생했습니다2.');
                         console.log(error);
                     });
             };
+
+
+
+
         </script>
     </th:block>
 </head>
 
 <body>
 
-    <th:block layout:fragment="content">
-        <!-- 검색 form -->
-        <form name="searchForm" method="post" onsubmit="return false;">
-            <input type="hidden" name="userName" th:value="${employeeDTO.userName}">
-            <input type="hidden" name="userBirth" th:value="${employeeDTO.userBirth}">
-            <input type="hidden" name="empNo" th:value="${employeeDTO.empNo}">
-            <input type="hidden" name="position" th:value="${employeeDTO.position}">
-            <input type="hidden" name="department" th:value="${employeeDTO.department}">
-            <input type="hidden" name="hireDate" th:value="${employeeDTO.hireDate}">
-            <input type="hidden" name="email" th:value="${employeeDTO.email}">
-            <input type="hidden" name="status" th:value="${employeeDTO.status}">
+<th:block layout:fragment="content">
+    <!-- 검색 form -->
+    <form name="searchForm" method="post" onsubmit="return false;">
 
-            <!--페이지 네이션-->
-            <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
-            <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+        <!--페이지 네이션-->
+        <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+        <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+    </form>
 
-
-        </form>
-
-        <div style="display: flex;">
-            <!--sidebar-->
-            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
-            <!--content-->
-            <div class="content">
-                <!--상단-->
-                <div class="account">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                <span>admin</span>
+    <div style="display: flex;">
+        <!--sidebar-->
+        <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+        <!--content-->
+        <div class="content">
+            <!--상단-->
+            <div class="account">
+                <ul>
+                    <li>
+                        <a href="#">
+                        <span>admin</span>
                             </a>
                         </li>
                         <li>
@@ -215,7 +242,7 @@
                                     생년월일
                                 </th>
                                 <td>
-                                    <input type="date" name="userBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                    <input type="text" name="userBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
                                 </td>
                             </tr>
                             <tr>
@@ -255,9 +282,6 @@
                                     이메일
                                 </th>
                                 <td>
-                                    <!-- 최종 email 조합 hidden input -->
-                                    <input type="hidden" name="email">
-
                                     <input type="text" name="email1" class="form-control w20p dib">
                                     <span class="dib">@</span>
                                     <input type="text" name="email2" class="form-control w20p dib">
@@ -269,6 +293,7 @@
                                         <option value="gmail.com">gmail.com</option>
                                         <option value="kakao.com">kakao.com</option>
                                     </select>
+
                                 </td>
                             </tr>
                             <tr>
