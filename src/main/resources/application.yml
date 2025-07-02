@@ -3,32 +3,11 @@ spring:
     name: petrochem
   config:
     use-legacy-processing: true
-  profiles:
-    active:
-      - localhost
   devtools:
     livereload:
       enabled: true
     restart:
       enabled: true
-  datasource:
-    url: jdbc:p6spy:mariadb://192.168.0.4:3307/vacation
-    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    username: vacation_user
-    password: "3828"
-    hikari:
-      pool-name: pool-petrochem_dev
-      auto-commit: false
-      connection-test-query: SELECT 1
-      maximum-pool-size: 10
-      transaction-isolation: TRANSACTION_READ_UNCOMMITTED
-  servlet:
-    multipart:
-      enabled: true
-      file-size-threshold: 50MB
-      location: ${java.io.tmpdir}
-      max-file-size: 1024MB
-      max-request-size: 1024MB
   thymeleaf:
     mode: HTML
     encoding: UTF-8
@@ -36,13 +15,6 @@ spring:
     suffix: .html
     cache: false
     check-template-location: true
-  messages:
-    basename: classpath:messages/message
-    encoding: UTF-8
-    cache-duration: -1
-    always-use-message-format: false
-    fallback-to-system-locale: true
-    use-code-as-default-message: false
 
 server:
   port: 9922
@@ -61,134 +33,21 @@ server:
 logging:
   config: classpath:logback-spring.xml
 
-upload:
-  root: C://@/petrochem/
-  path:
-    absolute: file:///C://@/petrochem/
-    relative: /uploaded/file/**
-editor:
-  root: C://@/petrochem/editor
-  path:
-    absolute: file:///C://@/petrochem/editor/
-    relative: /editor/image/**
-issue:
-  path:
-    root: C://@/petrochem/issue
-    cover:
-      absolute: file:///C://@/petrochem/issue/
-      relative: /issue/cover/**
-log:
-  path: C://@/petrochem/log
-
-app:
-  site:
-    url: http://localhost:9922
-  email:
-    info: admin@kitech.re.kr
-
 ---
 
 spring:
   config:
     activate:
-      on-profile: localhost-d
-
-upload:
-  root: D://@/petrochem/
-  path:
-    absolute: file:///D://@/petrochem/
-    relative: /uploaded/file/**
-editor:
-  root: D://@/petrochem/editor
-  path:
-    absolute: file:///D://@/petrochem/editor/
-    relative: /editor/image/**
-issue:
-  path:
-    root: D://@/petrochem/issue
-    cover:
-      absolute: file:///D://@/petrochem/issue/
-      relative: /issue/cover/**
-log:
-  path: D://@/petrochem/log
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: development
-
-upload:
-  root: /home/petrochem/
-  path:
-    absolute: file:/home/petrochem/
-    relative: /uploaded/file/**
-editor:
-  root: /home/petrochem/editor/
-  path:
-    absolute: file:/home/petrochem/editor/
-    relative: /editor/image/**
-issue:
-  path:
-    root: /home/petrochem/issue
-    cover:
-      absolute: file:/home/petrochem/issue/
-      relative: /issue/cover/**
-log:
-  path: /server/petrochem/logs
-app:
-  email:
-    info: admin@chemtec-navi.or.kr
-  site:
-    url: https://petrochem.iooo.pw
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: production
-  devtools:
-    livereload:
-      enabled: false
-    restart:
-      enabled: false
-  thymeleaf:
-    cache: true
+      on-profile: localhost
   datasource:
-    url: jdbc:p6spy:mariadb://192.168.0.4:3307/vacation
-    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    username: vacation_user
-    password: "3828"
     hikari:
-      pool-name: pool-petrochem
+      jdbc-url: jdbc:p6spy:mariadb://127.0.0.1:13306/vacation #터널링
+      #jdbc-url: jdbc:p6spy:mariadb://54.180.103.246:3306/vacation #운영
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      username: ptg0131
+      password: "3828"
+      pool-name: pool-
       auto-commit: false
       connection-test-query: SELECT 1
       maximum-pool-size: 10
       transaction-isolation: TRANSACTION_READ_UNCOMMITTED
-
-upload:
-  root: /home/petrochem/
-  path:
-    absolute: file:/home/petrochem/
-    relative: /uploaded/file/**
-editor:
-  root: /home/petrochem/editor/
-  path:
-    absolute: file:/home/petrochem/editor/
-    relative: /editor/image/**
-issue:
-  path:
-    root: /home/petrochem/issue
-    cover:
-      absolute: file:/home/petrochem/issue/
-      relative: /issue/cover/**
-log:
-  path: /server/petrochem/logs
-app:
-  email:
-    info: admin@chemtec-navi.or.kr
-  site:
-    url: http://www.chemtec-navi.or.kr/
-
