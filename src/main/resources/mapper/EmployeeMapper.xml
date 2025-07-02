@@ -5,28 +5,26 @@
 
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO employee (
-						   userId
-						 , userName
-						 , userBirth
+		INSERT INTO Employee (
+						   empId
+						 , empName
+						 , empBirth
 						 , empNo
 						 , position
 						 , department
 						 , hiteDate
 						 , email
 						 , status
-						 , userPassword
 		) VALUES (
-				   #{user_id}
-				 , #{user_name}
-				 , #{user_birth}
-				 , #{emp_no}
+				   #{empId}
+		        ,  #{empName}
+				 , #{empBirth}
+				 , #{empNo}
 				 , #{position}
 				 , #{department}
-				 , #{hire_date}
+				 , #{hireDate}
 				 , #{email}
 				 , #{status}
-				 , #{password}
 				 )
 	</insert>
 </mapper>

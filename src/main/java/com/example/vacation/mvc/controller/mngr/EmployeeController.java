@@ -10,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequiredArgsConstructor
 public class EmployeeController {
@@ -37,8 +40,11 @@ public class EmployeeController {
 
     @PostMapping("/employee/regist")
     @ResponseBody
-    public ResponseEntity<?> regist(@RequestBody EmployeeDTO employeeDTO) throws Exception {
-        return ResponseEntity.ok(employeeService.regist(employeeDTO));
+    public ResponseEntity<Map<String, Object>> regist(@RequestBody EmployeeDTO employeeDTO) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+        employeeService.regist(employeeDTO);
+        rs.put("result", "SUCCESS");
+        return ResponseEntity.ok(rs);
     }
 
 

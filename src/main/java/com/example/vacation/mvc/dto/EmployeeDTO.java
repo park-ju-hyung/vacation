@@ -1,23 +1,21 @@
 package com.example.vacation.mvc.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class EmployeeDTO extends BaseDTO {
-    private int userId;
-    private String userName; // 직원 이름
-    private String userBirth; // 직원 생년월일
+    private int empId;
+    private String empName; // 직원 이름
+    private String empBirth; // 직원 생년월일
     private String empNo; // 사번
     private String position; // 직책
     private String department; // 부서
     private String hireDate; // 입사일
     private String email; // 이메일
     private String status; // 상태
-    private String userPassword; // 상태
+    private String empPassword; // 패스워드
 }

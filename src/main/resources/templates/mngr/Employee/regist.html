@@ -9,7 +9,7 @@
             document.addEventListener('DOMContentLoaded', () => {
                 setDefault();
                 registEvent();
-                $('input[name="userBirth"]').datepicker(dtPickerJSON);
+                $('input[name="empBirth"]').datepicker(dtPickerJSON);
             });
             
             document.addEventListener('DOMContentLoaded', () => {
@@ -46,7 +46,7 @@
                 button.list = document.querySelector('.btn-view');
                 button.regist = document.querySelector('.btn-regist');
 
-                $('input[name="userBirth"]').datepicker(dtPickerJSON);
+                $('input[name="empBirth"]').datepicker(dtPickerJSON);
             };
 
             const registEvent = function () {
@@ -67,11 +67,11 @@
             };
 
             const validator = function (formData) {
-                if (isEmpty(formData['userName'])) {
+                if (isEmpty(formData['empName'])) {
                     alert('이름을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['userBirth'])) {
+                if (isEmpty(formData['empBirth'])) {
                     alert('생년월일을 입력하여 주십시오.');
                     return true;
                 }
@@ -120,8 +120,8 @@
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
 
                 let formData = {
-                    'userName': document.querySelector('input[name="userName"]').value,
-                    'userBirth': document.querySelector('input[name="userBirth"]').value,
+                    'empName': document.querySelector('input[name="empName"]').value,
+                    'empBirth': document.querySelector('input[name="empBirth"]').value,
                     'empNo': document.querySelector('input[name="empNo"]').value,
                     'position': document.querySelector('input[name="position"]').value,
                     'department': document.querySelector('input[name="department"]').value,
@@ -133,8 +133,7 @@
 
                 if (validator(formData)) {
                     return;
-                }
-                ;
+                };
 
                 // startLoading();
 
@@ -234,7 +233,7 @@
                                     이름
                                 </th>
                                 <td>
-                                    <input type="text" name="userName" class="form-control w20p">
+                                    <input type="text" name="empName" class="form-control w20p">
                                 </td>
                             </tr>
                             <tr>
@@ -242,7 +241,7 @@
                                     생년월일
                                 </th>
                                 <td>
-                                    <input type="text" name="userBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                    <input type="text" name="empBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
                                 </td>
                             </tr>
                             <tr>
