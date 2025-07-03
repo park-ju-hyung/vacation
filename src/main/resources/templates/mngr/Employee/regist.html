@@ -10,6 +10,7 @@
                 setDefault();
                 registEvent();
                 $('input[name="empBirth"]').datepicker(dtPickerJSON);
+                $('input[name="hireDate"]').datepicker(dtPickerJSON);
             });
             
             document.addEventListener('DOMContentLoaded', () => {
@@ -47,6 +48,7 @@
                 button.regist = document.querySelector('.btn-regist');
 
                 $('input[name="empBirth"]').datepicker(dtPickerJSON);
+                $('input[name="hireDate"]').datepicker(dtPickerJSON);
             };
 
             const registEvent = function () {
@@ -123,8 +125,8 @@
                     'empName': document.querySelector('input[name="empName"]').value,
                     'empBirth': document.querySelector('input[name="empBirth"]').value,
                     'empNo': document.querySelector('input[name="empNo"]').value,
-                    'position': document.querySelector('input[name="position"]').value,
-                    'department': document.querySelector('input[name="department"]').value,
+                    'position': document.querySelector('select[name="position"]').value,
+                    'department': document.querySelector('select[name="department"]').value,
                     'hireDate': document.querySelector('input[name="hireDate"]').value,
                     'email': getEmail(),
                     'status': document.querySelector('select[name="status"]').value
@@ -257,7 +259,19 @@
                                     직급
                                 </th>
                                 <td>
-                                    <input type="text" name="position" class="form-control w20p">
+                                    <select name="position" class="form-control w22p">
+                                        <option value="">직급 선택</option>
+                                        <option value="사원">사원</option>
+                                        <option value="주임">주임</option>
+                                        <option value="대리">대리</option>
+                                        <option value="과장">과장</option>
+                                        <option value="차장">차장</option>
+                                        <option value="부장">부장</option>
+                                        <option value="이사">이사</option>
+                                        <option value="상무">상무</option>
+                                        <option value="전무">전무</option>
+                                        <option value="대표이사">대표이사</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -265,7 +279,15 @@
                                     부서
                                 </th>
                                 <td>
-                                    <input type="text" name="department" class="form-control w20p">
+                                    <select name="department" class="form-control w22p">
+                                        <option value="">부서 선택</option>
+                                        <option value="경영지원팀">경영지원팀</option>
+                                        <option value="개발팀">개발팀</option>
+                                        <option value="영업팀">영업팀</option>
+                                        <option value="마케팅팀">마케팅팀</option>
+                                        <option value="디자인팀">디자인팀</option>
+                                        <option value="고객지원팀">고객지원팀</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -273,7 +295,7 @@
                                     입사일
                                 </th>
                                 <td>
-                                    <input type="text" name="hireDate" class="form-control w20p">
+                                    <input type="text" name="hireDate" class="form-control w20p" placeholder="YYYY-MM-DD">
                                 </td>
                             </tr>
                             <tr>
@@ -300,7 +322,7 @@
                                     상태
                                 </th>
                                 <td>
-                                    <select name="status" class="form-select w20p dib">
+                                    <select name="status" class="form-select w22p">
                                         <option value="">직접선택</option>
                                         <option value="재직">재직</option>
                                         <option value="휴직">휴직</option>

@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 public class EmployeeDTO extends BaseDTO {
+    private Long seq;
     private int empId;
     private String empName; // 직원 이름
     private String empBirth; // 직원 생년월일

@@ -21,8 +21,15 @@ public class EmployeeController {
 
     /**직원 관리 및 등록 list**/
     @GetMapping("/mngr/Employee/list")
-    public String EmployeeListPage() {
+    public String EmployeeListPage(EmployeeDTO employeeDTO, ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("employeeDTO", employeeDTO);
         return "mngr/Employee/list";
+    }
+
+    @PostMapping("/mngr/Employee/list")
+    @ResponseBody
+    public ResponseEntity<?> list(@RequestBody EmployeeDTO employeeDTO) throws Exception {
+        return new ResponseEntity<>(employeeService.Employeelist(employeeDTO), HttpStatus.OK);
     }
 
     /**직원 관리 및 등록 view**/

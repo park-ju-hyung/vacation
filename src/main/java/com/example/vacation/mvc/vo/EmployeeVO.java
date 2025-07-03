@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeVO extends BaseVO {
+    private Long seq;
     private int userId;
     private String userName; // 직원 이름
     private String userBirth; // 직원 생년월일
