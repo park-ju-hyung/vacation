@@ -24,9 +24,9 @@
             });
 
             const dtPickerJSON = {
-                format: "yy-mm-dd",
+                format: "yyyy-mm-dd",
                 startView: 3,
-                todayBtn: "linked",
+                todayBtn:"linked",
                 language: "kr",
                 orientation: "top auto",
                 keyboardNavigation: false,
@@ -153,7 +153,7 @@
 
                         if (data.result === 'SUCCESS') {
                             alert('등록 성공');
-                            window.location.replace('/employee/list?' + getQueryStr(searchData));
+                            window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
                         } else {
                             alert('등록 실패');
                         }

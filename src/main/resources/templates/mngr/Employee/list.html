@@ -68,12 +68,15 @@
 
             };
 
+
             const getSearchParam = (searchParam) => {
                 // 검색 조건 추가
-                searchParam.append('searchField', document.querySelector('[name="searchField"]').value);
-                searchParam.append('searchKwd', document.querySelector('[name="searchKwd"]').value);
+                searchParam.append('empName', document.querySelector('[name="empName"]').value);
+                searchParam.append('department', document.querySelector('[name="department"]').value);
+                searchParam.append('position', document.querySelector('[name="position"]').value);
                 searchParam.append('schDtStart', document.querySelector('[name="schDtStart"]').value);
                 searchParam.append('schDtEnd', document.querySelector('[name="schDtEnd"]').value);
+
 
                 return searchParam;
             };
@@ -119,7 +122,7 @@
                 for (el of list) {
                     html += '<tr>';
                     html += '<td class="txt-cter">' + (el.seq) + '</td>';
-                    html += '<td><span class="mv-view pointer txt-lf" data-id="' + (el.empId) + '">' + (el.empName) + '</span></td>';
+                    html += '<td><span class="mv-view pointer txt-lf" data-id="'+ (el.empId) +'">'+ (el.empName) +'</span></td>';
                     html += '<td class="txt-cter">' + (el.empBirth) + '</td>';
                     html += '<td class="txt-cter">' + (el.department) + '</td>';
                     html += '<td class="txt-cter">' + (el.position) + '</td>';
@@ -218,14 +221,29 @@
                     <div class="search-box">
                         <p>검색영역</p>
                         <div class="search-content">
+                            <!--부서-->
                             <div>
-                                <select name="searchField" class="form-select w120">
-                                    <option value="all">전체</option>
-                                    <option value="empName" th:selected="${employeeDTO.searchField == 'empName'}">이름</option>
-                                    <option value="department" th:selected="${employeeDTO.searchField == 'department'}">부서</option>
-                                    <option value="position" th:selected="${employeeDTO.searchField == 'position'}">부서</option>
-                                </select>
-                                <input type="text" style="width: 300px; margin-left: 10px;" class="sch-input form-control form-control" th:value="${employeeDTO.searchKwd}">
+                                <span>부서</span>
+                                <input type="text" name="department" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.department}">
+                            </div>
+                            <!--직책-->
+                            <div>
+                                <span>직책</span>
+                                <input type="text" name="position" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.position}">
+                            </div>
+                        </div>
+                        <div class="search-content">
+                            <!--이름-->
+                            <div>
+                                <span>이름</span>
+                                <input type="text" name="empName" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.empName}">
+                            </div>
+                            <!--입사일자-->
+                            <div>
+                                <span>입사일자</span>
+                                <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtStart}">
+                                <span class="dpi">~</span>
+                                <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtEnd}">
                             </div>
                         </div>
                     </div>

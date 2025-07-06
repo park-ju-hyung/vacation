@@ -17,4 +17,10 @@ public interface EmployeeMapper {
 
 	// 등록
 	public void insertEmployee(EmployeeDTO employeedto) throws Exception;
+
+	// 상세보기
+	public EmployeeVO employeeVO(EmployeeDTO employeedto) throws Exception;
+
+	// 수정
+	public int employeeUpdate(EmployeeDTO employeedto) throws Exception;
 }

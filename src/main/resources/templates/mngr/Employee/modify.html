@@ -5,6 +5,174 @@
 
 <head>
     <title>직원 등록 - 수정</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefault();
+                registEvent();
+                $('input[name="empBirth"]').datepicker(dtPickerJSON);
+                $('input[name="hireDate"]').datepicker(dtPickerJSON);
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('select[name="domain"]').addEventListener('change', function () {
+                    const selectedValue = this.value;
+                    const email2Input = document.querySelector('input[name="email2"]');
+
+                    email2Input.value = selectedValue;
+                    email2Input.readOnly = selectedValue !== "";
+                });
+            });
+
+            const dtPickerJSON = {
+                format: "yyyy-mm-dd",
+                startView: 3,
+                todayBtn:"linked",
+                language: "kr",
+                orientation: "top auto",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            };
+
+            const csrf = {'header': null, 'value': null};
+
+            const button = {'list': null, 'regist': null};
+
+            const setDefault = function () {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                // configEditor(false);
+                button.list = document.querySelector('.btn-view');
+                button.regist = document.querySelector('.btn-regist');
+
+                $('input[name="empBirth"]').datepicker(dtPickerJSON);
+                $('input[name="hireDate"]').datepicker(dtPickerJSON);
+            };
+
+            const registEvent = function () {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
+                });
+
+                button.regist.addEventListener('click', regist);
+            };
+
+            const isEmpty = (value) => {
+                if (value == null || typeof value == 'undefined' || value == '')
+                    return true;
+                else
+                    return false;
+            };
+
+            const validator = function (formData) {
+                console.log(formData);
+                if (isEmpty(formData['empName'])) {
+                    alert('이름을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['empBirth'])) {
+                    alert('생년월일을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['empNo'])) {
+                    alert('사번을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['position'])) {
+                    alert('직급을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['department'])) {
+                    alert('부서를 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['hireDate'])) {
+                    alert('입사일을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['email'])) {
+                    alert('이메일을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['status'])) {
+                    alert('상태를 입력하여 주십시오.');
+                    return true;
+                }
+
+                return false;
+            };
+
+            function getEmail() {
+                let email1 = document.querySelector('input[name="email1"]').value;
+                let email2 = document.querySelector('input[name="email2"]').value;
+                let email = '';
+
+                if (email1 != '' && email2 != '') {
+                    email = email1 + '@' + document.querySelector('input[name="email2"]').value;
+                }
+
+                return email;
+            };
+
+
+            async function regist() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
+                let formData = {
+                    'empId' :  document.querySelector('input[name="empId"]').value,
+                    'empName': document.querySelector('input[name="empName"]').value,
+                    'empBirth': document.querySelector('input[name="empBirth"]').value,
+                    'empNo': document.querySelector('input[name="empNo"]').value,
+                    'position': document.querySelector('select[name="position"]').value,
+                    'department': document.querySelector('select[name="department"]').value,
+                    'hireDate': document.querySelector('input[name="hireDate"]').value,
+                    'email': getEmail(),
+                    'status': document.querySelector('select[name="status"]').value
+                };
+                console.log(formData.empId);
+
+                if (validator(formData)) {
+                    return;
+                };
+
+                // startLoading();
+
+                await fetch('/Employee/modify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf.token
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // endLoading();
+                        console.log(data);
+                        if(data.result){
+                            alert('수정 성공');
+                            window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
+                        } else {
+                            alert('수정 실패');
+                        }
+                    })
+                    .catch(error => {
+                        // endLoading();
+                        alert('오류가 발생했습니다2.');
+                        console.log(error);
+                    });
+            };
+
+
+
+
+        </script>
+    </th:block>
 </head>
 
 <body>
@@ -48,6 +216,14 @@
 
                         </ul>
                     </div>
+                    <!-- 검색 form -->
+                    <form name="searchForm" method="post" onsubmit="return false;">
+
+                        <!-- 페이징 -->
+                        <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+                        <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+
+                    </form>
 
                     <!--content-table-->
                     <div class="view-table">
@@ -62,7 +238,8 @@
                                     이름
                                 </th>
                                 <td>
-                                    <input type="text" class="form-control w20p">
+                                    <input type="text" name="empName" th:value="${employeeVO.empName}" class="form-control w20p">
+                                    <input type="hidden" name="empId" th:value="${employeeDTO.empId}">
                                 </td>
                             </tr>
                             <tr>
@@ -70,7 +247,7 @@
                                     생년월일
                                 </th>
                                 <td>
-                                    <input type="date" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                    <input type="text" name="empBirth" th:value="${employeeVO.empBirth}" class="form-control w20p">
                                 </td>
                             </tr>
                             <tr>
@@ -78,7 +255,7 @@
                                     사번
                                 </th>
                                 <td>
-                                    <input type="text" class="form-control w20p">
+                                    <input type="text" name="empNo" th:value="${employeeVO.empNo}" class="form-control w20p">
                                 </td>
                             </tr>
                             <tr>
@@ -86,7 +263,19 @@
                                     직급
                                 </th>
                                 <td>
-                                    <input type="text" class="form-control w20p">
+                                    <select name="position" class="form-control w22p">
+                                        <option value="">직급 선택</option>
+                                        <option value="사원" th:selected="${employeeVO.position == '사원'}">사원</option>
+                                        <option value="주임" th:selected="${employeeVO.position == '주임'}">주임</option>
+                                        <option value="대리" th:selected="${employeeVO.position == '대리'}">대리</option>
+                                        <option value="과장" th:selected="${employeeVO.position == '과장'}">과장</option>
+                                        <option value="차장" th:selected="${employeeVO.position == '차장'}">차장</option>
+                                        <option value="부장" th:selected="${employeeVO.position == '부장'}">부장</option>
+                                        <option value="이사" th:selected="${employeeVO.position == '이사'}">이사</option>
+                                        <option value="상무" th:selected="${employeeVO.position == '상무'}">상무</option>
+                                        <option value="전무" th:selected="${employeeVO.position == '전무'}">전무</option>
+                                        <option value="대표이사" th:selected="${employeeVO.position == '대표이사'}">대표이사</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -94,7 +283,15 @@
                                     부서
                                 </th>
                                 <td>
-                                    <input type="text" class="form-control w20p">
+                                    <select name="department" class="form-control w22p">
+                                        <option value="">부서 선택</option>
+                                        <option value="경영지원팀" th:selected="${employeeVO.department == '경영지원팀'}">경영지원팀</option>
+                                        <option value="개발팀" th:selected="${employeeVO.department == '개발팀'}">개발팀</option>
+                                        <option value="영업팀" th:selected="${employeeVO.department == '영업팀'}">영업팀</option>
+                                        <option value="마케팅팀" th:selected="${employeeVO.department == '마케팅팀'}">마케팅팀</option>
+                                        <option value="디자인팀" th:selected="${employeeVO.department == '디자인팀'}">디자인팀</option>
+                                        <option value="고객지원팀" th:selected="${employeeVO.department == '고객지원팀'}">고객지원팀</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -102,32 +299,35 @@
                                     입사일
                                 </th>
                                 <td>
-                                    <input type="text" class="form-control w20p">
+                                    <input type="text" name="hireDate" th:value="${employeeVO.hireDate}" class="form-control w20p">
                                 </td>
                             </tr>
                             <tr>
-                                <th>
-                                    이메일
-                                </th>
+                                <th>이메일</th>
                                 <td>
-                                    <input type="text" name="email1" class="form-control w20p dib">
+                                    <input type="text" name="email1" class="form-control w20p dib"
+                                           th:value="${#strings.substringBefore(employeeVO.email, '@')}">
                                     <span class="dib">@</span>
-                                    <input type="text" name="email2" class="form-control w20p dib">
+                                    <input type="text" name="email2" class="form-control w20p dib"
+                                           th:value="${#strings.substringAfter(employeeVO.email, '@')}">
                                     <select name="domain" class="form-select w20p dib">
                                         <option value="">직접선택</option>
-                                        <option value="naver.com">naver.com</option>
-                                        <option value="nate.com">nate.com</option>
-                                        <option value="gmail.com">gmail.com</option>
-                                        <option value="kakao.com">kakao.com</option>
+                                        <option value="naver.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'naver.com'}">naver.com</option>
+                                        <option value="nate.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'nate.com'}">nate.com</option>
+                                        <option value="gmail.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'gmail.com'}">gmail.com</option>
+                                        <option value="kakao.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'kakao.com'}">kakao.com</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <th>
-                                    상태
-                                </th>
+                                <th>상태</th>
                                 <td>
-                                    <input type="text" class="form-control w20p">
+                                    <select name="status" class="form-control w20p">
+                                        <option value="">상태 선택</option>
+                                        <option value="재직" th:selected="${employeeVO.status == '재직'}">재직</option>
+                                        <option value="휴직" th:selected="${employeeVO.status == '휴직'}">휴직</option>
+                                        <option value="퇴사" th:selected="${employeeVO.status == '퇴사'}">퇴사</option>
+                                    </select>
                                 </td>
                             </tr>
 
@@ -140,8 +340,8 @@
 
                     <!--검색버튼-->
                     <div class="search-button">
-                        <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
-                        <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
+                        <button type="button" class="btn btn-regist w75">수정</button>
+                        <button type="button" class="btn btn-view w75">목록</button>
                     </div>
 
 

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{site/common/layout/basic_layout}">
+<head>
+<script th:inline="javascript">
+document.addEventListener('DOMContentLoaded', () => {
+	setDefault();
+	registEvent();
+	satisfaction.processLoader();
+	search();
+});
+
+const csrf = { 'header' : null, 'value' : null };
+
+const button = { 'sch' : null };
+
+function setDefault() {
+	csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+	csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');	
+	button.sch = document.querySelector('.integ-sch-btn');
+};
+
+function registEvent() {
+	button.sch.addEventListener('click', search);
+	
+	document.querySelector('#searchMainTotal').addEventListener("keydown", (e) => {
+		let keyword = e.target.value;
+		if (e.keyCode == 13) {
+        	location.replace('/integ/search?keyword='+keyword);	
+        }
+	});
+};
+
+function search() {
+	
+	let keyword = document.querySelector('#searchMainTotal').value;
+	
+	if(keyword == '') {
+		alert('검색단어를 입력하여 주십시오.');
+		return;
+	}
+	
+	let formData = {
+		'keyword' : keyword	
+	};
+	
+	fetch('/integ/search', {
+		method : 'POST',
+		headers : { 
+			'Content-Type' : 'application/json', 
+			'X-CSRF-TOKEN' :  csrf.token 
+		},
+		body : JSON.stringify(formData)
+	})
+	.then((response) => response.json())
+	.then((data) => {
+		init_search_result();
+		createSearchResultList(data.list);
+		divideSearchResultDataByTbl(data.list);
+		draw(data.list);
+		reloadSearchTitle(keyword, data.totalCount);
+		funcView();
+	})
+	.catch((error) => {
+		console.log(error);
+	});
+};
+
+function reloadSearchTitle(keyword, totalCount) {
+	document.querySelector('.integ-sch-kw').innerHTML = keyword;
+	document.querySelector('.integ-sch-total').innerHTML = totalCount;
+};
+
+let sch_result = new Object();
+
+/**
+ * 검색결과 목록 초기화
+ */
+function init_search_result() {
+	sch_result = new Object();
+	let init_target_parent = document.querySelector('.t_search_lf');
+	let search_list = document.querySelectorAll('.search_list');
+	for(item of search_list) {
+		init_target_parent.removeChild(item);
+	}
+};
+
+function draw(list) {
+	
+	let search_result = ''; 
+	for(key of Object.keys(sch_result)) {
+		let div_elem = document.createElement('div');
+		div_elem.classList.add('search_result');
+		
+		// searchResult header 그리기
+		let header = '';
+		header += '<h4>';
+		header += '<span class="">'+ sch_result[key][0].div +'</span>';
+		header += '<em class="search_num">'+ sch_result[key].length +'</em>';
+		header += '</h4>';
+		
+		div_elem.innerHTML = header;
+		document.querySelector('.'+key).appendChild(div_elem);
+		
+		// searchResult dbody 그리기
+		for(vo of sch_result[key]) {
+			let ul_element = document.createElement('ul');
+			ul_element.classList.add('dbody');
+			
+			let tag_attr = 'url="'+vo.url+'" id="'+ vo.id+'" sub-id="'+vo.subId+'" sub-type="'+vo.subType +'"'; 
+			
+			let li_element = '';
+			li_element += '<li>';
+			li_element += '<span class="group">';
+			li_element += '<span class="title pointer"'+ tag_attr +'>';
+			li_element += vo.title +'</span>';
+			li_element += '<div class="desc">';
+			li_element += '<span>'+ vo.gist +'</span>';
+			li_element += '</div>';
+			li_element += '</span>';
+			li_element += '</li>';
+			
+			ul_element.innerHTML = li_element;
+			document.querySelector('.'+key).appendChild(ul_element);
+		}
+	}
+};
+
+function funcView() {
+	let group = document.querySelectorAll('.group');
+	for(item of group) {
+		item.addEventListener('click', goViewPage);
+	}
+};
+
+// POST 방식으로 이동하는 URL
+const POST_URL = ['/subject/debate/list', '/subject/debate/view'
+	, '/climate/agd/opin/', '/cm/fr/topic//view'
+	, '/cm/oper/res//view'
+];
+
+const POST_PARAM = ['subjectId', 'subjectId,debateId'
+	, 'climateEcoCode,cmAgdId', 'climateEcoCode,freeTopicId'
+	, 'climateEcoCode,cmOperId'
+];
+
+// 검색결과의 원문으로 이동
+function goViewPage(e) {
+	let url = e.target.getAttribute('url');
+	let id = e.target.getAttribute('id');
+	let subId = e.target.getAttribute('sub-id');
+	let subType = e.target.getAttribute('sub-type');
+	
+	let schUrl = '';
+	if(subType != '') schUrl = url.replace(subType, '');
+	else schUrl = url;
+	
+	if(POST_URL.includes(schUrl)) {
+		let index = POST_URL.indexOf(schUrl);
+		let names = POST_PARAM[index];
+		
+		if(names.indexOf(',') > 0) {
+			let name1, name2;
+			
+			name1 = names.split(',')[1];
+			name2 = names.split(',')[0];
+			
+			if(subType == '') formSubmit(url, name1, id, name2, subId);
+			if(subType != '') formSubmit(url, name1, id, name2, subType);
+		} else {
+			formSubmit(url, names, id);
+		}	
+	} else {
+		window.open(url, '_blank');
+	}
+};
+
+function formSubmit(url, name1, val1, name2, val2) {
+	let form = document.createElement('form');
+
+    let obj = document.createElement('input');
+    obj.setAttribute('type', 'hidden');
+    obj.setAttribute('name', name1);
+    obj.setAttribute('value', val1);
+    form.appendChild(obj);
+    
+    let obj1 = document.createElement('input');
+    obj1.setAttribute('type', 'hidden');
+    obj1.setAttribute('name', name2);
+    obj1.setAttribute('value', val2);
+    form.appendChild(obj1);
+    
+    form.target = '_blank';
+    form.method = 'POST';
+    form.action = url;
+    document.body.append(form);
+	form.submit();	
+};
+
+/**
+ * 검색결과의 테이블 개수대로 searchResultList(Node) 생성
+ */
+function createSearchResultList(list) {
+	let before_div = '';
+	
+	for(let i = 0; i < list.length; i++) {
+		
+		if(i != 0) before_div = list[i-1].div;
+		
+		if(before_div != list[i].div) {
+			let div_element = document.createElement('div');
+			div_element.classList.add('search_list');
+			div_element.classList.add(list[i].tbl);
+			
+			sch_result[list[i].tbl] = [];
+			
+			document.querySelector('.t_search_lf').appendChild(div_element);
+		}
+	}
+};
+
+/**
+ * 검색결과를 테이블별로 나누어 저장한다.
+ */
+function divideSearchResultDataByTbl(list) {
+	for(item of list) {
+		sch_result[item.tbl].push(item);
+	}
+};
+</script>
+<script type="text/javascript">
+$(function(){ 
+	$(".tab_obj").css("display","none");
+	$(".on").css("display","block");
+	$(".title").click(function () {
+	  $(".title").removeClass("on");
+	  $(this).addClass("on");
+		var $boxVar = $(this).index() + 1;
+		$(".tab_obj").css("display","none");
+		$("#ranklist"+$boxVar).css("display","block");
+	});
+})
+</script>
+</head>
+<th:block layout:fragment="content">
+	
+	<div class="con_warp">
+		<div class="current-site-path">
+			<ul>
+			   <li class="location_home">홈</li>
+			<li class="location_arrow"><span class="location_txt">통합검색</span></li>	            
+			    	
+		   
+			</ul>	
+		</div>
+		<h2>통합검색</h2>
+				<!-- 검색영역 -->
+				<div class="t_search_area">
+					<!-- 통합검색 영역 -->
+					<div class="t_search_lf">
+						<div class="t_search_box">
+							<input type="text" name="searchMainTotal" 
+							 id="searchMainTotal" class="form-control bg_w search_inputb" 
+							 th:value="${keywordDTO.keyword}" 
+							 placeholder="검색어를 입력하세요" title="검색어를 입력하세요">
+							<button class="btn type1 integ-sch-btn" id="searchMainMouseDown"><i class="xi-search" aria-hidden="true"></i><span>검색</span></button>
+						</div>
+						<!-- 검색결과  title-->
+						<div class="search_title">
+							<p>검색어 <em class="em_black integ-sch-kw">"검색단어"</em> 에 대한 전체 <em class="em_orange integ-sch-total"></em> 개의 결과를 찾았습니다.</p>
+						</div>
+						
+						<!-- 검색결과 목록 -->
+						<!-- 샘플 
+						<div class="search_list">
+							<div class="search_result">
+								<h4>
+								<span class="">차세대화학기술 전략센터 </span>
+								<em class="search_num">8</em>
+								</h4>
+								
+								<ul class="dbody">
+									<li>
+										<a href="" class="group">
+											<span class="title">성과 교류회</span>
+											<div class="desc">
+												<span>과학기술정보통신부와 한국생산기술연구원은 차세대 친환경 화학 기술개발의 솔루션을 제시하고  기후환경 분야 R&amp;D 전과정 평가 및 상향식 정책 제안을 위한 전략센터 개소식과 성과교류회 개최
+												□ 행사 개요
+												ㅇ 행 사 명 : 「차세대화학기술전략센터」 개소식 및 성과교류회
+												</span>
+											</div>
+										</a>
+									
+									</li>
+								</ul>
+								<a href="" class="more" onclick="">
+									<span class="sr_only">차세대화학기술전략센터</span> <span class="sr_only">더보기</span>
+									<i class="xi-angle-right" aria-hidden="true"></i>
+								</a>
+							</div>
+						</div>	-->				
+						<!-- //검색결과 목록 -->
+						
+					</div>
+					
+					<!-- 인기검색어 -->
+					<div class="t_search_rf">
+						<div class="Sbox">
+							<h4>인기검색어</h4>
+							<ul>
+								<li class="title on" style="display: block;"><a href="#search">주간</a>
+									<div id="ranklist1" class="tab_obj on" style="display: block;">
+										<ol th:each="item : ${wordForWeek.list}">
+											<li><span th:text="${item.seq}"></span>
+												<a th:href="|/integ/search?keyword=${item.keyword}|" title="" th:text="${item.keyword}">성과교류회</a>
+											</li>
+										</ol>
+									</div>
+								</li>
+								
+								<li class="title"><a href="#search">일간</a>
+									<div id="ranklist2" class="tab_obj" style="display: none;">
+										<ol th:each="item : ${wordForDay.list}">
+											<li><span th:text="${item.seq}"></span>
+												<a th:href="|/integ/search?keyword=${item.keyword}|" title="" th:text="${item.keyword}">성과교류회</a>
+											</li>
+										</ol>
+									</div>
+								</li>
+							</ul>
+						
+						</div>
+						
+						
+					</div>
+				
+				
+				
+				</div>
+			
+			<!-- 만족도 조사 -->
+			
+			<div class="content-satis">
+				<div class="question-answer-wrap">
+					<div class="question-wrap">
+					이 페이지에서 제공하는 정보에 대하여 어느 정도 만족하셨습니까?
+					</div>
+					
+					<div class="answer-wrap">
+						<div class="radio-control">
+							<label class="radio-control-label">
+								<input class="radio-control-input" type="radio" name="score" id="" value="5">
+								매우만족
+							</label>
+							
+						</div>
+						<div class="radio-control">
+							<label class="radio-control-label">
+								<input class="radio-control-input" type="radio" name="score" id="" value="4">
+								만족
+							</label>
+							
+						</div>
+						<div class="radio-control">
+							<label class="radio-control-label">
+								<input class="radio-control-input" type="radio" name="score" id="" value="3">
+								보통
+							</label>
+							
+						</div>
+						<div class="radio-control">
+							<label class="radio-control-label">
+								<input class="radio-control-input" type="radio" name="score" id="" value="2">
+								불만족
+							</label>
+							
+						</div>
+						<div class="radio-control">
+							<label class="radio-control-label">
+								<input class="radio-control-input" type="radio" name="score" id="" value="1">
+								매우불만족
+							</label>
+							
+						</div>
+					
+					</div>
+					<div class="answer-text-wrap">
+						<div class="textarea-control">
+							<textarea name="" id="" class="textarea-control" placeholder="내용입력" style="height: 80px;"></textarea>
+							<input type="hidden" name="ssUserId" th:value="${session.ssUserId}">
+						</div>
+						<button type="button" class="sch-btn">의견등록</button>
+							
+					</div>
+				</div>
+			
+			</div>
+			
+		</div>	
+	
+		
+		
+		
+
+
+</th:block>
+</html>

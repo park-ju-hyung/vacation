@@ -59,9 +59,22 @@ public class EmployeeService {
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
     public Map<String, Object> regist(EmployeeDTO employeeDTO) throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
-
         employeeMapper.insertEmployee(employeeDTO);
+        rs.put("result", employeeDTO);
+        return rs;
+    }
 
+    // 상세보기
+    @Transactional(readOnly = true)
+    public EmployeeVO view(EmployeeDTO employeeDTO) throws Exception {
+        return employeeMapper.employeeVO(employeeDTO);
+    }
+
+    //수정
+    @Transactional(readOnly = false, rollbackFor = {Exception.class})
+    public Map<String, Object> modify(EmployeeDTO employeeDTO) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+        employeeMapper.employeeUpdate(employeeDTO);
         rs.put("result", employeeDTO);
         return rs;
     }

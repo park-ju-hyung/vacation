@@ -4,7 +4,40 @@
 
 <head>
     <title>직원 등록 - 상세보기</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+                setDefault();
+                registEvent();
+            });
 
+            const button = { 'list' : null, 'modify' : null };
+
+            const setDefault = function() {
+                button.list = document.querySelector('.btn-view');
+                button.modify = document.querySelector('.btn-regist');
+            };
+
+            const registEvent = function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                /**
+                 button.list.addEventListener('click', () => {
+                 window.location.replace('/mngr/gov/policy/list?' + getQueryStr(searchData));
+                 });
+                 **/
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
+                });
+
+                button.modify.addEventListener('click', () => {
+                    let id = document.querySelector('input[name="empId"]').value;
+                    window.location.replace('/mngr/Employee/modify?&empId='+ id +'&'+ getQueryStr(searchData));
+                    //http://localhost:8892/mngr/gov/policy/modify?&govId=79
+                });
+            };
+
+        </script>
+    </th:block>
 </head>
 
 <body>
@@ -53,6 +86,23 @@
                             </li>
                         </ul>
                     </div>
+                    <!-- 검색 form -->
+                    <form name="searchForm" method="post" onsubmit="return false;">
+
+                        <!-- 검색 조건 -->
+                        <input type="hidden" name="empId" th:value="${employeeDTO.empId}">
+                        <input type="hidden" name="empName" th:value="${employeeDTO.empName}">
+                        <input type="hidden" name="empBirth" th:value="${employeeDTO.empBirth}">
+                        <input type="hidden" name="position" th:value="${employeeDTO.position}">
+                        <input type="hidden" name="department" th:value="${employeeDTO.department}">
+                        <input type="hidden" name="email" th:value="${employeeDTO.email}">
+                        <input type="hidden" name="status" th:value="${employeeDTO.status}">
+
+                        <!-- 페이징 -->
+                        <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+                        <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+
+                    </form>
 
                     <!--content-table-->
                     <div class="view-table">
@@ -66,57 +116,43 @@
                                 <th>
                                     이름
                                 </th>
-                                <td>
-                                    이름
-                                </td>
+                                <td th:text="${employeeVO.empName}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     사번
                                 </th>
-                                <td>
-                                    사번
-                                </td>
+                                <td th:text="${employeeVO.empNo}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     직급
                                 </th>
-                                <td>
-                                    직급
-                                </td>
+                                <td th:text="${employeeVO.position}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     부서
                                 </th>
-                                <td>
-                                    부서
-                                </td>
+                                <td th:text="${employeeVO.department}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     입사일
                                 </th>
-                                <td>
-                                    입사일
-                                </td>
+                                <td th:text="${employeeVO.hireDate}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     이메일
                                 </th>
-                                <td>
-                                    이메일
-                                </td>
+                                <td th:text="${employeeVO.email}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     상태
                                 </th>
-                                <td>
-                                    상태
-                                </td>
+                                <td th:text="${employeeVO.status}"></td>
                             </tr>
                             <tr>
                                 <th>
@@ -168,8 +204,8 @@
 
                     <!--검색버튼-->
                     <div class="search-button">
-                        <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
-                        <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
+                        <button type="button" class="btn btn-regist w75">수정</button>
+                        <button type="button" class="btn btn-view w75">목록</button>
                     </div>
 
 

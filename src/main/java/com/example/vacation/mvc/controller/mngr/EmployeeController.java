@@ -34,7 +34,9 @@ public class EmployeeController {
 
     /**직원 관리 및 등록 view**/
     @GetMapping("/mngr/Employee/view")
-    public String EmployeeViewPage() {
+    public String EmployeeViewPage(EmployeeDTO employeeDTO, ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("employeeDTO", employeeDTO);
+        modelMap.addAttribute("employeeVO", employeeService.view(employeeDTO));
         return "mngr/Employee/view";
     }
 
@@ -57,10 +59,17 @@ public class EmployeeController {
 
     /**직원 관리 및 등록 modify**/
     @GetMapping("/mngr/Employee/modify")
-    public String EmployeeModifyPage() {
+    public String EmployeeModifyPage(EmployeeDTO employeeDTO, ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("employeeDTO", employeeDTO);
+        modelMap.addAttribute("employeeVO", employeeService.view(employeeDTO));
         return "mngr/Employee/modify";
     }
 
+    @PostMapping("/Employee/modify")
+    @ResponseBody
+    public ResponseEntity<?> modify(@RequestBody EmployeeDTO employeeDTO) throws Exception {
+        return new ResponseEntity<>(employeeService.modify(employeeDTO), HttpStatus.OK);
+    }
 
-    /**연차현황 조회 상세 페이지**/
+
 }
