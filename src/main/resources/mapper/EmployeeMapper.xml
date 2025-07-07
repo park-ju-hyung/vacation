@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO Employee ( empId , empName , empBirth, empNo, position, department, hireDate, email, status
-		) VALUES (#{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{hireDate}, #{email}, #{status})
+		INSERT INTO Employee ( empId, empName, empBirth, empNo, position, department, hireDate, email, status )
+		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{hireDate}, #{email}, #{status} )
 	</insert>
 
 	<!--리스트-->

@@ -59,6 +59,11 @@ public class EmployeeService {
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
     public Map<String, Object> regist(EmployeeDTO employeeDTO) throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
+
+        String birthDate = employeeDTO.getEmpName();
+        employeeDTO.setEmpNo(birthDate);
+        System.out.println("사번: " + employeeDTO.getEmpNo());
+
         employeeMapper.insertEmployee(employeeDTO);
         rs.put("result", employeeDTO);
         return rs;

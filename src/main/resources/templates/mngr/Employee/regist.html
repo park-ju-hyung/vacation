@@ -77,10 +77,6 @@
                     alert('생년월일을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['empNo'])) {
-                    alert('사번을 입력하여 주십시오.');
-                    return true;
-                }
                 if (isEmpty(formData['position'])) {
                     alert('직급을 입력하여 주십시오.');
                     return true;
@@ -124,7 +120,6 @@
                 let formData = {
                     'empName': document.querySelector('input[name="empName"]').value,
                     'empBirth': document.querySelector('input[name="empBirth"]').value,
-                    'empNo': document.querySelector('input[name="empNo"]').value,
                     'position': document.querySelector('select[name="position"]').value,
                     'department': document.querySelector('select[name="department"]').value,
                     'hireDate': document.querySelector('input[name="hireDate"]').value,
@@ -244,14 +239,6 @@
                                 </th>
                                 <td>
                                     <input type="text" name="empBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    사번
-                                </th>
-                                <td>
-                                    <input type="text" name="empNo" class="form-control w20p">
                                 </td>
                             </tr>
                             <tr>
