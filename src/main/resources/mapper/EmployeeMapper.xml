@@ -43,12 +43,12 @@
 		</if>
 	</sql>
 
-	<select id="EmployeeCount" parameterType="com.example.vacation.mvc.dto.EmployeeDTO" resultType="integer">
+	<select id="employeeCount" parameterType="com.example.vacation.mvc.dto.EmployeeDTO" resultType="integer">
 		SELECT count(*) FROM Employee
 		<include refid="where"/>
 	</select>
 
-	<select id="Employeelist" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
+	<select id="employeelist" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
 			resultType="com.example.vacation.mvc.vo.EmployeeVO">
 		<include refid="basicTable"/>
 		<include refid="where"/>

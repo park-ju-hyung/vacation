@@ -10,13 +10,13 @@ import java.util.List;
 @DBMapper
 @Repository
 public interface EmployeeMapper {
-	//list
-	public List<EmployeeVO> Employeelist(EmployeeDTO EmployeeDTO) throws Exception;
-
-	public int EmployeeCount(EmployeeDTO EmployeeDTO) throws Exception;
-
 	// 등록
 	public void insertEmployee(EmployeeDTO employeedto) throws Exception;
+
+	//list
+	public List<EmployeeVO> employeelist(EmployeeDTO EmployeeDTO) throws Exception;
+
+	public int employeeCount(EmployeeDTO EmployeeDTO) throws Exception;
 
 	// 상세보기
 	public EmployeeVO employeeVO(EmployeeDTO employeedto) throws Exception;

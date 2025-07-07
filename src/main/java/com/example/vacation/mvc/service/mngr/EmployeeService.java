@@ -21,41 +21,6 @@ public class EmployeeService {
 
     private final EmployeeMapper employeeMapper;
 
-    //list
-    @Transactional(readOnly = false)
-    public Map<String, Object> Employeelist(EmployeeDTO employeeDTO) throws Exception {
-        Map<String, Object> rs = new HashMap<>();
-
-        int pageNo = employeeDTO.getPageNo() == 0 ? 1 : employeeDTO.getPageNo();
-        int pageSize = employeeDTO.getPageSize() == 0 ? 10 : employeeDTO.getPageSize();
-        int pageBlock = employeeDTO.getPageBlock() == 0 ? 10 : employeeDTO.getPageBlock();
-        employeeDTO.setPageNo(pageNo);
-        employeeDTO.setPageSize(pageSize);
-        employeeDTO.setPageBlock(pageBlock);
-        employeeDTO.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
-
-        List<EmployeeVO> list = employeeMapper.Employeelist(employeeDTO);
-
-        if (pageNo != 1 && list.size() == 0) {
-            pageNo = 1;
-            employeeDTO.setPageNo(pageNo);
-            employeeDTO.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
-            list = employeeMapper.Employeelist(employeeDTO);
-        }
-
-        int totalCount = employeeMapper.EmployeeCount(employeeDTO);
-        int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
-        String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
-
-        rs.put("employeeDTO", employeeDTO);
-        rs.put("list", list);
-        rs.put("totalCount", totalCount);
-        rs.put("totalPageNo", totalPageNo);
-        rs.put("pagingHTML", pagingHTML);
-
-        return rs;
-    }
-
     // 등록
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
     public Map<String, Object> regist(EmployeeDTO employeeDTO) throws Exception {
@@ -78,6 +43,41 @@ public class EmployeeService {
 
         employeeMapper.insertEmployee(employeeDTO);
         rs.put("result", employeeDTO);
+        return rs;
+    }
+
+    //list
+    @Transactional(readOnly = false)
+    public Map<String, Object> Employeelist(EmployeeDTO employeeDTO) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+
+        int pageNo = employeeDTO.getPageNo() == 0 ? 1 : employeeDTO.getPageNo();
+        int pageSize = employeeDTO.getPageSize() == 0 ? 10 : employeeDTO.getPageSize();
+        int pageBlock = employeeDTO.getPageBlock() == 0 ? 10 : employeeDTO.getPageBlock();
+        employeeDTO.setPageNo(pageNo);
+        employeeDTO.setPageSize(pageSize);
+        employeeDTO.setPageBlock(pageBlock);
+        employeeDTO.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+
+        List<EmployeeVO> list = employeeMapper.employeelist(employeeDTO);
+
+        if (pageNo != 1 && list.size() == 0) {
+            pageNo = 1;
+            employeeDTO.setPageNo(pageNo);
+            employeeDTO.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+            list = employeeMapper.employeelist(employeeDTO);
+        }
+
+        int totalCount = employeeMapper.employeeCount(employeeDTO);
+        int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
+        String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
+
+        rs.put("employeeDTO", employeeDTO);
+        rs.put("list", list);
+        rs.put("totalCount", totalCount);
+        rs.put("totalPageNo", totalPageNo);
+        rs.put("pagingHTML", pagingHTML);
+
         return rs;
     }
 
