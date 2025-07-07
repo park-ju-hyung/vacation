@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -60,9 +61,20 @@ public class EmployeeService {
     public Map<String, Object> regist(EmployeeDTO employeeDTO) throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
 
-        String birthDate = employeeDTO.getEmpName();
-        employeeDTO.setEmpNo(birthDate);
-        System.out.println("사번: " + employeeDTO.getEmpNo());
+        //생년월일
+        String birthDate = employeeDTO.getEmpBirth();
+        birthDate = birthDate.replace("-", "");
+
+        //난수만들기
+        Random rand = new Random();
+        int randomNum = rand.nextInt(9000) + 1000;
+
+        //최종
+        employeeDTO.setEmpNo(birthDate + randomNum);
+        employeeDTO.setEmpPassword(birthDate + randomNum);
+        System.out.println("empNo:" + birthDate + randomNum);
+        System.out.println("Password:" + birthDate + randomNum);
+
 
         employeeMapper.insertEmployee(employeeDTO);
         rs.put("result", employeeDTO);

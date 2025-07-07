@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO Employee ( empId, empName, empBirth, empNo, position, department, hireDate, email, status )
-		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{hireDate}, #{email}, #{status} )
+		INSERT INTO Employee ( empId, empName, empBirth, empNo, position, department, hireDate, email, status, empPassword )
+		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{hireDate}, #{email}, #{status}, #{empPassword} )
 	</insert>
 
 	<!--리스트-->
@@ -27,10 +27,10 @@
 	<sql id="where">
 		WHERE 1=1
 		<if test="schDtStart != '' and schDtStart != null">
-			AND DATE_FORMAT(reg_date, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
+			AND DATE_FORMAT(hireDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
 		</if>
 		<if test="schDtEnd != '' and schDtEnd != null">
-			AND DATE_FORMAT(reg_date, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
+			AND DATE_FORMAT(hireDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
 		</if>
 		<if test="empName != null and empName != ''">
 			AND empName LIKE CONCAT('%', #{empName}, '%')

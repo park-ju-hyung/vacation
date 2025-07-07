@@ -9,10 +9,10 @@
             document.addEventListener('DOMContentLoaded', () => {
                 setDefault();
                 registEvent();
-                $('input[name="empBirth"]').datepicker(dtPickerJSON);
-                $('input[name="hireDate"]').datepicker(dtPickerJSON);
+
             });
-            
+
+
             document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('select[name="domain"]').addEventListener('change', function () {
                     const selectedValue = this.value;
@@ -24,7 +24,7 @@
             });
 
             const dtPickerJSON = {
-                format: "yyyy-mm-dd",
+                dateFormat: "yy-mm-dd",
                 startView: 3,
                 todayBtn:"linked",
                 language: "kr",

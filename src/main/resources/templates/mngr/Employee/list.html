@@ -18,8 +18,8 @@
                 'regist' : null, 'view' : null, 'page' : null, 'search' : null
             };
 
-            const pickerData = {
-                format: "yyyy-mm-dd",
+            const dtPickerJSON = {
+                dateFormat: "yy-mm-dd",
                 startView: 3,
                 todayBtn:"linked",
                 language: "kr",
@@ -37,8 +37,8 @@
                 button.regist = document.querySelector('.btn-regist');
                 button.search = document.querySelector('.sch-btn');
 
-                $('input[name="schDtStart"]').datepicker(pickerData);
-                $('input[name="schDtEnd"]').datepicker(pickerData);
+                $('input[name="schDtStart"]').datepicker(dtPickerJSON);
+                $('input[name="schDtEnd"]').datepicker(dtPickerJSON);
             };
 
             const registEvent = function() {
