@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
+<head>
+    <title>퇴직자 관리 - 목록</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefault();
+                registEvent();
+                getList();
+            });
+
+            const csrf = { 'header' : null, 'value' : null };
+
+            const button = {
+                'view' : null, 'page' : null, 'search' : null
+            };
+
+            const dtPickerJSON = {
+                dateFormat: "yy-mm-dd",
+                startView: 3,
+                todayBtn:"linked",
+                language: "kr",
+                orientation: "top auto",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            };
+
+            const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                button.search = document.querySelector('.sch-btn');
+
+                $('input[name="schDtStart"]').datepicker(dtPickerJSON);
+                $('input[name="schDtEnd"]').datepicker(dtPickerJSON);
+            };
+
+            const registEvent = function() {
+
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                searchData = getSearchParam(searchData);
+
+                // 검색 버튼 클릭 이벤트
+                button.search.addEventListener('click', () => {
+                    getList();
+                });
+
+
+                // 키다운(Enter) 이벤트
+                for(search of document.querySelectorAll('.sch-input')) {
+                    search.addEventListener('keydown', (e) => {
+                        if(e.key == 'Enter') getList();
+                    });
+                }
+
+                // 검색버튼 클릭 이벤트
+                button.search.addEventListener('click', getList());
+
+            };
+
+
+            const getSearchParam = (searchParam) => {
+                // 검색 조건 추가
+                searchParam.append('empName', document.querySelector('[name="empName"]').value);
+                searchParam.append('department', document.querySelector('[name="department"]').value);
+                searchParam.append('position', document.querySelector('[name="position"]').value);
+                searchParam.append('schDtStart', document.querySelector('[name="schDtStart"]').value);
+                searchParam.append('schDtEnd', document.querySelector('[name="schDtEnd"]').value);
+
+
+                return searchParam;
+            };
+
+            async function getList() {
+                let formData = new FormData(document.querySelector('[name="searchForm"]'));
+                formData = getJSONData(getSearchParam(formData));
+
+                await fetch('/mngr/retire/list', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        let totalCount = data.totalCount;
+                        let totalPageNo = data.totalPageNo;
+                        let list = data.list;
+
+                        let html = '';
+
+                        if (totalCount == 0) {
+                            html += '<tr><td class="text-center h-200px align-middle" colspan="6">데이터가 존재하지 않습니다.</td></tr>';
+                        } else {
+                            html += drawList(list);
+                        }
+
+                        document.querySelector('.list-table tbody').innerHTML = html;
+                        document.querySelector('.pagination').innerHTML = data.pagingHTML;
+
+                        viewFunc();
+                        pagingFunc();
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
+            };
+
+            const drawList = (list) => {
+                let html = '';
+
+                for (el of list) {
+                    html += '<tr>';
+                    html += '<td class="txt-cter">' + (el.seq) + '</td>';
+                    html += '<td><span class="mv-view pointer txt-lf" data-id="'+ (el.empId) +'">'+ (el.empName) +'</span></td>';
+                    html += '<td class="txt-cter">' + (el.empBirth) + '</td>';
+                    html += '<td class="txt-cter">' + (el.department) + '</td>';
+                    html += '<td class="txt-cter">' + (el.position) + '</td>';
+                    html += '<td class="txt-cter">' + (el.hireDate) + '</td>';
+                    html += '<td class="txt-cter">' + (el.status) + '</td>';
+                    html += '</tr>';
+                }
+                return html;
+            };
+
+            const pagingFunc = () => {
+                button.page = document.querySelectorAll('.pagination .pageNo');
+
+                for(page of button.page) {
+                    page.addEventListener('click', (e) => {
+                        let target = e.target;
+                        let pageNo = target.getAttribute('data-pageNo');
+
+                        if(target.classList.contains('pg-active') == false) {
+                            document.querySelector('[name="pageNo"]').value = pageNo;
+                            getList();
+                        }
+                    });
+                }
+            };
+
+            const viewFunc = () => {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                searchData = getSearchParam(searchData);
+
+                // 조회 화면으로 이동
+                button.view = document.querySelectorAll('span[class^="mv"]');
+                for(view of button.view) {
+                    view.addEventListener('click', (e) => {
+                        let id = e.target.getAttribute('data-id');
+                        // window.location.href = '/mngr/gov/policy/view?' + getQueryStr(searchData) + '&govId=' + id;
+                        window.location.href = '/mngr/retire/view?' + '&empId=' + id;
+                    });
+                }
+
+            };
+
+        </script>
+
+</head>
+
+<body>
+    <!-- layout에 삽입될 본문 fragment -->
+    <th:block layout:fragment="content">
+        <div style="display: flex;">
+            <!--sidebar-->
+            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+            <!--content-->
+            <div class="content">
+                <!--상단-->
+                <div class="account">
+                    <ul>
+                        <!--관리자 아이디 표시-->
+                        <li>
+                            <a href="#">
+                                <span>admin</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>로그아웃</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--content-->
+                <div class="content-box">
+                    <!--경로-->
+                    <div class="current-site-path">
+                        <ul>
+                            <li>
+                            <span>
+                                직원등록
+                            </span>
+                            </li>
+                            <li>
+                            <span>
+                                목록
+                            </span>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- 검색 form -->
+                    <form name="searchForm" method="post" onsubmit="return false;">
+                        <!-- 페이지네이션 -->
+                        <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+                        <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+                        <!-- // 페이지네이션 -->
+                    </form>
+                    <!--검색영역-->
+                    <div class="search-box">
+                        <p>검색영역</p>
+                        <div class="search-content">
+                            <!--부서-->
+                            <div>
+                                <span>부서</span>
+                                <input type="text" name="department" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.department}">
+                            </div>
+                            <!--직책-->
+                            <div>
+                                <span>직책</span>
+                                <input type="text" name="position" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.position}">
+                            </div>
+                        </div>
+                        <div class="search-content">
+                            <!--이름-->
+                            <div>
+                                <span>이름</span>
+                                <input type="text" name="empName" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.empName}">
+                            </div>
+                            <!--입사일자-->
+                            <div>
+                                <span>입사일자</span>
+                                <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtStart}">
+                                <span class="dpi">~</span>
+                                <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtEnd}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--검색버튼-->
+                    <div class="search-button">
+                        <button type="button" class="sch-btn btn btn-primary w75">검색</button>
+                    </div>
+
+                    <!--content-table-->
+                    <div class="list-table">
+                        <table>
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>이름</th>
+                                <th>생년월일</th>
+                                <th>부서</th>
+                                <th>직책</th>
+                                <th>입사일</th>
+                                <th>상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!--등록-->
+                    <div class="search-button">
+                        <button id="btn-search" type="button" class="btn btn-regist w75">등록</button>
+                    </div>
+
+
+
+
+
+                    <!--페이지네이션-->
+                    <div class="pagination">
+                        <div class="pageNo-group">
+                            <span class="pageNo prev" data-pageno="1">&lt;</span>
+                            <span class="pageNo pg-active">1</span>
+                            <span class="pageNo" data-pageno="2">2</span>
+                            <span class="pageNo next" data-pageno="2">&gt;</span>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+    </th:block>
+
+
+
+
+</body>
+
+</html>
