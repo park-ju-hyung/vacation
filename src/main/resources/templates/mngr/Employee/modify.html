@@ -49,6 +49,7 @@
 
                 $('input[name="empBirth"]').datepicker(dtPickerJSON);
                 $('input[name="hireDate"]').datepicker(dtPickerJSON);
+                $('input[name="statusDate"]').datepicker(dtPickerJSON);
             };
 
             const registEvent = function () {
@@ -70,37 +71,48 @@
 
             const validator = function (formData) {
                 console.log(formData);
-                if (isEmpty(formData['empName'])) {
+                if (isEmpty(formData.employee.empName)) {
                     alert('이름을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['empBirth'])) {
+                if (isEmpty(formData.employee.empBirth)) {
                     alert('생년월일을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['empNo'])) {
+                if (isEmpty(formData.employee.empNo)) {
                     alert('사번을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['position'])) {
+                if (isEmpty(formData.employee.position)) {
                     alert('직급을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['department'])) {
+                if (isEmpty(formData.employee.department)) {
                     alert('부서를 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['hireDate'])) {
+                if (isEmpty(formData.employee.hireDate)) {
                     alert('입사일을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['email'])) {
+                if (isEmpty(formData.employee.email)) {
                     alert('이메일을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['status'])) {
+                if (isEmpty(formData.employee.status)) {
                     alert('상태를 입력하여 주십시오.');
                     return true;
+                }
+
+                if (formData.employee.status === '퇴직' || formData.employee.status === '휴직') {
+                    if (isEmpty(formData.status.statusDate)) {
+                        alert('기간을 입력하여 주십시오.');
+                        return true;
+                    }
+                    if (isEmpty(formData.status.statusReason)) {
+                        alert('사유를 입력하여 주십시오.');
+                        return true;
+                    }
                 }
 
                 return false;
@@ -122,18 +134,28 @@
             async function regist() {
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
 
-                let formData = {
-                    'empId' :  document.querySelector('input[name="empId"]').value,
-                    'empName': document.querySelector('input[name="empName"]').value,
-                    'empBirth': document.querySelector('input[name="empBirth"]').value,
-                    'empNo': document.querySelector('input[name="empNo"]').value,
-                    'position': document.querySelector('select[name="position"]').value,
-                    'department': document.querySelector('select[name="department"]').value,
-                    'hireDate': document.querySelector('input[name="hireDate"]').value,
-                    'email': getEmail(),
-                    'status': document.querySelector('select[name="status"]').value
+                let employee = {
+                    empId: document.querySelector('input[name="empId"]').value,
+                    empName: document.querySelector('input[name="empName"]').value,
+                    empBirth: document.querySelector('input[name="empBirth"]').value,
+                    empNo: document.querySelector('input[name="empNo"]').value,
+                    position: document.querySelector('select[name="position"]').value,
+                    department: document.querySelector('select[name="department"]').value,
+                    hireDate: document.querySelector('input[name="hireDate"]').value,
+                    email: getEmail(),
+                    status: document.querySelector('select[name="status"]').value
                 };
-                console.log(formData.empId);
+
+                let status = {
+                    statusDate: document.querySelector('input[name="statusDate"]').value,
+                    statusReason: document.querySelector('textarea[name="statusReason"]').value
+                };
+
+                let formData = {
+                    employee: employee,
+                    status: status
+                };
+                console.log(formData);
 
                 if (validator(formData)) {
                     return;
@@ -166,6 +188,26 @@
                         console.log(error);
                     });
             };
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const $statusSelect = $('#statusSelect');
+                const $dateSection = $('#dateSection');
+                const $reasonSection = $('#reasonSection');
+
+                $statusSelect.on('change', function () {
+                    const selected = $(this).val();
+
+                    if (selected === '휴직' || selected === '퇴직') {
+                        $dateSection.show();
+                        $reasonSection.show();
+                    } else {
+                        $dateSection.hide();
+                        $reasonSection.hide();
+                        $('#statusDate').val('');
+                        $('#reason').val('');
+                    }
+                });
+            });
 
 
 
@@ -321,12 +363,28 @@
                             <tr>
                                 <th>상태</th>
                                 <td>
-                                    <select name="status" class="form-control w20p">
+                                    <select id="statusSelect" name="status" class="form-control w20p">
                                         <option value="">상태 선택</option>
                                         <option value="재직" th:selected="${employeeVO.status == '재직'}">재직</option>
                                         <option value="휴직" th:selected="${employeeVO.status == '휴직'}">휴직</option>
-                                        <option value="퇴사" th:selected="${employeeVO.status == '퇴사'}">퇴사</option>
+                                        <option value="퇴직" th:selected="${employeeVO.status == '퇴직'}">퇴직</option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr id="dateSection" style="display: none">
+                                <th>
+                                    일자
+                                </th>
+                                <td>
+                                    <input type="text" name="statusDate" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                </td>
+                            </tr>
+                            <tr id="reasonSection" style="display: none">
+                                <th>
+                                    사유
+                                </th>
+                                <td>
+                                    <textarea name="statusReason" class="form-control" rows="3" placeholder="사유를 입력하세요"></textarea>
                                 </td>
                             </tr>
 

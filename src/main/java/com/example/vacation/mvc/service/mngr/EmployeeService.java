@@ -2,6 +2,8 @@ package com.example.vacation.mvc.service.mngr;
 
 import com.example.vacation.common.util.AppPagingUtil;
 import com.example.vacation.mvc.dto.EmployeeDTO;
+import com.example.vacation.mvc.dto.EmployeeFormDTO;
+import com.example.vacation.mvc.dto.EmployeeStatusDTO;
 import com.example.vacation.mvc.mapper.EmployeeMapper;
 import com.example.vacation.mvc.vo.EmployeeVO;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +25,16 @@ public class EmployeeService {
 
     // 등록
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
-    public Map<String, Object> regist(EmployeeDTO employeeDTO) throws Exception {
+    public Map<String, Object> regist(EmployeeDTO employeedto) throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
 
+        //상태 기본 값은 재직
+        if (employeedto.getStatus() == null || employeedto.getStatus().isEmpty()) {
+            employeedto.setStatus("재직");
+        }
+
         //생년월일
-        String birthDate = employeeDTO.getEmpBirth();
+        String birthDate = employeedto.getEmpBirth();
         birthDate = birthDate.replace("-", "");
 
         //난수만들기
@@ -35,44 +42,44 @@ public class EmployeeService {
         int randomNum = rand.nextInt(9000) + 1000;
 
         //최종
-        employeeDTO.setEmpNo(birthDate + randomNum);
-        employeeDTO.setEmpPassword(birthDate + randomNum);
+        employeedto.setEmpNo(birthDate + randomNum);
+        employeedto.setEmpPassword(birthDate + randomNum);
         System.out.println("empNo:" + birthDate + randomNum);
         System.out.println("Password:" + birthDate + randomNum);
 
 
-        employeeMapper.insertEmployee(employeeDTO);
-        rs.put("result", employeeDTO);
+        employeeMapper.insertEmployee(employeedto);
+        rs.put("result", employeedto);
         return rs;
     }
 
     //list
     @Transactional(readOnly = false)
-    public Map<String, Object> Employeelist(EmployeeDTO employeeDTO) throws Exception {
+    public Map<String, Object> Employeelist(EmployeeDTO employeedto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
 
-        int pageNo = employeeDTO.getPageNo() == 0 ? 1 : employeeDTO.getPageNo();
-        int pageSize = employeeDTO.getPageSize() == 0 ? 10 : employeeDTO.getPageSize();
-        int pageBlock = employeeDTO.getPageBlock() == 0 ? 10 : employeeDTO.getPageBlock();
-        employeeDTO.setPageNo(pageNo);
-        employeeDTO.setPageSize(pageSize);
-        employeeDTO.setPageBlock(pageBlock);
-        employeeDTO.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+        int pageNo = employeedto.getPageNo() == 0 ? 1 : employeedto.getPageNo();
+        int pageSize = employeedto.getPageSize() == 0 ? 10 : employeedto.getPageSize();
+        int pageBlock = employeedto.getPageBlock() == 0 ? 10 : employeedto.getPageBlock();
+        employeedto.setPageNo(pageNo);
+        employeedto.setPageSize(pageSize);
+        employeedto.setPageBlock(pageBlock);
+        employeedto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
 
-        List<EmployeeVO> list = employeeMapper.employeelist(employeeDTO);
+        List<EmployeeVO> list = employeeMapper.employeelist(employeedto);
 
         if (pageNo != 1 && list.size() == 0) {
             pageNo = 1;
-            employeeDTO.setPageNo(pageNo);
-            employeeDTO.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
-            list = employeeMapper.employeelist(employeeDTO);
+            employeedto.setPageNo(pageNo);
+            employeedto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+            list = employeeMapper.employeelist(employeedto);
         }
 
-        int totalCount = employeeMapper.employeeCount(employeeDTO);
+        int totalCount = employeeMapper.employeeCount(employeedto);
         int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
         String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
 
-        rs.put("employeeDTO", employeeDTO);
+        rs.put("employeeDTO", employeedto);
         rs.put("list", list);
         rs.put("totalCount", totalCount);
         rs.put("totalPageNo", totalPageNo);
@@ -83,16 +90,35 @@ public class EmployeeService {
 
     // 상세보기
     @Transactional(readOnly = true)
-    public EmployeeVO view(EmployeeDTO employeeDTO) throws Exception {
-        return employeeMapper.employeeVO(employeeDTO);
+    public EmployeeVO view(EmployeeDTO employeedto) throws Exception {
+        return employeeMapper.employeeVO(employeedto);
     }
 
     //수정
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
-    public Map<String, Object> modify(EmployeeDTO employeeDTO) throws Exception {
+    public Map<String, Object> modify(EmployeeFormDTO employeeformdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
-        employeeMapper.employeeUpdate(employeeDTO);
-        rs.put("result", employeeDTO);
+
+
+        EmployeeDTO employeedto = employeeformdto.getEmployee();
+        EmployeeStatusDTO statusdto = employeeformdto.getStatus();
+
+        // 기본 정보 업데이트
+        employeeMapper.employeeUpdate(employeedto);
+
+        if ("휴직".equals(employeedto.getStatus()) || "퇴직".equals(employeedto.getStatus())) {
+            // 먼저 상태 DTO에 필요한 값들을 세팅
+            statusdto.setEmpName(employeedto.getEmpName());
+            statusdto.setEmpBirth(employeedto.getEmpBirth());
+            statusdto.setEmpNo(employeedto.getEmpNo());
+            statusdto.setStatus(employeedto.getStatus());
+
+            // 그런 다음 insert
+            employeeMapper.insertStatus(statusdto);
+        }
+
+        rs.put("result", employeedto);
+        rs.put("status", statusdto);
         return rs;
     }
 

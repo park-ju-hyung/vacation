@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO Employee ( empId, empName, empBirth, empNo, position, department, hireDate, email, status, empPassword )
-		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{hireDate}, #{email}, #{status}, #{empPassword} )
+		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, hireDate, email, empPassword )
+		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{hireDate}, #{email}, #{empPassword} )
 	</insert>
 
 	<!--리스트-->
@@ -21,7 +21,7 @@
 			   department,
 			   DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
 			   status
-		FROM Employee
+		FROM employee
 	</sql>
 
 	<sql id="where">
@@ -44,7 +44,7 @@
 	</sql>
 
 	<select id="employeeCount" parameterType="com.example.vacation.mvc.dto.EmployeeDTO" resultType="integer">
-		SELECT count(*) FROM Employee
+		SELECT count(*) FROM employee
 		<include refid="where"/>
 	</select>
 
@@ -69,13 +69,13 @@
 			department,
 			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
 			status
-		FROM Employee
+		FROM employee
 		WHERE empId = #{empId}
 	</select>
 
 	<!--수정하기-->
 	<update id="employeeUpdate" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		UPDATE Employee
+		UPDATE employee
 		SET empName=#{empName}
 		, empBirth=#{empBirth}
 		, position=#{position}
@@ -85,6 +85,14 @@
 		, status=#{status}
 		WHERE empId= #{empId}
 	</update>
+
+	<!--휴직 퇴직시 날짜, 사유 등록-->
+	<insert id="insertStatus" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO">
+		INSERT INTO employeestatus ( statusId, empName, empBirth, empNo, status, statusDate, statusReason)
+		VALUES ( #{statusId}, #{empName}, #{empBirth}, #{empNo}, #{status}, #{statusDate}, #{statusReason})
+	</insert>
+
+
 
 
 
