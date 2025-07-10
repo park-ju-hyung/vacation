@@ -9,11 +9,17 @@
             document.addEventListener("DOMContentLoaded", () => {
                 setDefault();
                 registEvent();
+                getList();
             });
+
+            const csrf = { 'header' : null, 'value' : null };
 
             const button = { 'list' : null, 'modify' : null };
 
             const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
                 button.list = document.querySelector('.btn-view');
                 button.modify = document.querySelector('.btn-regist');
             };
@@ -34,6 +40,66 @@
                     window.location.replace('/mngr/Employee/modify?&empId='+ id +'&'+ getQueryStr(searchData));
                     //http://localhost:8892/mngr/gov/policy/modify?&govId=79
                 });
+            };
+
+
+
+            async function getList() {
+                const empNo = document.querySelector('[name="empNo"]').value;
+                const empBirth = document.querySelector('[name="empBirth"]').value;
+                console.log("empNo" + empNo);
+                console.log("empBirth" + empBirth);
+
+                const requestData = {
+                    empNo: empNo,
+                    empBirth : empBirth
+                };
+
+                await fetch('/mngr/EmployeeStatus/list', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(requestData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        let totalCount = data.totalCount;
+                        let totalPageNo = data.totalPageNo;
+                        let list = data.list;
+
+                        let html = '';
+
+                        if (totalCount == 0) {
+                            html += '<tr><td class="text-center h-200px align-middle" colspan="6">데이터가 존재하지 않습니다.</td></tr>';
+                        } else {
+                            html += drawList(list);
+                        }
+
+                        document.querySelector('.list-table tbody').innerHTML = html;
+                        //document.querySelector('.pagination').innerHTML = data.pagingHTML;
+
+                        //viewFunc();
+                        //pagingFunc();
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
+            };
+
+            const drawList = (list) => {
+                let html = '';
+
+                for (el of list) {
+                    html += '<tr>';
+                    html += '<td class="txt-cter">' + (el.seq) + '</td>';
+                    html += '<td class="txt-cter">' + (el.empName) + '</td>';
+                    html += '<td class="txt-cter">' + (el.empBirth) + '</td>';
+                    html += '<td class="txt-cter">' + (el.status) + '</td>';
+                    html += '<td class="txt-cter">' + (el.statusDate) + '</td>';
+                    html += '<td class="txt-cter">' + (el.statusReason) + '</td>';
+                    html += '</tr>';
+                }
+                return html;
             };
 
         </script>
@@ -97,6 +163,7 @@
                         <input type="hidden" name="department" th:value="${employeeDTO.department}">
                         <input type="hidden" name="email" th:value="${employeeDTO.email}">
                         <input type="hidden" name="status" th:value="${employeeDTO.status}">
+                        <input type="hidden" name="empNo" th:value="${employeeVO.empNo}">
 
                         <!-- 페이징 -->
                         <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
@@ -206,6 +273,32 @@
                     <div class="search-button">
                         <button type="button" class="btn btn-regist w75">수정</button>
                         <button type="button" class="btn btn-view w75">목록</button>
+                    </div>
+
+                    <!--퇴직 휴직 list-->
+                    <div class="list-table">
+                        <table>
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>이름</th>
+                                <th>생년월일</th>
+                                <th>상태</th>
+                                <th>일자</th>
+                                <th>사유</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
 
 

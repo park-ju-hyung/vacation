@@ -20,7 +20,7 @@
 
 	<sql id="where">
 		WHERE 1=1
-		AND status = '퇴사'
+		AND status = '퇴직'
 		<if test="status != null and status != ''">
 			AND status = #{status}
 		</if>

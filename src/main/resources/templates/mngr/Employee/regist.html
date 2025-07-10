@@ -93,10 +93,12 @@
                     alert('이메일을 입력하여 주십시오.');
                     return true;
                 }
+                /**
                 if (isEmpty(formData['status'])) {
                     alert('상태를 입력하여 주십시오.');
                     return true;
                 }
+                 **/
 
                 return false;
             };
@@ -124,7 +126,7 @@
                     'department': document.querySelector('select[name="department"]').value,
                     'hireDate': document.querySelector('input[name="hireDate"]').value,
                     'email': getEmail(),
-                    'status': document.querySelector('select[name="status"]').value
+                    //'status': document.querySelector('select[name="status"]').value
                 };
                 console.log(formData);
 
@@ -304,6 +306,7 @@
 
                                 </td>
                             </tr>
+                            <!--
                             <tr>
                                 <th>
                                     상태
@@ -317,6 +320,7 @@
                                     </select>
                                 </td>
                             </tr>
+                            -->
 
 
                             </tbody>

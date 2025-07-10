@@ -5,6 +5,7 @@ import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.EmployeeFormDTO;
 import com.example.vacation.mvc.dto.EmployeeStatusDTO;
 import com.example.vacation.mvc.mapper.EmployeeMapper;
+import com.example.vacation.mvc.vo.EmployeeStatusVO;
 import com.example.vacation.mvc.vo.EmployeeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -119,6 +120,42 @@ public class EmployeeService {
 
         rs.put("result", employeedto);
         rs.put("status", statusdto);
+        return rs;
+    }
+
+
+    // 휴직 퇴직시 날짜, 사유 list
+    @Transactional(readOnly = false)
+    public Map<String, Object> EmployeeStatusList(EmployeeStatusDTO employeestatusdto) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+
+        int pageNo = employeestatusdto.getPageNo() == 0 ? 1 : employeestatusdto.getPageNo();
+        int pageSize = employeestatusdto.getPageSize() == 0 ? 10 : employeestatusdto.getPageSize();
+        int pageBlock = employeestatusdto.getPageBlock() == 0 ? 10 : employeestatusdto.getPageBlock();
+        employeestatusdto.setPageNo(pageNo);
+        employeestatusdto.setPageSize(pageSize);
+        employeestatusdto.setPageBlock(pageBlock);
+        employeestatusdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+
+        List<EmployeeStatusVO> list = employeeMapper.employeeStatuslist(employeestatusdto);
+
+        if (pageNo != 1 && list.size() == 0) {
+            pageNo = 1;
+            employeestatusdto.setPageNo(pageNo);
+            employeestatusdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+            list = employeeMapper.employeeStatuslist(employeestatusdto);
+        }
+
+        int totalCount = employeeMapper.employeeStatusCount(employeestatusdto);
+        int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
+        String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
+
+        rs.put("employeestatusDTO", employeestatusdto);
+        rs.put("list", list);
+        rs.put("totalCount", totalCount);
+        rs.put("totalPageNo", totalPageNo);
+        rs.put("pagingHTML", pagingHTML);
+
         return rs;
     }
 

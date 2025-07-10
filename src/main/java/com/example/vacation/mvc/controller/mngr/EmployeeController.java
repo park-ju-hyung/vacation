@@ -51,6 +51,13 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.Employeelist(employeedto), HttpStatus.OK);
     }
 
+    @PostMapping("/mngr/EmployeeStatus/list")
+    @ResponseBody
+    public ResponseEntity<?> StatusList(@RequestBody EmployeeStatusDTO employeestatusdto, ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("employeestatusDTO", employeestatusdto);
+        return new ResponseEntity<>(employeeService.EmployeeStatusList(employeestatusdto), HttpStatus.OK);
+    }
+
     /**직원 관리 및 등록 modify**/
     @GetMapping("/mngr/Employee/modify")
     public String EmployeeModifyPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {

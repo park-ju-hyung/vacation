@@ -17,6 +17,6 @@ public class EmployeeDTO extends BaseDTO {
     private String department; // 부서
     private String hireDate; // 입사일
     private String email; // 이메일
-    private String status; // 상태
+    private String status ="재직"; // 상태
     private String empPassword; // 패스워드
 }

@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, hireDate, email, empPassword )
-		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{hireDate}, #{email}, #{empPassword} )
+		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, empPassword )
+		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{status}, #{hireDate}, #{email}, #{empPassword} )
 	</insert>
 
 	<!--리스트-->
@@ -91,6 +91,26 @@
 		INSERT INTO employeestatus ( statusId, empName, empBirth, empNo, status, statusDate, statusReason)
 		VALUES ( #{statusId}, #{empName}, #{empBirth}, #{empNo}, #{status}, #{statusDate}, #{statusReason})
 	</insert>
+
+	<!--휴직 퇴직시 날짜, 사유 list-->
+	<sql id="statusTable">
+		SELECT ROW_NUMBER() OVER (ORDER BY E.statusDate DESC) AS seq,
+				S.empId, S.empName, S.empNo,
+			   E.status, E.statusDate, E.statusReason
+		FROM employee S JOIN employeestatus E ON S.empNo = E.empNo
+		WHERE E.empNo = #{empNo}
+	</sql>
+
+	<select id="employeeStatusCount" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO" resultType="integer">
+		SELECT count(*) FROM employeestatus
+	</select>
+
+	<select id="employeeStatuslist" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+		<include refid="statusTable"/>
+		ORDER BY seq DESC
+		LIMIT #{pageSize} OFFSET #{pageOffset}
+	</select>
 
 
 
