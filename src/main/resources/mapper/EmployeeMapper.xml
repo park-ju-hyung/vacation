@@ -96,7 +96,7 @@
 	<sql id="statusTable">
 		SELECT ROW_NUMBER() OVER (ORDER BY E.statusDate DESC) AS seq,
 				S.empId, S.empName, S.empNo,
-			   E.status, E.statusDate, E.statusReason
+			   E.status, E.empBirth, E.statusDate, E.statusReason
 		FROM employee S JOIN employeestatus E ON S.empNo = E.empNo
 		WHERE E.empNo = #{empNo}
 	</sql>
@@ -106,7 +106,7 @@
 	</select>
 
 	<select id="employeeStatuslist" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO"
-			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+			resultType="com.example.vacation.mvc.vo.EmployeeStatusVO">
 		<include refid="statusTable"/>
 		ORDER BY seq DESC
 		LIMIT #{pageSize} OFFSET #{pageOffset}

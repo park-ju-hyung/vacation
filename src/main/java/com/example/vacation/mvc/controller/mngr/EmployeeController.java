@@ -76,6 +76,7 @@ public class EmployeeController {
     @GetMapping("/mngr/Employee/view")
     public String EmployeeViewPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeedto);
+        modelMap.addAttribute("employeeDTO", employeedto);
         modelMap.addAttribute("employeeVO", employeeService.view(employeedto));
         return "mngr/Employee/view";
     }

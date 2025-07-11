@@ -156,6 +156,10 @@ public class EmployeeService {
         rs.put("totalPageNo", totalPageNo);
         rs.put("pagingHTML", pagingHTML);
 
+
+        //rs.put("employeeStatusVO", list.get(0)); // 이름과 타입 일치
+
+
         return rs;
     }
 

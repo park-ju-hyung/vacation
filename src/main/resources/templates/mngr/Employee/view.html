@@ -47,44 +47,45 @@
             async function getList() {
                 const empNo = document.querySelector('[name="empNo"]').value;
                 const empBirth = document.querySelector('[name="empBirth"]').value;
-                console.log("empNo" + empNo);
-                console.log("empBirth" + empBirth);
 
                 const requestData = {
                     empNo: empNo,
-                    empBirth : empBirth
+                    empBirth: empBirth
                 };
 
                 await fetch('/mngr/EmployeeStatus/list', {
-                    method : 'POST',
-                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
-                    body : JSON.stringify(requestData),
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf.token
+                    },
+                    body: JSON.stringify(requestData),
                 })
                     .then((response) => response.json())
                     .then((data) => {
+
                         let totalCount = data.totalCount;
                         let totalPageNo = data.totalPageNo;
                         let list = data.list;
+                        console.log(list);
 
                         let html = '';
 
-                        if (totalCount == 0) {
+                        if (!list || list.length === 0) {
                             html += '<tr><td class="text-center h-200px align-middle" colspan="6">데이터가 존재하지 않습니다.</td></tr>';
                         } else {
                             html += drawList(list);
                         }
 
                         document.querySelector('.list-table tbody').innerHTML = html;
-                        //document.querySelector('.pagination').innerHTML = data.pagingHTML;
-
-                        //viewFunc();
-                        //pagingFunc();
+                        // document.querySelector('.pagination').innerHTML = data.pagingHTML;
                     })
                     .catch((error) => {
                         alert('데이터를 가져오는데 실패하였습니다.');
                         console.log(error);
                     });
-            };
+            }
+
 
             const drawList = (list) => {
                 let html = '';

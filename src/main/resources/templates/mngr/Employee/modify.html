@@ -371,20 +371,20 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr id="dateSection" style="display: none">
+                            <tr id="dateSection">
                                 <th>
                                     일자
                                 </th>
                                 <td>
-                                    <input type="text" name="statusDate" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                    <input type="text" name="statusDate" th:value="${employeeVO.hireDate}" class="form-control w20p" placeholder="YYYY-MM-DD">
                                 </td>
                             </tr>
-                            <tr id="reasonSection" style="display: none">
+                            <tr id="reasonSection">
                                 <th>
                                     사유
                                 </th>
                                 <td>
-                                    <textarea name="statusReason" class="form-control" rows="3" placeholder="사유를 입력하세요"></textarea>
+                                    <textarea name="statusReason" th:value="${employeeVO.hireDate}" class="form-control" rows="3" placeholder="사유를 입력하세요"></textarea>
                                 </td>
                             </tr>
 
