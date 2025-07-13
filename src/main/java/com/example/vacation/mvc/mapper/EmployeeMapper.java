@@ -34,4 +34,5 @@ public interface EmployeeMapper {
 
 	public int employeeStatusCount(EmployeeStatusDTO employeestatusdto) throws Exception;
 
+
 }
