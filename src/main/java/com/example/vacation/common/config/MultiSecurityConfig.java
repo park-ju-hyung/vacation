@@ -14,15 +14,25 @@ public class MultiSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // 일단 CSRF도 비활성화
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()  // 모두 접근 가능하게 열어두기
+                        .requestMatchers("/mngr/login","/", "/mngr/login/**", "/css/**", "/js/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/mngr/login")
+                        .loginProcessingUrl("/mngr/login") // 또는 /mngr/loginProc 로 분리해도 좋음
+                        .usernameParameter("empNo")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/mngr/main", true)
+                        .failureUrl("/mngr/login?error=true")
+                        .permitAll()
                 );
 
         return http.build();
     }
 
-    @Bean
+    @Bean(name = "mngrPasswordEncoder")
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

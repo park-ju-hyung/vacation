@@ -11,18 +11,19 @@
 
 <body>
     <div>
-        <div class="login-container">
-            <h2>로그인</h2>
-            <div>
-                <input type="text" class="form-control fs085" placeholder="아이디">
+        <form name="loginForm" th:action="@{/mngr/login}" method="post">
+            <div class="login-container">
+                <h2>로그인</h2>
+                <div>
+                    <input type="text" name="empNo" class="form-control fs085" placeholder="아이디">
+                </div>
+                <div>
+                    <input type="password" name="password" class="form-control fs085" placeholder="비밀번호">
+                </div>
+                <hr>
+                <button type="submit" class="btn-login">Login</button>
             </div>
-            <div>
-                <input type="password" class="form-control fs085" placeholder="비밀번호">
-            </div>
-            <hr>
-            <button type="submit" class="btn-login">Login</button>
-
-        </div>
+        </form>
     </div>
 </body>
 
