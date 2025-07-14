@@ -9,6 +9,11 @@ import com.example.vacation.mvc.vo.EmployeeStatusVO;
 import com.example.vacation.mvc.vo.EmployeeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +25,12 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmployeeService {
+public class EmployeeService implements UserDetailsService {
+
+    @Autowired
+    @Qualifier("mngrPasswordEncoder")
+    private PasswordEncoder mngrPasswordEncoder;
+
 
     private final EmployeeMapper employeeMapper;
 
@@ -162,5 +172,16 @@ public class EmployeeService {
 
         return rs;
     }
+
+    /**계정 조회**/
+    @Override
+    public EmployeeVO loadUserByUsername(String empNo) throws UsernameNotFoundException {
+        EmployeeDTO mngr = new EmployeeDTO();
+        mngr.setEmpNo(empNo);
+
+        return employeeMapper.loadUserByUsername(mngr);
+    }
+
+
 
 }

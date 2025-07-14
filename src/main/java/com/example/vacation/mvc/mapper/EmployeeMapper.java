@@ -34,4 +34,6 @@ public interface EmployeeMapper {
 
 	public int employeeStatusCount(EmployeeStatusDTO employeestatusdto) throws Exception;
 
+	// login
+	public EmployeeVO loadUserByUsername(EmployeeDTO employeedto);
 }

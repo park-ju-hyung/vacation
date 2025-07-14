@@ -112,6 +112,23 @@
 		LIMIT #{pageSize} OFFSET #{pageOffset}
 	</select>
 
+	<!--login-->
+	<select id="loadUserByUsername" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+		SELECT
+			ROW_NUMBER() OVER(order by hiredate) AS seq,
+			empId,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			empNo,
+			position,
+			department,
+			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
+			status
+		FROM employee
+		WHERE empNo = #{empNo}
+	</select>
+
 
 
 
