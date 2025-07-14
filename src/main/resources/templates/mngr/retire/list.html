@@ -234,9 +234,9 @@
                                 <span>이름</span>
                                 <input type="text" name="empName" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.empName}">
                             </div>
-                            <!--입사일자-->
+                            <!--퇴직일자-->
                             <div>
-                                <span>입사일자</span>
+                                <span>퇴직일자</span>
                                 <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtStart}">
                                 <span class="dpi">~</span>
                                 <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtEnd}">
@@ -266,7 +266,7 @@
                                 <th>생년월일</th>
                                 <th>부서</th>
                                 <th>직책</th>
-                                <th>입사일</th>
+                                <th>퇴직일</th>
                                 <th>상태</th>
                             </tr>
                             </thead>
@@ -275,14 +275,6 @@
                         </table>
 
                     </div>
-
-                    <!--등록-->
-                    <div class="search-button">
-                        <button id="btn-search" type="button" class="btn btn-regist w75">등록</button>
-                    </div>
-
-
-
 
 
                     <!--페이지네이션-->

@@ -49,6 +49,8 @@
 
                 $('input[name="empBirth"]').datepicker(dtPickerJSON);
                 $('input[name="hireDate"]').datepicker(dtPickerJSON);
+                $('input[name="breakStart"]').datepicker(dtPickerJSON);
+                $('input[name="breakEnd"]').datepicker(dtPickerJSON);
                 $('input[name="statusDate"]').datepicker(dtPickerJSON);
             };
 
@@ -104,7 +106,22 @@
                     return true;
                 }
 
-                if (formData.employee.status === '퇴직' || formData.employee.status === '휴직') {
+                if (formData.employee.status === '휴직') {
+                    if (isEmpty(formData.status.breakStart)) {
+                        alert('시작 날짜를 입력하여 주십시오.');
+                        return true;
+                    }
+                    if (isEmpty(formData.status.breakEnd)) {
+                        alert('끝나는 날을 입력하여 주십시오.');
+                        return true;
+                    }
+                    if (isEmpty(formData.status.statusReason)) {
+                        alert('사유를 입력하여 주십시오.');
+                        return true;
+                    }
+                }
+
+                if (formData.employee.status === '퇴직') {
                     if (isEmpty(formData.status.statusDate)) {
                         alert('기간을 입력하여 주십시오.');
                         return true;
@@ -147,6 +164,8 @@
                 };
 
                 let status = {
+                    breakStart: document.querySelector('input[name="breakStart"]').value,
+                    breakEnd: document.querySelector('input[name="breakEnd"]').value,
                     statusDate: document.querySelector('input[name="statusDate"]').value,
                     statusReason: document.querySelector('textarea[name="statusReason"]').value
                 };
@@ -189,19 +208,27 @@
                     });
             };
 
+
             document.addEventListener('DOMContentLoaded', () => {
                 const $statusSelect = $('#statusSelect');
-                const $dateSection = $('#dateSection');
+                const $breakSection = $('#breakSection');
+                const $retireSection = $('#retireSection');
                 const $reasonSection = $('#reasonSection');
 
                 $statusSelect.on('change', function () {
                     const selected = $(this).val();
 
-                    if (selected === '휴직' || selected === '퇴직') {
-                        $dateSection.show();
+                    if (selected === '휴직') {
+                        $breakSection.show();
+                        $retireSection.hide();
+                        $reasonSection.show();
+                    } else if (selected === '퇴직') {
+                        $breakSection.hide();
+                        $retireSection.show();
                         $reasonSection.show();
                     } else {
-                        $dateSection.hide();
+                        $breakSection.hide();
+                        $retireSection.hide();
                         $reasonSection.hide();
                         $('#statusDate').val('');
                         $('#reason').val('');
@@ -371,15 +398,28 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr id="dateSection">
+                            <!--휴직-->
+                            <tr id="breakSection" style="display: none">
                                 <th>
-                                    일자
+                                    휴직일자
                                 </th>
                                 <td>
-                                    <input type="text" name="statusDate" th:value="${employeeVO.hireDate}" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                    <input type="text" name="breakStart" class="dib form-control w20p" placeholder="YYYY-MM-DD">
+                                    <span> ~ </span>
+                                    <input type="text" name="breakEnd" class="dib form-control w20p" placeholder="YYYY-MM-DD">
                                 </td>
                             </tr>
-                            <tr id="reasonSection">
+                            <!--퇴직-->
+                            <tr id="retireSection" style="display: none">
+                                <th>
+                                    퇴직일자
+                                </th>
+                                <td>
+                                    <input type="text" name="statusDate" class="form-control w20p" placeholder="YYYY-MM-DD">
+                                </td>
+                            </tr>
+                            <!--사유-->
+                            <tr id="reasonSection" style="display: none">
                                 <th>
                                     사유
                                 </th>
