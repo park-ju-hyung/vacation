@@ -24,7 +24,7 @@ public class EmployeeController {
     /**직원 관리 및 등록 regist**/
     @GetMapping("/mngr/Employee/regist")
     public String EmployeeRegistPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
-        System.out.println("empBirth 값 확인: " + employeedto.getEmpBirth());
+        System.out.println("empBirth 값 확인2: " + employeedto.getEmpBirth());
         modelMap.addAttribute("employeeDTO", employeedto);
         return "mngr/Employee/regist";
     }

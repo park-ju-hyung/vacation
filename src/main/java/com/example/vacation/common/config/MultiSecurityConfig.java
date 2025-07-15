@@ -1,5 +1,6 @@
 package com.example.vacation.common.config;
 
+import com.example.vacation.common.bean.MngrLoginFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,21 +12,27 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class MultiSecurityConfig {
+
+    @Bean
+    public MngrLoginFailureHandler mngrLoginFailureHandler() {
+        return new MngrLoginFailureHandler();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/mngr/login","/", "/mngr/login/**", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/","res/css/**", "res/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/mngr/login")
+                        .loginPage("/")
                         .loginProcessingUrl("/mngr/login") // 또는 /mngr/loginProc 로 분리해도 좋음
                         .usernameParameter("empNo")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/mngr/main", true)
-                        .failureUrl("/mngr/login?error=true")
+                        .passwordParameter("empPassword")
+                        .defaultSuccessUrl("/site/informodify/Information_modify", true)
+                        .failureHandler(mngrLoginFailureHandler())
                         .permitAll()
                 );
 

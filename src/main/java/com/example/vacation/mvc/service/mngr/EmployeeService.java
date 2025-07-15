@@ -25,7 +25,7 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmployeeService implements UserDetailsService {
+public class EmployeeService {
 
     @Autowired
     @Qualifier("mngrPasswordEncoder")
@@ -54,7 +54,7 @@ public class EmployeeService implements UserDetailsService {
 
         //최종
         employeedto.setEmpNo(birthDate + randomNum);
-        employeedto.setEmpPassword(birthDate + randomNum);
+        employeedto.setEmpPassword(mngrPasswordEncoder.encode(birthDate + randomNum));
         System.out.println("empNo:" + birthDate + randomNum);
         System.out.println("Password:" + birthDate + randomNum);
 
@@ -174,7 +174,6 @@ public class EmployeeService implements UserDetailsService {
     }
 
     /**계정 조회**/
-    @Override
     public EmployeeVO loadUserByUsername(String empNo) throws UsernameNotFoundException {
         EmployeeDTO mngr = new EmployeeDTO();
         mngr.setEmpNo(empNo);

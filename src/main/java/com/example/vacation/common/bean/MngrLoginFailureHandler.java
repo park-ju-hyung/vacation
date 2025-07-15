@@ -18,7 +18,7 @@ public class MngrLoginFailureHandler implements AuthenticationFailureHandler {
 										AuthenticationException exception) throws IOException, ServletException {
 		
 		RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-		redirectStrategy.sendRedirect(request, response, "/mngr/loginPage?code=99");
+		redirectStrategy.sendRedirect(request, response, "/?code=99");
 	}
 
 }
