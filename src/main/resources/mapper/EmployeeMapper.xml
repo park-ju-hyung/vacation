@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, empPassword )
-		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{status}, #{hireDate}, #{email}, #{empPassword} )
+		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, empPassword, role )
+		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{status}, #{hireDate}, #{email}, #{empPassword}, #{role})
 	</insert>
 
 	<!--리스트-->
@@ -68,7 +68,8 @@
 			email,
 			department,
 			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
-			status
+			status,
+			role
 		FROM employee
 		WHERE empId = #{empId}
 	</select>
@@ -83,6 +84,7 @@
 		, department=#{department}
 		, hireDate=#{hireDate}
 		, status=#{status}
+		, role=#{role}
 		WHERE empId= #{empId}
 	</update>
 

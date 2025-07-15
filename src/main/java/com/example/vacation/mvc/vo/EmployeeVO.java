@@ -27,6 +27,7 @@ public class EmployeeVO extends BaseVO implements Serializable, UserDetails {
     private String email; // 이메일
     private String status; // 상태
     private String empPassword; // 패스워드
+    private String role; // 권한
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

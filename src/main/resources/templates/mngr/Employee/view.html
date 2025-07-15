@@ -163,6 +163,7 @@
                         <input type="hidden" name="position" th:value="${employeeDTO.position}">
                         <input type="hidden" name="department" th:value="${employeeDTO.department}">
                         <input type="hidden" name="email" th:value="${employeeDTO.email}">
+                        <input type="hidden" name="role" th:value="${employeeDTO.role}">
                         <input type="hidden" name="status" th:value="${employeeDTO.status}">
                         <input type="hidden" name="empNo" th:value="${employeeVO.empNo}">
 
@@ -221,6 +222,14 @@
                                     상태
                                 </th>
                                 <td th:text="${employeeVO.status}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    권한
+                                </th>
+                                <td th:if="${employeeVO.role == 'user'}">일반</td>
+                                <td th:if="${employeeVO.role == 'admin'}">관리자</td>
+
                             </tr>
                             <tr>
                                 <th>

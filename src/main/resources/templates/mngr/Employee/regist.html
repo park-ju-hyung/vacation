@@ -93,6 +93,10 @@
                     alert('이메일을 입력하여 주십시오.');
                     return true;
                 }
+                if (isEmpty(formData['role'])) {
+                    alert('직급을 입력하여 주십시오.');
+                    return true;
+                }
                 /**
                 if (isEmpty(formData['status'])) {
                     alert('상태를 입력하여 주십시오.');
@@ -126,6 +130,7 @@
                     'department': document.querySelector('select[name="department"]').value,
                     'hireDate': document.querySelector('input[name="hireDate"]').value,
                     'email': getEmail(),
+                    'role': document.querySelector('select[name="role"]').value,
                     //'status': document.querySelector('select[name="status"]').value
                 };
                 console.log(formData);
@@ -304,6 +309,18 @@
                                         <option value="kakao.com">kakao.com</option>
                                     </select>
 
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    권한
+                                </th>
+                                <td>
+                                    <select name="role" class="form-control w22p">
+                                        <option value="">권한 선택</option>
+                                        <option value="user">일반</option>
+                                        <option value="admin">관리자</option>
+                                    </select>
                                 </td>
                             </tr>
                             <!--

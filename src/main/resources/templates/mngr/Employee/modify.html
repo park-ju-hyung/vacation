@@ -132,6 +132,11 @@
                     }
                 }
 
+                if (isEmpty(formData.employee.role)) {
+                    alert('권한을 선택하여 주십시오.');
+                    return true;
+                }
+
                 return false;
             };
 
@@ -160,7 +165,8 @@
                     department: document.querySelector('select[name="department"]').value,
                     hireDate: document.querySelector('input[name="hireDate"]').value,
                     email: getEmail(),
-                    status: document.querySelector('select[name="status"]').value
+                    status: document.querySelector('select[name="status"]').value,
+                    role: document.querySelector('select[name="role"]').value
                 };
 
                 let status = {
@@ -425,6 +431,18 @@
                                 </th>
                                 <td>
                                     <textarea name="statusReason" th:value="${employeeVO.hireDate}" class="form-control" rows="3" placeholder="사유를 입력하세요"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    권한
+                                </th>
+                                <td>
+                                    <select name="role" class="form-control w22p">
+                                        <option value="">권한 선택</option>
+                                        <option value="user" th:selected="${employeeVO.role == 'user'}">일반</option>
+                                        <option value="admin" th:selected="${employeeVO.role == 'admin'}">관리자</option>
+                                    </select>
                                 </td>
                             </tr>
 
