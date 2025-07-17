@@ -45,8 +45,20 @@ public class MngrAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException("BadCredentialsException : a discrepancy between id and pwd");
 
 
-        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("MANAGER"));
+		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		String role = employeeVo.getRole(); // DB 값: "admin" 또는 "user" 등
+
+		if ("admin".equalsIgnoreCase(role)) {
+			System.out.println("role: " + role);
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			authorities.add(new SimpleGrantedAuthority("MANAGER"));
+		} else if ("user".equalsIgnoreCase(role)) {
+			System.out.println("role: " + role);
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			authorities.add(new SimpleGrantedAuthority("USER"));
+		}
+
+
         return new UsernamePasswordAuthenticationToken(employeeVo, pwd, authorities);
         
 	}

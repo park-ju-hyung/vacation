@@ -128,7 +128,8 @@
 			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
 			status,
 			email,
-			empPassword
+			empPassword,
+			role
 		FROM employee
 		WHERE empNo = #{empNo}
 	</select>

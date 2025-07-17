@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -43,12 +44,25 @@ public class MngrLoginSuccessHandler implements AuthenticationSuccessHandler {
 		} catch (Exception e) {
 			System.out.println("MngrLoginSuccessHandler : " + e.getMessage());
 		}
-		
+
+		String role = mngr.getRole();
+
 		// 리다이렉트
-		RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();	
+		RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
 		// 로그인 이후 가야할 목적지 지정
-		String targetUrl = "/mngr/member/list";
-		redirectStrategy.sendRedirect(request, response, targetUrl);	
+		if ("admin".equalsIgnoreCase(role)) {
+			System.out.println("role: " + role);
+			String targetUrl = "/mngr/Employee/regist";
+			redirectStrategy.sendRedirect(request, response, targetUrl);
+		} else if ("user".equalsIgnoreCase(role)) {
+			System.out.println("role: " + role);
+			String targetUrl = "/site/informodify/Information_modify";
+			redirectStrategy.sendRedirect(request, response, targetUrl);
+		}
+
+		
+
 	}
 
 }
