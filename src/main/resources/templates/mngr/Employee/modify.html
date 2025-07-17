@@ -101,6 +101,22 @@
                     alert('이메일을 입력하여 주십시오.');
                     return true;
                 }
+                if (isEmpty(formData.employee.phoneNumber)) {
+                    alert('연락처를 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData.employee.emerNumber)) {
+                    alert('비상연락망을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData.employee.bankName)) {
+                    alert('은행명을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData.employee.accountNumber)) {
+                    alert('계좌번호를 입력하여 주십시오.');
+                    return true;
+                }
                 if (isEmpty(formData.employee.status)) {
                     alert('상태를 입력하여 주십시오.');
                     return true;
@@ -165,6 +181,10 @@
                     department: document.querySelector('select[name="department"]').value,
                     hireDate: document.querySelector('input[name="hireDate"]').value,
                     email: getEmail(),
+                    phoneNumber: document.querySelector('input[name="phoneNumber"]').value,
+                    emerNumber: document.querySelector('input[name="emerNumber"]').value,
+                    bankName: document.querySelector('select[name="bankName"]').value,
+                    accountNumber: document.querySelector('input[name="accountNumber"]').value,
                     status: document.querySelector('select[name="status"]').value,
                     role: document.querySelector('select[name="role"]').value
                 };
@@ -393,6 +413,58 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>
+                                    연락처
+                                </th>
+                                <td>
+                                    <input type="text" name="hireDate" th:value="${employeeVO.phoneNumber}" class="form-control w20p">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    비상연락망
+                                </th>
+                                <td>
+                                    <input type="text" name="hireDate" th:value="${employeeVO.emerNumber}" class="form-control w20p">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    은행명
+                                </th>
+                                <td>
+                                    <select name="department" class="form-control w22p">
+                                        <option value="">은행 선택</option>
+                                        <option value="국민은행" th:selected="${employeeVO.bankName == '국민은행'}">국민은행</option>
+                                        <option value="신한은행" th:selected="${employeeVO.bankName == '신한은행'}">신한은행</option>
+                                        <option value="우리은행" th:selected="${employeeVO.bankName == '우리은행'}">우리은행</option>
+                                        <option value="하나은행" th:selected="${employeeVO.bankName == '하나은행'}">하나은행</option>
+                                        <option value="기업은행" th:selected="${employeeVO.bankName == '기업은행'}">기업은행</option>
+                                        <option value="농협은행" th:selected="${employeeVO.bankName == '농협은행'}">농협은행</option>
+                                        <option value="카카오뱅크" th:selected="${employeeVO.bankName == '카카오뱅크'}">카카오뱅크</option>
+                                        <option value="토스뱅크" th:selected="${employeeVO.bankName == '토스뱅크'}">토스뱅크</option>
+                                        <option value="새마을금고" th:selected="${employeeVO.bankName == '새마을금고'}">새마을금고</option>
+                                        <option value="신협" th:selected="${employeeVO.bankName == '신협'}">신협</option>
+
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    계좌번호
+                                </th>
+                                <td>
+                                    <input type="text" name="hireDate" th:value="${employeeVO.accountNumber}" class="form-control w20p">
+                                </td>
+                            </tr>
+
+
+
+
+
+
+
                             <tr>
                                 <th>상태</th>
                                 <td>

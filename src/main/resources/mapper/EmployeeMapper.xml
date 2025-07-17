@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, empPassword, role )
-		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{status}, #{hireDate}, #{email}, #{empPassword}, #{role})
+		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, phoneNumber, emerNumber, bankName, accountNumber, empPassword, role )
+		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{status}, #{hireDate}, #{email}, #{phoneNumber}, #{emerNumber}, #{bankName}, #{accountNumber}, #{empPassword}, #{role})
 	</insert>
 
 	<!--리스트-->
@@ -66,6 +66,10 @@
 			empNo,
 			position,
 			email,
+			phoneNumber,
+            emerNumber,
+            bankName,
+            accountNumber,
 			department,
 			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
 			status,
@@ -80,7 +84,11 @@
 		SET empName=#{empName}
 		, empBirth=#{empBirth}
 		, position=#{position}
-		, email=#{email}
+		, email=#{email},
+		, phoneNumber=#{phoneNumber},
+		, emerNumber=#{emerNumber},
+		, bankName=#{bankName},
+		, accountNumber=#{accountNumber},
 		, department=#{department}
 		, hireDate=#{hireDate}
 		, status=#{status}

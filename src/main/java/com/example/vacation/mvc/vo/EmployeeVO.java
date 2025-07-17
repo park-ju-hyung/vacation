@@ -25,7 +25,11 @@ public class EmployeeVO extends BaseVO implements Serializable, UserDetails {
     private String department; // 부서
     private String hireDate; // 입사일
     private String email; // 이메일
-    private String status; // 상태
+    private String phoneNumber; // 연락처
+    private String emerNumber; // 비상연락망
+    private String bankName; // 은행명
+    private String accountNumber; // 계좌번호
+    private String status ="재직"; // 상태
     private String empPassword; // 패스워드
     private String role; // 권한
 
