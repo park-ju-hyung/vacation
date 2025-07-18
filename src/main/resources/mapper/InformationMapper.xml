@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.vacation.mvc.mapper.InformationMapper">
+
+	<!--상세보기-->
+	<select id="employeeVO" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+		SELECT
+			empId,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			empNo,
+			position,
+			email,
+			phoneNumber,
+            emerNumber,
+            bankName,
+            accountNumber,
+			department,
+			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
+			status,
+			role
+		FROM employee
+		WHERE empNo = #{empNo}
+	</select>
+
+	<!--수정하기-->
+	<update id="employeeUpdate" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
+		UPDATE employee
+		SET empPassword=#{empPassword},
+		email=#{email},
+		phoneNumber=#{phoneNumber},
+		emerNumber=#{emerNumber},
+		bankName=#{bankName},
+		accountNumber=#{accountNumber}
+		WHERE empNo= #{empNo}
+	</update>
+
+
+
+
+</mapper>

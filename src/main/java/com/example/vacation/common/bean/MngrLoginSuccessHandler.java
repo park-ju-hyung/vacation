@@ -57,7 +57,7 @@ public class MngrLoginSuccessHandler implements AuthenticationSuccessHandler {
 			redirectStrategy.sendRedirect(request, response, targetUrl);
 		} else if ("user".equalsIgnoreCase(role)) {
 			System.out.println("role: " + role);
-			String targetUrl = "/site/informodify/Information_modify";
+			String targetUrl = "/site/informodify/modify";
 			redirectStrategy.sendRedirect(request, response, targetUrl);
 		}
 

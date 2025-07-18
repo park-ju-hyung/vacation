@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
+<head>
+    <title>개인정보 - 수정</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefault();
+                registEvent();
+
+                const passwordInput = document.querySelector('input[name="empPassword"]');
+                const passwordConfirmInput = document.querySelector('input[name="empPassword2"]');
+
+                passwordInput.addEventListener('input', validate.password);
+                passwordConfirmInput.addEventListener('input', validate.password);
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('select[name="domain"]').addEventListener('change', function () {
+                    const selectedValue = this.value;
+                    const email2Input = document.querySelector('input[name="email2"]');
+
+                    email2Input.value = selectedValue;
+                    email2Input.readOnly = selectedValue !== "";
+                });
+            });
+
+            const dtPickerJSON = {
+                dateFormat: "yy-mm-dd",
+                startView: 3,
+                todayBtn:"linked",
+                language: "kr",
+                orientation: "top auto",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            };
+
+            const csrf = {'header': null, 'value': null};
+
+            const button = {'list': null, 'regist': null};
+
+            const setDefault = function () {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                // configEditor(false);
+                button.regist = document.querySelector('.btn-regist');
+
+            };
+
+            const registEvent = function () {
+
+                button.regist.addEventListener('click', regist);
+            };
+
+            function getEmail() {
+                let email1 = document.querySelector('input[name="email1"]').value;
+                let email2 = document.querySelector('input[name="email2"]').value;
+                let email = '';
+
+                if (email1 != '' && email2 != '') {
+                    email = email1 + '@' + document.querySelector('input[name="email2"]').value;
+                }
+
+                return email;
+            };
+
+
+            async function regist() {
+                const isValid = validate.password();
+
+                if (!isValid) {
+                    alert('비밀번호를 다시 확인해주십시오.');
+                    iniPasswordForm(); // 입력 폼 초기화
+                    return;
+                }
+
+                let formData = {
+                    empNo: document.querySelector('input[name="empNo"]').value,
+                    empPassword: document.querySelector('input[name="empPassword"]').value,
+                    email: getEmail(),
+                    phoneNumber: document.querySelector('input[name="phoneNumber"]').value,
+                    emerNumber: document.querySelector('input[name="emerNumber"]').value,
+                    bankName: document.querySelector('select[name="bankName"]').value,
+                    accountNumber: document.querySelector('input[name="accountNumber"]').value
+                };
+
+                console.log(formData);
+
+                // startLoading();
+
+                await fetch('/informodify/modify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf.token
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // endLoading();
+                        console.log(data);
+                        if(data.result){
+                            alert('수정 성공');
+                            window.location.replace('/site/informodify/modify');
+                        } else {
+                            alert('수정 실패');
+                        }
+                    })
+                    .catch(error => {
+                        // endLoading();
+                        alert('오류가 발생했습니다2.');
+                        console.log(error);
+                    });
+            };
+
+
+            /* 비밀번호 검증 관련 함수 ========================== */
+
+
+            // 비밀번호 입력 폼 초기화
+            const iniPasswordForm = () => {
+                printAlert(99);
+                document.querySelector('input[name="empPassword"]').value = '';
+                document.querySelector('input[name="empPassword2"]').value = '';
+            };
+
+            // 비밀번호 규칙 안내 문구 변경
+            const printAlert = (code) => {
+                const printArea = document.querySelector('.mem-stxt');
+                console.log("code" + code);
+
+                if(code == 0) {
+                    printArea.style.color = 'red';
+                    printArea.innerText = '값이 일치하지 않습니다.';
+                    validate.overlap = false;
+                } else if(code == 1){
+                    printArea.style.color = 'red';
+                    printArea.innerText = '영문(대소문자구분),숫자,특수문자(~!@#$%^&amp;*()-_?) 포함해서 입력해주세요.';
+                    validate.overlap = false;
+                } else if(code == 2) {
+                    printArea.style.color = 'green';
+                    printArea.innerText = '확인완료';
+                    validate.overlap = true;
+                } else if(code == 99){
+                    printArea.style.color = 'black';
+                    printArea.innerText = '영문(대소문자구분),숫자,특수문자(~!@#$%^&amp;*()-_?) 포함해서 입력해주세요';
+                }
+            };
+
+            // 유효성 검사
+            const validate = {
+                overlap: false,
+                password: function () {
+                    const passwd1 = document.querySelector('input[name="empPassword"]').value.trim();
+                    const passwd2 = document.querySelector('input[name="empPassword2"]').value.trim();
+                    const regexp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()\-_=+]).{8,}$/;
+
+                    if (passwd1 === '' || passwd2 === '') {
+                        printAlert(99);
+                        this.overlap = false;
+                        return false;
+                    } else if (passwd1 !== passwd2) {
+                        printAlert(0);
+                        this.overlap = false;
+                        return false;
+                    } else if (!regexp.test(passwd1)) {
+                        printAlert(1);
+                        this.overlap = false;
+                        return false;
+                    } else {
+                        printAlert(2);
+                        this.overlap = true;
+                        return true;
+                    }
+                }
+            };
+
+
+
+
+
+
+
+
+
+
+
+        </script>
+    </th:block>
+
+</head>
+
+<body>
+<th:block layout:fragment="content">
+    <div style="display: flex;">
+        <!--sidebar-->
+        <th:block th:replace="~{site/fragment/basic_aside :: aside}"></th:block>
+
+        <!--content-->
+        <div class="content">
+            <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
+            <!--content-->
+            <div class="content-box">
+                <!--경로-->
+                <div class="current-site-path">
+                    <ul>
+                        <li>
+                            <span>
+                                개인정보 수정
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 검색 form -->
+                <form name="searchForm" method="post" onsubmit="return false;">
+
+                    <!-- 페이징 -->
+                    <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+                    <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+
+                </form>
+
+                <!--content-table-->
+                <div class="view-table">
+                    <table>
+                        <colgroup>
+                            <col width="12%">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>이름</th>
+                            <td th:text="${employeeVO.empName}"></td>
+                        </tr>
+                        <input type="hidden" name="empId" th:value="${employeeDTO.empId}">
+                        <input type="hidden" name="empNo" th:value="${employeeDTO.empNo}">
+                        <tr>
+                            <th>
+                                생년월일
+                            </th>
+                            <td th:text="${employeeVO.empBirth}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사번
+                            </th>
+                            <td th:text="${employeeVO.empNo}"></td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                부서
+                            </th>
+                            <td th:text="${employeeVO.department}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                직급
+                            </th>
+                            <td th:text="${employeeVO.position}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                입사일
+                            </th>
+                            <td th:text="${employeeVO.hireDate}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                상태
+                            </th>
+                            <td th:text="${employeeVO.status}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                비밀번호 변경
+                            </th>
+                            <td>
+                                <input type="text" name="empPassword" class="form-control w20p">
+                                <span class="mem-stxt">영문(대소문자구분),숫자,특수문자(~!@#$%^&amp;*()-_?) 포함해서 입력해주세요</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                비밀번호 확인
+                            </th>
+                            <td>
+                                <input type="text" name="empPassword2" class="form-control w20p">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                이메일
+                            </th>
+                            <td>
+                                <input type="text" name="email1" class="form-control w20p dib"
+                                       th:value="${#strings.substringBefore(employeeVO.email, '@')}">
+                                <span class="dib">@</span>
+                                <input type="text" name="email2" class="form-control w20p dib"
+                                       th:value="${#strings.substringAfter(employeeVO.email, '@')}">
+                                <select name="domain" class="form-select w20p dib">
+                                    <option value="">직접선택</option>
+                                    <option value="naver.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'naver.com'}">naver.com</option>
+                                    <option value="nate.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'nate.com'}">nate.com</option>
+                                    <option value="gmail.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'gmail.com'}">gmail.com</option>
+                                    <option value="kakao.com" th:selected="${#strings.substringAfter(employeeVO.email, '@') == 'kakao.com'}">kakao.com</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                연락처
+                            </th>
+                            <td>
+                                <input type="text" name="phoneNumber" th:value="${employeeVO.phoneNumber}" class="form-control w20p">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                비상연락망
+                            </th>
+                            <td>
+                                <input type="text" name="emerNumber" th:value="${employeeVO.emerNumber}" class="form-control w20p">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                은행명
+                            </th>
+                            <td>
+                                <select name="bankName" class="form-control w22p">
+                                    <option value="">은행 선택</option>
+                                    <option value="국민은행" th:selected="${employeeVO.bankName == '국민은행'}">국민은행</option>
+                                    <option value="신한은행" th:selected="${employeeVO.bankName == '신한은행'}">신한은행</option>
+                                    <option value="우리은행" th:selected="${employeeVO.bankName == '우리은행'}">우리은행</option>
+                                    <option value="하나은행" th:selected="${employeeVO.bankName == '하나은행'}">하나은행</option>
+                                    <option value="기업은행" th:selected="${employeeVO.bankName == '기업은행'}">기업은행</option>
+                                    <option value="농협은행" th:selected="${employeeVO.bankName == '농협은행'}">농협은행</option>
+                                    <option value="카카오뱅크" th:selected="${employeeVO.bankName == '카카오뱅크'}">카카오뱅크</option>
+                                    <option value="토스뱅크" th:selected="${employeeVO.bankName == '토스뱅크'}">토스뱅크</option>
+                                    <option value="새마을금고" th:selected="${employeeVO.bankName == '새마을금고'}">새마을금고</option>
+                                    <option value="신협" th:selected="${employeeVO.bankName == '신협'}">신협</option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                계좌번호
+                            </th>
+                            <td>
+                                <input type="text" name="accountNumber" th:value="${employeeVO.accountNumber}" class="form-control w20p">
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <!--검색버튼-->
+                <div class="search-button">
+                    <button type="button" class="btn btn-regist w75">수정</button>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+
+</th:block>
+
+
+
+</body>
+
+</html>

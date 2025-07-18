@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="nav">
+    <!--상단-->
+    <div class="account">
+        <ul>
+            <li>
+                <a href="/">
+                    <span th:text="${session.ssManagerId}"></span>
+                </a>
+            </li>
+            <li>
+                <a href="/">
+                    <span>로그아웃</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</th:block>
+</html>

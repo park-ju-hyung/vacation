@@ -39,6 +39,7 @@ public class MngrAuthenticationProvider implements AuthenticationProvider {
 		if(employeeVo == null)
 			throw new BadCredentialsException("NullPointerException : not exist manager");
 		System.out.println("employeeVo: " + employeeVo);
+		System.out.println("사번: " + employeeVo.getEmpNo());
 		System.out.println("입력받은 비밀번호: " + pwd);
 		System.out.println("DB 비밀번호: " + employeeVo.getEmpPassword());
 		if(!mngrPasswordEncoder.matches(pwd, employeeVo.getEmpPassword()))
