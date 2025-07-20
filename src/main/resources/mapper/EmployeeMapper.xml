@@ -81,19 +81,19 @@
 	<!--수정하기-->
 	<update id="employeeUpdate" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
 		UPDATE employee
-		SET empName=#{empName}
-		, empBirth=#{empBirth}
-		, position=#{position}
-		, email=#{email},
-		, phoneNumber=#{phoneNumber},
-		, emerNumber=#{emerNumber},
-		, bankName=#{bankName},
-		, accountNumber=#{accountNumber},
-		, department=#{department}
-		, hireDate=#{hireDate}
-		, status=#{status}
-		, role=#{role}
-		WHERE empId= #{empId}
+		SET empName=#{empName},
+			empBirth=#{empBirth},
+			position=#{position},
+			email=#{email},
+			phoneNumber=#{phoneNumber},
+			emerNumber=#{emerNumber},
+			bankName=#{bankName},
+			accountNumber=#{accountNumber},
+			department=#{department},
+			hireDate=#{hireDate},
+			status=#{status},
+			role=#{role}
+		WHERE empId = #{empId}
 	</update>
 
 	<!--휴직 퇴직시 날짜, 사유 등록-->

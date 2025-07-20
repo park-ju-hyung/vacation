@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
+<head>
+    <title>휴가 신청 - 신청</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefault();
+                registEvent();
+            });
+
+            const dtPickerJSON = {
+                dateFormat: "yy-mm-dd",
+                startView: 3,
+                todayBtn:"linked",
+                language: "kr",
+                orientation: "top auto",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            };
+
+            const csrf = {'header': null, 'value': null};
+
+            const button = {'list': null, 'regist': null};
+
+            const setDefault = function () {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                // configEditor(false);
+                button.list = document.querySelector('.btn-view');
+                button.regist = document.querySelector('.btn-regist');
+
+                $('input[name="startDate"]').datepicker(dtPickerJSON);
+                $('input[name="endDate"]').datepicker(dtPickerJSON);
+            };
+
+            const registEvent = function () {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/site/UserBreak/list?' + getQueryStr(searchData));
+                });
+
+                button.regist.addEventListener('click', regist);
+            };
+
+            const isEmpty = (value) => {
+                if (value == null || typeof value == 'undefined' || value == '')
+                    return true;
+                else
+                    return false;
+            };
+
+            const validator = function (formData) {
+                if (isEmpty(formData['startDate'])) {
+                    alert('휴가기간을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['endDate'])) {
+                    alert('휴가기간을 입력하여 주십시오.');
+                    return true;
+                }
+                if (isEmpty(formData['reason'])) {
+                    alert('사유를 입력하여 주십시오.');
+                    return true;
+                }
+
+                return false;
+            };
+
+
+            async function regist() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
+                let formData = {
+                    'startDate': document.querySelector('input[name="startDate"]').value,
+                    'endDate': document.querySelector('input[name="endDate"]').value,
+                    'reason': document.querySelector('select[name="reason"]').value,
+                };
+                console.log(formData);
+
+                if (validator(formData)) {
+                    return;
+                };
+
+                // startLoading();
+
+                await fetch('/insertBreak', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf.token
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // endLoading();
+
+                        if (data.result === 'SUCCESS') {
+                            alert('등록 성공');
+                            window.location.replace('/site/UserBreak/list?' + getQueryStr(searchData));
+                        } else {
+                            alert('등록 실패');
+                        }
+                    })
+                    .catch(error => {
+                        // endLoading();
+                        alert('오류가 발생했습니다2.');
+                        console.log(error);
+                    });
+            };
+
+
+
+
+        </script>
+    </th:block>
+</head>
+
+<body>
+<th:block layout:fragment="content">
+    <div style="display: flex;">
+        <!--sidebar-->
+        <th:block th:replace="~{site/fragment/basic_aside :: aside}"></th:block>
+
+        <!--content-->
+        <div class="content">
+            <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
+            <!--content-->
+            <div class="content-box">
+                <!--경로-->
+                <div class="current-site-path">
+                    <ul>
+                        <li>
+                            <span>
+                                휴가 신청
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                신청
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--content-table-->
+                <div class="view-table">
+                    <table>
+                        <colgroup>
+                            <col width="12%">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>
+                                이름
+                            </th>
+                            <td th:text="${employeeVO.empName}"></td>
+                        </tr>
+                        <input type="hidden" name="empId" th:value="${employeeDTO.empId}">
+                        <input type="hidden" name="empNo" th:value="${employeeDTO.empNo}">
+                        <tr>
+                            <th>
+                                사번
+                            </th>
+                            <td th:text="${employeeVO.empNo}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부서
+                            </th>
+                            <td th:text="${employeeVO.department}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                직급
+                            </th>
+                            <td th:text="${employeeVO.position}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                신청일
+                            </th>
+                            <td>
+                                신청일
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부여휴가일수
+                            </th>
+                            <td>
+                                부여휴가일수
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                잔여휴가일수
+                            </th>
+                            <td>
+                                잔여휴가일수
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                신청기간
+                            </th>
+                            <td>
+                                <input type="date" class="form-control w20p dib" name="startDate"  required>
+                                <span>~</span>
+                                <input type="date" class="form-control w20p dib" name="endDate" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사유
+                            </th>
+                            <td>
+                                <textarea class="form-control" name="reason" id="" style="height: 300px;"></textarea>
+                            </td>
+                        </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <!--버튼-->
+                <div class="search-button">
+                    <button type="button" class="btn btn-regist w75">신청</button>
+                    <button type="button" class="btn btn-view w75">목록</button>
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+</th:block>
+
+
+
+</body>
+
+</html>
