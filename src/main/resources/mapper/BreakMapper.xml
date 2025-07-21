@@ -7,8 +7,8 @@
 
 	<!--휴가 신청-->
 	<insert id="insertBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
-		INSERT INTO break (holidayId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, totalDays, approval)
-		VALUES (#{holidayId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{totalDays}, #{approval})
+		INSERT INTO break (holidayId, startDate, endDate, useDays, type, totalDays, reason, approval, regDate)
+		VALUES (#{holidayId}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{totalDays}, #{reason}, #{approval}, #{regDate})
 	</insert>
 
 	<!--직원 정보 가져오기-->
@@ -31,6 +31,46 @@
 			role
 		FROM employee
 		WHERE empNo = #{empNo}
+	</select>
+
+	<!--리스트-->
+	<sql id="basicTable">
+		SELECT ROW_NUMBER() OVER(order by regDate) AS seq,
+			   holidayId,
+			   empName,
+			   DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			   empNo,
+			   position,
+			   DATE_FORMAT(startDate, '%Y-%m-%d') as startDate,
+			   DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
+			   useDays,
+			   type,
+			   totalDays,
+			   reason
+		FROM break
+	</sql>
+
+	<sql id="where">
+		WHERE 1=1
+		<if test="schDtStart != '' and schDtStart != null">
+			AND DATE_FORMAT(startDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
+		</if>
+		<if test="schDtEnd != '' and schDtEnd != null">
+			AND DATE_FORMAT(endDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
+		</if>
+	</sql>
+
+	<select id="breakCount" parameterType="com.example.vacation.mvc.dto.BreakDTO" resultType="integer">
+		SELECT count(*) FROM break
+		<include refid="where"/>
+	</select>
+
+	<select id="breaklist" parameterType="com.example.vacation.mvc.dto.BreakDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+		<include refid="basicTable"/>
+		<include refid="where"/>
+		ORDER BY seq DESC
+		LIMIT #{pageSize} OFFSET #{pageOffset}
 	</select>
 
 

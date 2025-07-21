@@ -41,7 +41,7 @@
 
             const registEvent = function () {
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
-
+                console.log(searchData);
                 button.list.addEventListener('click', () => {
                     window.location.replace('/site/UserBreak/list?' + getQueryStr(searchData));
                 });
@@ -80,7 +80,7 @@
                 let formData = {
                     'startDate': document.querySelector('input[name="startDate"]').value,
                     'endDate': document.querySelector('input[name="endDate"]').value,
-                    'reason': document.querySelector('select[name="reason"]').value,
+                    'reason': document.querySelector('textarea[name="reason"]').value
                 };
                 console.log(formData);
 
@@ -125,6 +125,13 @@
 
 <body>
 <th:block layout:fragment="content">
+    <!-- 검색 form -->
+    <form name="searchForm" method="post" onsubmit="return false;">
+
+        <!--페이지 네이션-->
+        <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+        <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+    </form>
     <div style="display: flex;">
         <!--sidebar-->
         <th:block th:replace="~{site/fragment/basic_aside :: aside}"></th:block>
