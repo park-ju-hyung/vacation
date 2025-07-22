@@ -104,6 +104,7 @@ public class BreakService {
     // 신청자 정보 + 휴가 데이터
     @Transactional(readOnly = true)
     public BreakVO BreakView(BreakDTO breakdto) throws Exception {
+        System.out.println("service: " + breakMapper.breakVO(breakdto));
         return breakMapper.breakVO(breakdto);
     }
 

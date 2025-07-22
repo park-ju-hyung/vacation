@@ -18,12 +18,12 @@ public class BreakDTO extends BaseDTO {
     private String empNo; // 사번
     private String position; // 직책
     private String department; // 부서
-    private Date startDate; // 휴가1
-    private Date endDate; // 휴가2
+    private String startDate; // 휴가1
+    private String endDate; // 휴가2
     private BigDecimal useDays; // 신청 휴가 일수
     private String type; // 연차 or 반차
     private BigDecimal totalDays; // 부여받은 휴가 일수
     private String reason; // 사유
     private String approval; // 승인 여부
-    private Date regDate; // 신청 일자
+    private String regDate; // 신청 일자
 }

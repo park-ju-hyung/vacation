@@ -110,6 +110,7 @@
                         console.log(error);
                     });
             };
+
             // 날짜 포맷 함수
             const formatDate = (dateStr) => {
                 const date = new Date(dateStr);
@@ -167,7 +168,7 @@
                     view.addEventListener('click', (e) => {
                         let id = e.target.getAttribute('data-id');
                         // window.location.href = '/mngr/gov/policy/view?' + getQueryStr(searchData) + '&govId=' + id;
-                        window.location.href = '/site/UserBreak/view?' + '&holiydayId=' + id;
+                        window.location.href = '/site/UserBreak/view?' + '&holidayId=' + id;
                     });
                 }
 

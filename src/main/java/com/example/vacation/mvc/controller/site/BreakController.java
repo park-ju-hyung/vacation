@@ -62,6 +62,7 @@ public class BreakController {
     public String BreakViewPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("breakDTO", breakdto);
         modelMap.addAttribute("breakVO", breakService.BreakView(breakdto));
+        System.out.println("controller: " + breakService.BreakView(breakdto));
         return "site/UserBreak/view";
     }
 

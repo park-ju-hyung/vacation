@@ -32,7 +32,7 @@
                  });
                  **/
                 button.list.addEventListener('click', () => {
-                    window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
+                    window.location.replace('/site/UserBreak/list?' + getQueryStr(searchData));
                 });
 
                 /**
@@ -43,6 +43,7 @@
                 });
                  **/
             };
+
 
 
 
@@ -85,7 +86,6 @@
 
                 <!-- 검색 form -->
                 <form name="searchForm" method="post" onsubmit="return false;">
-
                     <!-- 검색 조건 -->
                     <input type="hidden" name="holidayId" th:value="${breakDTO.holidayId}">
                     <input type="hidden" name="empName" th:value="${breakDTO.empName}"> <!--이름-->
@@ -95,9 +95,7 @@
                     <input type="hidden" name="startDate" th:value="${breakDTO.startDate}"><!--휴가기간-->
                     <input type="hidden" name="endDate" th:value="${breakDTO.endDate}"><!--휴가기간-->
                     <input type="hidden" name="useDays" th:value="${breakDTO.useDays}"><!--신청일수-->
-                    <input type="hidden" name="total" th:value="${breakDTO.useDays}"><!--신청일수-->
-
-
+                    <input type="hidden" name="totalDays" th:value="${breakDTO.totalDays}"><!--부여받은 일수-->
                 </form>
 
                 <!--content-table-->
@@ -112,65 +110,56 @@
                             <th>
                                 이름
                             </th>
-                            <td>
-                                이름
-                            </td>
+                            <td th:text="${breakVO.empName}"></td>
                         </tr>
                         <tr>
                             <th>
                                 사번
                             </th>
-                            <td>
-                                사번
-                            </td>
+                            <td th:text="${breakVO.empNo}"></td>
                         </tr>
                         <tr>
                             <th>
                                 부서
                             </th>
-                            <td>
-                                부서
-                            </td>
+                            <td th:text="${breakVO.department}"></td>
                         </tr>
                         <tr>
                             <th>
                                 직급
                             </th>
-                            <td>
-                                직급
-                            </td>
+                            <td th:text="${breakVO.position}"></td>
                         </tr>
                         <tr>
                             <th>
                                 신청일
                             </th>
-                            <td>
-                                신청일
-                            </td>
+                            <td th:text="${breakVO.regDate}"></td>
                         </tr>
                         <tr>
                             <th>
                                 휴가기간
                             </th>
                             <td>
-                                휴가기간
+                                <span th:text="${breakVO.startDate}"></span>
+                                <span>~</span>
+                                <span th:text="${breakVO.endDate}"></span>
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 부여휴가일수
                             </th>
-                            <td>
-                                부여휴가일수
+                            <td th:text="${breakVO.totalDays}">
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 잔여휴가일수
                             </th>
-                            <td>
-                                잔여휴가일수
-                            </td>
+                            <!--
+                            <td th:text="${breakVO.totalDays - breakVO.useDays}"></td>
+                            -->
                         </tr>
 
                         <tr>
@@ -193,8 +182,8 @@
 
                 <!--버튼-->
                 <div class="search-button">
-                    <button id="btn-search" type="button" class="btn btn-danger w75">삭제</button>
-                    <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
+                    <button type="button" class="btn btn-danger w75">삭제</button>
+                    <button type="button" class="btn btn-view w75">목록</button>
                 </div>
 
 
