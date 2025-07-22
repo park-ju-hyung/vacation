@@ -66,7 +66,7 @@ public class BreakService {
         return rs;
     }
 
-    // 직원 정보 가져오기
+    // 신청자 정보 가져오기
     @Transactional(readOnly = true)
     public EmployeeVO view(EmployeeDTO employeedto) throws Exception {
         String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
@@ -76,25 +76,35 @@ public class BreakService {
     }
 
     // 휴가 신청
-    @Transactional(readOnly = false, rollbackFor = {Exception.class})
-    public Map<String, Object> InsertBreak(BreakFormDTO breakFormDTO) throws Exception {
-
-        EmployeeDTO employeedto = breakFormDTO.getEmployee();
-        System.out.println("employeedto:" + employeedto);
-        BreakDTO breakData = breakFormDTO.getBreakData();
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    public Map<String, Object> insertBreak(BreakDTO breakdto) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
 
         String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
-        employeedto.setEmpNo(empNo);
-        System.out.println("empNo:" + empNo);
-        employeedto.setEmpName(employeedto.getEmpName());
-        employeedto.setEmpBirth(employeedto.getEmpBirth());
-        employeedto.setPosition(employeedto.getPosition());
-        employeedto.setDepartment(employeedto.getPosition());
 
-        Map<String, Object> rs = new HashMap<String, Object>();
-        breakMapper.insertBreak(breakFormDTO);
-        rs.put("result", breakFormDTO);
+        EmployeeDTO empDto = new EmployeeDTO();
+        empDto.setEmpNo(empNo);
+        EmployeeVO employee = breakMapper.employeeVO(empDto);
+        System.out.println("employeeVo: " + employee);
+
+        breakdto.setEmpNo(employee.getEmpNo());
+        breakdto.setEmpName(employee.getEmpName());
+        breakdto.setEmpBirth(employee.getEmpBirth());
+        breakdto.setPosition(employee.getPosition());
+        breakdto.setDepartment(employee.getDepartment());
+        System.out.println("employeeVo: " + employee.getEmpNo());
+
+
+        breakMapper.insertBreak(breakdto);
+
+        rs.put("result", "SUCCESS");
         return rs;
+    }
+
+    // 신청자 정보 + 휴가 데이터
+    @Transactional(readOnly = true)
+    public BreakVO BreakView(BreakDTO breakdto) throws Exception {
+        return breakMapper.breakVO(breakdto);
     }
 
 

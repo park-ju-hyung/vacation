@@ -15,14 +15,17 @@ import java.util.List;
 public interface BreakMapper {
 
 	// 휴가 신청
-	public void insertBreak(BreakFormDTO breakFormDTO) throws Exception;
+	public void insertBreak(BreakDTO breakdto) throws Exception;
 
-	// 직원 정보 가져오기
+	// 신청자 정보 가져오기
 	public EmployeeVO employeeVO(EmployeeDTO employeedto) throws Exception;
 
 	//list
 	public List<BreakVO> breaklist(BreakDTO breakdto) throws Exception;
 
 	public int breakCount(BreakDTO breakdto) throws Exception;
+
+	// 신청자 정보 + 휴가 데이터 가져오기
+	public BreakVO breakVO(BreakDTO breakdto) throws Exception;
 
 }

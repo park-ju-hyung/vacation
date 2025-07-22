@@ -27,6 +27,23 @@ public class BreakController {
 
     private final BreakService breakService;
 
+    /** 휴가 신청 regist **/
+    @GetMapping("/site/UserBreak/regist")
+    public String UserBreakRegistPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("employeeDTO", employeedto);
+        modelMap.addAttribute("employeeVO", breakService.view(employeedto));
+        return "site/UserBreak/regist";
+    }
+
+    @PostMapping("/insertBreak")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> insertBreak(@RequestBody BreakDTO breakdto) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+        breakService.insertBreak(breakdto);
+        rs.put("result", "SUCCESS");
+        return ResponseEntity.ok(rs);
+    }
+
     /** 휴가 신청 list **/
     @GetMapping("/site/UserBreak/list")
     public String BreakListPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
@@ -40,22 +57,14 @@ public class BreakController {
         return new ResponseEntity<>(breakService.Breaklist(breakdto), HttpStatus.OK);
     }
 
-    /** 휴가 신청 regist **/
-    @GetMapping("/site/UserBreak/regist")
-    public String UserBreakRegistPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
-        modelMap.addAttribute("employeeDTO", employeedto);
-        modelMap.addAttribute("employeeVO", breakService.view(employeedto));
-        return "site/UserBreak/regist";
+    /** 상세보기 **/
+    @GetMapping("/site/UserBreak/view")
+    public String BreakViewPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
+        modelMap.addAttribute("breakDTO", breakdto);
+        modelMap.addAttribute("breakVO", breakService.BreakView(breakdto));
+        return "site/UserBreak/view";
     }
 
-    @PostMapping("/insertBreak")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> insertBreak(@RequestBody BreakFormDTO breakFormDTO) throws Exception {
-        Map<String, Object> rs = new HashMap<>();
-        breakService.InsertBreak(breakFormDTO);
-        rs.put("result", "SUCCESS");
-        return ResponseEntity.ok(rs);
-    }
 
 
 

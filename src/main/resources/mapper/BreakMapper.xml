@@ -7,11 +7,11 @@
 
 	<!--휴가 신청-->
 	<insert id="insertBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
-		INSERT INTO break (holidayId, startDate, endDate, useDays, type, totalDays, reason, approval, regDate)
-		VALUES (#{holidayId}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{totalDays}, #{reason}, #{approval}, #{regDate})
+			INSERT INTO break (holidayId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, totalDays, reason, approval)
+			VALUES (#{holidayId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{totalDays}, #{reason}, #{approval})
 	</insert>
 
-	<!--직원 정보 가져오기-->
+	<!-- 신청자 정보 가져오기-->
 	<select id="employeeVO" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
 			resultType="com.example.vacation.mvc.vo.EmployeeVO">
 		SELECT
@@ -46,7 +46,9 @@
 			   useDays,
 			   type,
 			   totalDays,
-			   reason
+			   reason,
+			   approval,
+			   regDate
 		FROM break
 	</sql>
 
@@ -66,12 +68,33 @@
 	</select>
 
 	<select id="breaklist" parameterType="com.example.vacation.mvc.dto.BreakDTO"
-			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+			resultType="com.example.vacation.mvc.vo.BreakVO">
 		<include refid="basicTable"/>
 		<include refid="where"/>
 		ORDER BY seq DESC
 		LIMIT #{pageSize} OFFSET #{pageOffset}
 	</select>
 
+	<!-- 신청자 정보 + 휴가 데이터 가져오기-->
+	<select id="breakVO" parameterType="com.example.vacation.mvc.dto.BreakDTO"
+			resultType="com.example.vacation.mvc.vo.BreakVO">
+		SELECT
+			holidayId,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			empNo,
+			position,
+			department,
+			DATE_FORMAT(startDate, '%Y-%m-%d') as startDate,
+			DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
+			useDays,
+			type,
+			totalDays,
+			reason,
+			approval,
+			regDate
+		FROM break
+		WHERE holidayId = #{holidayId}
+	</select>
 
 </mapper>
