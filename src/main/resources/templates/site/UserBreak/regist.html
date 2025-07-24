@@ -57,6 +57,10 @@
             };
 
             const validator = function (formData) {
+                const today = new Date();
+                const start = new Date(formData['startDate']);
+                const end = new Date(formData['endDate']);
+
                 if (isEmpty(formData['startDate'])) {
                     alert('휴가기간을 입력하여 주십시오.');
                     return true;
@@ -69,6 +73,15 @@
                     alert('사유를 입력하여 주십시오.');
                     return true;
                 }
+                if (start < today.setHours(0,0,0,0)) {
+                    alert('시작일이 현재보다 이전일 수 없습니다.');
+                    return true;
+                }
+                if (start > end) {
+                    alert('종료일이 시작일보다 작을 수 없습니다.');
+                    return true;
+                }
+
 
                 return false;
             };
@@ -80,8 +93,10 @@
                 let formData = {
                     'startDate': document.querySelector('input[name="startDate"]').value,
                     'endDate': document.querySelector('input[name="endDate"]').value,
-                    useDays: calculatedUseDays, // input 없이 전역 변수 사용
-                    'reason': document.querySelector('textarea[name="reason"]').value
+                    useDays: useDays, // input 없이 전역 변수 사용
+                    'type': document.querySelector('input[name="type"]:checked')?.value || '',
+                    'reason': document.querySelector('textarea[name="reason"]').value,
+                    'totalDays': document.querySelector('input[name="totalDays"]').value
                 };
                 console.log(formData);
 
@@ -89,7 +104,56 @@
                     return;
                 };
 
-                // startLoading();
+                // 반차 체크
+                var isHalfDayChecked = $('#toggleCheckbox').is(':checked');
+                // 반차 유형
+                var halfDay = formData.type;
+
+                if (isHalfDayChecked){
+                    if (halfDay == null || halfDay == '') {
+                        alert('반차 유형을 선택하여 주십시오');
+                        return true;
+                    }
+                }
+                /**
+                //총 휴가사용횟수와 휴가부여횟수를 비교하여 남은 휴가일수가 되는지 체크한다
+                var totalDays = formData.totalDays; // 부여받은 휴가 일수
+                console.log(totalDays);
+                var useDays = formData.useDays; //현재 신청 휴가 일수
+                console.log(useDays);
+                //console.log("int_day_num:"+int_day_num);
+                //console.log(typeof int_day_num);
+                // 반차선택시 *0.5
+                if (isHalfDayChecked) {
+                    int_day_num = int_day_num * 0.5; // 반차 계산
+                    console.log("int_day_num:", int_day_num); // 값 확인
+                    day_num = int_day_num;
+                    console.log("day_num:", day_num); // day_num 값 확인
+                }
+                $("#day_num").val(int_day_num); // 실제로 적용될 day_num 값을 업데이트
+                console.log("지금 신청일수 : ", $("#day_num").val());
+                var use_day = ${break_info.day_num}; //이번년도 총 휴가사용 횟수
+                console.log("올해 사용한 휴가 일수 :", ${break_info.day_num});
+                var totalDays = formData.totalDays; //이번년도 휴가부여 횟수
+                console.log("받은 휴가 일수 :"+ totalDays);
+                var rest_day = total_day-use_day; //이번년도 휴가 사용가능 횟수
+                if(rest_day >= int_day_num){ //휴가사용가능
+                    //console.log("휴가 사용가능");
+                    if(status == 'save'){
+                        popOpen('#savePop');
+                    }
+                    if(status == 'submit'){
+                        popOpen('#submitPop');
+                    }
+
+                }else{ //휴가사용 불가
+                    //console.log("휴가사용 불가");
+                    var notMsg = "남은 휴가일수가 부족 합니다, 확인 하세요.<br>( 남은 휴가일수: "+rest_day+"일"+" , 신청 휴가일수: "+int_day_num+"일 )";
+                    $("#notUseBreakMessage").html(notMsg);
+                    popOpen('#notUseBreak');
+                }
+                 **/
+
 
                 await fetch('/insertBreak', {
                     method: 'POST',
@@ -195,7 +259,7 @@
             };
 
             //주말을 제외한 합계일수 리턴
-            let calculatedUseDays = 0; // 전역 변수 선언
+            let useDays = 0; // 전역 변수 선언
             function excludeWeekendDate(fromDate, toDate, list) {
                 //var date1 = new Date(2017, 10, 30); // 2017-11-30
                 //var date2 = new Date(2017, 11, 6); // 2017-12-6
@@ -292,7 +356,7 @@
                         temp_date.setDate(date1.getDate() + 1);
                     }
                 }//while end
-                calculatedUseDays = count; // 전역 변수에 저장
+                useDays = count; // 전역 변수에 저장
                 return count;
             }
 
@@ -408,6 +472,7 @@
                                 부여휴가일수
                             </th>
                             <td th:text="${employeeVO.totalDays}"></td>
+                            <input type="hidden" name="totalDays">
                         </tr>
                         <tr>
                             <th>
@@ -422,27 +487,28 @@
                                 신청기간
                             </th>
                             <td>
-                                <div>
+                                <div class="dib">
                                     <!-- <input type="text" class="input_style " id="start" name="start" placeholder="YYYY. MM. DD" style="width:190px;" onchange="startChange(this);"/> -->
-                                    <input type="text" class="input_style " id="startDate" name="startDate" placeholder="YYYY. MM. DD" style="width:175px;" onchange="endChange();"/>
+                                    <input type="text" class="form-control" id="startDate" name="startDate" placeholder="YYYY. MM. DD" style="width:175px;" onchange="endChange();"/>
                                     <span class="bg_date"></span>
                                 </div>
-                                <span class="mr03 ml03"> ~ </span>
-                                <div>
-                                    <input type="text" class=" input_style" id="endDate" name="endDate" placeholder="YYYY. MM. DD" style="width:175px;" onchange="endChange();"/>
+                                <span class="dib"> ~ </span>
+                                <div class="dib">
+                                    <input type="text" class="form-control" id="endDate" name="endDate" placeholder="YYYY. MM. DD" style="width:175px;" onchange="endChange();"/>
                                     <span class="bg_date"></span>
                                 </div>
-                                <input type="text" class=" input_style" id="day" name="day" placeholder="0박0일" style="width:100px;" readonly>
-                                <input type="hidden" id="useDays" name="useDays" />
-                                <div id="halfDaySelect" style="display: none;">
-                                    <div id="half_day_off">
+                                <input type="text" class="form-control dib" id="day" name="day" placeholder="0박0일" style="width:100px;" readonly>
+                                <div id="halfDaySelect" class="dib">
+                                    <!--오전 오후-->
+                                    <div id="type">
                                         <label for="vacation_ev">
-                                            <input type="radio" class="half_day_off" name="half_day_off" id="vacation_ev" value="오전반차">오전
+                                            <input type="radio" class="half_day_off" name="type" id="vacation_ev" value="오전반차">오전
                                         </label>
                                         <label for="vacation_af">
-                                            <input type="radio" class="half_day_off" name="half_day_off" id="vacation_af" value="오후반차">오후
+                                            <input type="radio" class="half_day_off" name="type" id="vacation_af" value="오후반차">오후
                                         </label>
                                     </div>
+                                    <!--반차 선택 버튼-->
                                     <input type="checkbox" class="input_style" id="toggleCheckbox" style="margin-right: 0; margin-left: 6px;">
                                     <span style="vertical-align: -1.6px;">반차신청</span>
                                 </div>
@@ -450,7 +516,7 @@
 
                                 <script>
                                     document.getElementById('toggleCheckbox').addEventListener('change', function () {
-                                        const div1 = document.getElementById('half_day_off');
+                                        const div1 = document.getElementById('type');
 
                                         if (this.checked) {
                                             // 체크박스가 체크된 경우
@@ -460,15 +526,10 @@
                                             div1.style.display = 'none'; // 2번 DIV 숨김
                                         }
                                     });
-
                                     // 초기 상태 설정
-                                    document.getElementById('half_day_off').style.display = 'none'; // 1번 DIV 기본 표시
+                                    document.getElementById('type').style.display = 'none'; // 1번 DIV 기본 표시
                                 </script>
-                                <!--
-                                <input type="date" class="form-control w20p dib" name="startDate"  required>
-                                <span>~</span>
-                                <input type="date" class="form-control w20p dib" name="endDate" required>
-                                -->
+
                             </td>
                         </tr>
                         <tr>
