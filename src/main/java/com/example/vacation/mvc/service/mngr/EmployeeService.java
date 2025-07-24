@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,15 @@ public class EmployeeService {
         //최종
         employeedto.setEmpNo(birthDate + randomNum);
         employeedto.setEmpPassword(mngrPasswordEncoder.encode(birthDate + randomNum));
-        System.out.println("empNo:" + birthDate + randomNum);
-        System.out.println("Password:" + birthDate + randomNum);
+
+        if ("사원".equals(employeedto.getPosition())) {
+            employeedto.setTotalDays(BigDecimal.valueOf(3));
+        } else if ("주임".equals(employeedto.getPosition())) {
+            employeedto.setTotalDays(BigDecimal.valueOf(5));
+        } else {
+            employeedto.setTotalDays(BigDecimal.valueOf(8));
+        }
+
 
 
         employeeMapper.insertEmployee(employeedto);

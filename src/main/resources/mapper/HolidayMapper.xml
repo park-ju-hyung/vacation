@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.vacation.mvc.mapper.HolidayMapper">
+	<!-- holiday 정보 조회 결과 리스트 -->
+	<select id="selectHolidayList"
+			parameterType="com.example.vacation.mvc.dto.HolidayDTO"
+			resultType="com.example.vacation.mvc.vo.HolidayVO">
+		SELECT
+			A.year
+			 , A.m1
+			 , A.m2
+			 , A.m3
+			 , A.m4
+			 , A.m5
+			 , A.m6
+			 , A.m7
+			 , A.m8
+			 , A.m9
+			 , A.m10
+			 , A.m11
+			 , A.m12
+			 , A.memo
+		FROM  holiday A
+		WHERE A.year <![CDATA[>=]]> #{stYear}
+		  AND   A.year <![CDATA[<=]]> #{edYear}
+		ORDER BY A.year
+	</select>
+
+
+
+</mapper>

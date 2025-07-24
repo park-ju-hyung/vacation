@@ -1,10 +1,21 @@
 package com.example.vacation.mvc.controller.mngr;
 
+import com.example.vacation.mvc.dto.HolidayDTO;
+import com.example.vacation.mvc.service.mngr.HolidayService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequiredArgsConstructor
 public class HoildayController {
+    private final HolidayService HolidayService;
+
 
     /**공휴일 관리 list**/
     @GetMapping("mngr/holiday/holiday_list")
@@ -31,5 +42,11 @@ public class HoildayController {
     }
 
 
-    /**연차현황 조회 상세 페이지**/
+
+
+    @ResponseBody
+    @PostMapping("/holidayList")
+    public ResponseEntity<?> holidayList(@RequestBody HolidayDTO holidaydto) throws Exception {
+        return new ResponseEntity<>(HolidayService.selectHolidayList(holidaydto), HttpStatus.OK);
+    }
 }

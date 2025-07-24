@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
-		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, phoneNumber, emerNumber, bankName, accountNumber, empPassword, role )
-		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{status}, #{hireDate}, #{email}, #{phoneNumber}, #{emerNumber}, #{bankName}, #{accountNumber}, #{empPassword}, #{role})
+		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, phoneNumber, emerNumber, bankName, accountNumber, empPassword, role, totalDays )
+		VALUES ( #{empId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{status}, #{hireDate}, #{email}, #{phoneNumber}, #{emerNumber}, #{bankName}, #{accountNumber}, #{empPassword}, #{role}, #{totalDays})
 	</insert>
 
 	<!--리스트-->
@@ -73,7 +73,8 @@
 			department,
 			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
 			status,
-			role
+			role,
+			totalDays; // 부여받은 휴가 일수
 		FROM employee
 		WHERE empId = #{empId}
 	</select>

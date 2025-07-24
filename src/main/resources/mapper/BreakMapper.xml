@@ -28,7 +28,8 @@
 			department,
 			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
 			status,
-			role
+			role,
+			totalDays
 		FROM employee
 		WHERE empNo = #{empNo}
 	</select>

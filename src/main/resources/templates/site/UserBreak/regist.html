@@ -80,6 +80,7 @@
                 let formData = {
                     'startDate': document.querySelector('input[name="startDate"]').value,
                     'endDate': document.querySelector('input[name="endDate"]').value,
+                    useDays: calculatedUseDays, // input 없이 전역 변수 사용
                     'reason': document.querySelector('textarea[name="reason"]').value
                 };
                 console.log(formData);
@@ -115,6 +116,209 @@
                         console.log(error);
                     });
             };
+
+            function endChange(){
+
+                var start = $("#startDate").val();
+                var end = $("#endDate").val();
+
+                if (start == null || start == "" || end == null || end == '') {
+
+                }
+                else{
+                    var arr1 = start.split('-');
+                    var year = Number(arr1[0]);
+                    var month = Number(arr1[1]);
+                    var day = Number(arr1[2]);
+                    var date = new Date(year, month-1, day);  //휴가 시작일 date로 변경
+
+                    var arr2 = end.split('-');
+                    var year1 = Number(arr2[0]);
+                    var month1 = Number(arr2[1]);
+                    var day1 = Number(arr2[2]);
+                    var date1 = new Date(year1, month1-1, day1);  //휴가 종료일 date로 변경
+
+                    console.log("start:", start); // "2025-07-24"
+                    console.log("split result:", arr1); // ["2025", "07", "24"]
+                    console.log("year:", year); // 2025
+                    console.log("month:", month); // 7
+                    console.log("day:", day); // 24
+
+                    if(date.getTime() > date1.getTime()) {//시작일이 종료일보다 큰경우
+                        $("#useDays").val('0박 0일');
+                    }else{
+                        findAllAction(date, date1);
+                    }
+
+
+
+                }
+
+            }
+
+            //년도에 해당하는 휴일 검색
+            const findAllAction = function(date, date1) {
+                let stYear = date.getFullYear();//년 Number
+                let stMonth = date.getMonth()+1;// 월 Number
+                let stDate = date.getDate();// 일 Number
+                console.log("stYear" + stYear);
+                console.log("stMonth" + stMonth);
+                console.log("stDate" + stDate);
+
+                let edYear = date1.getFullYear();//년 Number
+                let edMonth = date1.getMonth()+1;// 월 Number
+                let edDate = date1.getDate();// 일 Number
+
+                const formData = {
+                    stYear : stYear,
+                    edYear : edYear
+                };
+
+                $.ajax({
+                    data : JSON.stringify(formData),
+                    url : '/holidayList',
+                    type : 'post',
+                    dataType : 'json',
+                    contentType : 'application/json'
+                }).done(function (result, status, xhr) {
+                    const list = result.list;
+
+                    //주말 제외
+                    var totCnt = excludeWeekendDate(date, date1, list);
+                    $("#useDays").val(totCnt);//휴가일수 저장->마이페이지->계약사항조회에서 휴가사용현황 총 일수 보여주기 위해 새로 칼럼생성-2022-11-10
+                    console.log("totCnt" + totCnt);
+                    $("#day").val((totCnt-1)+'박 '+totCnt+'일');
+
+                }).fail(function (xhr, status, error) {
+                    alert("데이터를 불러오는데 실패했습니다.");
+                });
+            };
+
+            //주말을 제외한 합계일수 리턴
+            let calculatedUseDays = 0; // 전역 변수 선언
+            function excludeWeekendDate(fromDate, toDate, list) {
+                //var date1 = new Date(2017, 10, 30); // 2017-11-30
+                //var date2 = new Date(2017, 11, 6); // 2017-12-6
+                var date1 = fromDate; // 2017-11-30
+                var date2 = toDate; // 2017-12-6
+                //console.log(date1);
+                //console.log(date2);
+                var count = 0;
+                var temp_date = date1;
+                var isHoliday = false;//휴일여부
+
+                while(true) {
+                    //console.log(temp_date);
+                    if(temp_date.getTime() > date2.getTime()) {
+                        console.log("count : " + count);
+                        if (count === 1) {
+                            document.getElementById('halfDaySelect').style.display = 'inline';
+                        } else{
+                            document.getElementById('halfDaySelect').style.display = 'none';
+                        }
+                        break;
+                    } else {
+                        var tmp = temp_date.getDay();
+                        if(tmp == 0 || tmp == 6) {
+                            // 주말
+                            //console.log("주말");
+                        } else {
+                            // 평일
+                            //console.log("평일");
+                            for(let i=0;i<list.length;i++){
+                                isHoliday = false;//휴일여부
+                                //console.log(i+"->"+list[i].year+list[i].m1);
+                                //let dateFormat1 = temp_date.getFullYear() + '년 ' + (temp_date.getMonth()+1) + '월 '	+ temp_date.getDate() + '일';
+                                //console.log(dateFormat1);
+                                if(temp_date.getFullYear()==Number(list[i].year)){
+                                    switch (temp_date.getMonth()+1) {
+                                        case 1:
+                                            //console.log("1->"+list[i].m1);
+                                            isHoliday = CheckHoliday(list[i].m1, temp_date);
+                                            break;
+                                        case 2:
+                                            //console.log("2->"+list[i].m2);
+                                            isHoliday = CheckHoliday(list[i].m2, temp_date);
+                                            break;
+                                        case 3:
+                                            //console.log("3->"+list[i].m3);
+                                            isHoliday = CheckHoliday(list[i].m3, temp_date);
+                                            break;
+                                        case 4:
+                                            //console.log("4->"+list[i].m4);
+                                            isHoliday = CheckHoliday(list[i].m4, temp_date);
+                                            break;
+                                        case 5:
+                                            //console.log("5->"+list[i].m5);
+                                            isHoliday = CheckHoliday(list[i].m5, temp_date);
+                                            break;
+                                        case 6:
+                                            //console.log("6->"+list[i].m6);
+                                            isHoliday = CheckHoliday(list[i].m6, temp_date);
+                                            break;
+                                        case 7:
+                                            //console.log("7->"+list[i].m7);
+                                            isHoliday = CheckHoliday(list[i].m7, temp_date);
+                                            break;
+                                        case 8:
+                                            //console.log("8->"+list[i].m8);
+                                            isHoliday = CheckHoliday(list[i].m8, temp_date);
+                                            break;
+                                        case 9:
+                                            //console.log("9->"+list[i].m9);
+                                            isHoliday = CheckHoliday(list[i].m9, temp_date);
+                                            break;
+                                        case 10:
+                                            //console.log("10->"+list[i].m10);
+                                            isHoliday = CheckHoliday(list[i].m10, temp_date);
+                                            break;
+                                        case 11:
+                                            //console.log("11->"+list[i].m11);
+                                            isHoliday = CheckHoliday(list[i].m11, temp_date);
+                                            break;
+                                        case 12:
+                                            //console.log("12->"+list[i].m12);
+                                            isHoliday = CheckHoliday(list[i].m12, temp_date);
+                                            break;
+                                        default:
+                                            console.log((temp_date.getMonth()+1));
+                                            break;
+                                    }
+                                }
+                            }
+                            //휴일은 제외한다
+                            if(!isHoliday) count++;
+                        }
+                        temp_date.setDate(date1.getDate() + 1);
+                    }
+                }//while end
+                calculatedUseDays = count; // 전역 변수에 저장
+                return count;
+            }
+
+            //휴일 체크
+            function CheckHoliday(mm,dateObj){
+                let isHoliday = false;
+                if(mm.length>0){
+                    var arr1 = mm.split(',');
+                    for(let k=0;k<arr1.length;k++){
+                        //console.log(k+"->"+arr1[k]);
+                        if(dateObj.getDate()==Number(arr1[k])){
+                            console.log(k+"->"+arr1[k]);
+                            isHoliday = true;//휴일여부
+                            console.log("휴일->"+arr1[k]);
+                            break;
+                        }
+                    }
+                }//if end
+                return isHoliday;
+            }
+
+
+
+
+
+
 
 
 
@@ -203,9 +407,7 @@
                             <th>
                                 부여휴가일수
                             </th>
-                            <td>
-                                부여휴가일수
-                            </td>
+                            <td th:text="${employeeVO.totalDays}"></td>
                         </tr>
                         <tr>
                             <th>
@@ -220,9 +422,53 @@
                                 신청기간
                             </th>
                             <td>
+                                <div>
+                                    <!-- <input type="text" class="input_style " id="start" name="start" placeholder="YYYY. MM. DD" style="width:190px;" onchange="startChange(this);"/> -->
+                                    <input type="text" class="input_style " id="startDate" name="startDate" placeholder="YYYY. MM. DD" style="width:175px;" onchange="endChange();"/>
+                                    <span class="bg_date"></span>
+                                </div>
+                                <span class="mr03 ml03"> ~ </span>
+                                <div>
+                                    <input type="text" class=" input_style" id="endDate" name="endDate" placeholder="YYYY. MM. DD" style="width:175px;" onchange="endChange();"/>
+                                    <span class="bg_date"></span>
+                                </div>
+                                <input type="text" class=" input_style" id="day" name="day" placeholder="0박0일" style="width:100px;" readonly>
+                                <input type="hidden" id="useDays" name="useDays" />
+                                <div id="halfDaySelect" style="display: none;">
+                                    <div id="half_day_off">
+                                        <label for="vacation_ev">
+                                            <input type="radio" class="half_day_off" name="half_day_off" id="vacation_ev" value="오전반차">오전
+                                        </label>
+                                        <label for="vacation_af">
+                                            <input type="radio" class="half_day_off" name="half_day_off" id="vacation_af" value="오후반차">오후
+                                        </label>
+                                    </div>
+                                    <input type="checkbox" class="input_style" id="toggleCheckbox" style="margin-right: 0; margin-left: 6px;">
+                                    <span style="vertical-align: -1.6px;">반차신청</span>
+                                </div>
+
+
+                                <script>
+                                    document.getElementById('toggleCheckbox').addEventListener('change', function () {
+                                        const div1 = document.getElementById('half_day_off');
+
+                                        if (this.checked) {
+                                            // 체크박스가 체크된 경우
+                                            div1.style.display = 'inline-block';
+                                        } else {
+                                            // 체크박스가 해제된 경우
+                                            div1.style.display = 'none'; // 2번 DIV 숨김
+                                        }
+                                    });
+
+                                    // 초기 상태 설정
+                                    document.getElementById('half_day_off').style.display = 'none'; // 1번 DIV 기본 표시
+                                </script>
+                                <!--
                                 <input type="date" class="form-control w20p dib" name="startDate"  required>
                                 <span>~</span>
                                 <input type="date" class="form-control w20p dib" name="endDate" required>
+                                -->
                             </td>
                         </tr>
                         <tr>

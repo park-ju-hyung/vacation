@@ -2,6 +2,8 @@ package com.example.vacation.mvc.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
@@ -24,4 +26,5 @@ public class EmployeeDTO extends BaseDTO {
     private String status ="재직"; // 상태
     private String empPassword; // 패스워드
     private String role; // 권한
+    private BigDecimal totalDays; // 부여받은 휴가 일수
 }

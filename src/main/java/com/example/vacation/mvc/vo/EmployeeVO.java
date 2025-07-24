@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +33,7 @@ public class EmployeeVO extends BaseVO implements Serializable, UserDetails {
     private String status ="재직"; // 상태
     private String empPassword; // 패스워드
     private String role; // 권한
+    private BigDecimal totalDays; // 부여받은 휴가 일수
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
