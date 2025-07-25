@@ -96,13 +96,13 @@ public class BreakService {
         breakdto.setDepartment(employee.getDepartment());
         breakdto.setTotalDays(employee.getTotalDays());
         System.out.println("employeeVo: " + employee.getEmpNo());
-        System.out.println("employeeVo: " + employee.getTotalDays());
+        System.out.println("부여휴가일수 " + employee.getTotalDays());
 
         // 총 휴가 사용일수
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("empNo", empNo);
         Map<String, Object> TotalUseDays = getBreakTotalDay(paramMap);
-        System.out.println("TotalUseDays: " + TotalUseDays);
+        System.out.println("휴가 총 사용일수: " + TotalUseDays);
 
         breakMapper.insertBreak(breakdto);
 

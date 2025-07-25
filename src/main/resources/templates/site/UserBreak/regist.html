@@ -110,8 +110,7 @@
                     'totalDays': document.querySelector('input[name="totalDays"]').value,
                     totalUseDays: totalUseDays
                 };
-                console.log("formaDate1 " + formData);
-                console.log("totalDays " + formData.totalDays);
+                console.log(formData);
 
                 if (validator(formData)) {
                     return;
@@ -128,13 +127,13 @@
                         return true;
                     }
                 }
+                const totalDays = formData.totalDays // 부여받은 휴가 일수
+                const useDay = formData.useDays;// 신청일수
+                console.log("부여받은휴가" + totalDays)
+                console.log("사용한휴가" + totalUseDays)
+                console.log("신청휴가일수" + useDay)
 
-                var totalDays = formData.totalDays;
-                console.log(document.querySelector('input[name="totalDays"]'));  // null 이면 해당 input 없음
-                console.log(document.querySelector('input[name="totalDays"]').value);  // ""이면 value가 안 들어감
-
-
-                if (totalDays > totalUseDays){
+                if ((useDay + totalUseDays) > totalDays){
                     alert('휴가일수가 부족합니다.');
                     return false;
                 }
@@ -459,7 +458,7 @@
                                 부여휴가일수
                             </th>
                             <td th:text="${employeeVO.totalDays}"></td>
-                            <input type="hidden" name="totalDays" th:value="${employeeDTO.totalDays}">
+                            <input type="hidden" name="totalDays" th:value="${employeeVO.totalDays}">
                         </tr>
                         <tr>
                             <th>
