@@ -80,6 +80,7 @@ public class BreakService {
     public Map<String, Object> insertBreak(BreakDTO breakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
 
+        // 로그인한 empNO 정보 가져오기
         String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
 
         EmployeeDTO empDto = new EmployeeDTO();
@@ -87,18 +88,31 @@ public class BreakService {
         EmployeeVO employee = breakMapper.employeeVO(empDto);
         System.out.println("employeeVo: " + employee);
 
+        // 직원 정보 가져오기
         breakdto.setEmpNo(employee.getEmpNo());
         breakdto.setEmpName(employee.getEmpName());
         breakdto.setEmpBirth(employee.getEmpBirth());
         breakdto.setPosition(employee.getPosition());
         breakdto.setDepartment(employee.getDepartment());
+        breakdto.setTotalDays(employee.getTotalDays());
         System.out.println("employeeVo: " + employee.getEmpNo());
+        System.out.println("employeeVo: " + employee.getTotalDays());
 
+        // 총 휴가 사용일수
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("empNo", empNo);
+        Map<String, Object> TotalUseDays = getBreakTotalDay(paramMap);
+        System.out.println("TotalUseDays: " + TotalUseDays);
 
         breakMapper.insertBreak(breakdto);
 
         rs.put("result", "SUCCESS");
         return rs;
+    }
+
+    // 총 휴가일수 구하기
+    public Map<String, Object> getBreakTotalDay(Map<String, Object> paramMap) throws Exception {
+        return breakMapper.getBreakTotalDay(paramMap); // 이건 SUM(useDays)
     }
 
     // 신청자 정보 + 휴가 데이터

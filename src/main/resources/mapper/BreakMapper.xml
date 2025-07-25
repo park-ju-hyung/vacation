@@ -98,4 +98,12 @@
 		WHERE holidayId = #{holidayId}
 	</select>
 
+	<!-- 신청자별 총 신청 휴가일수-->
+	<select id="getBreakTotalDay" parameterType="map" resultType="map">
+		SELECT COALESCE(SUM(useDays), 0) AS useDays
+		FROM break
+		WHERE empNo = #{empNo}
+	</select>
+
+
 </mapper>

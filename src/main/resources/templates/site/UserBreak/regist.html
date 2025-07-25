@@ -86,19 +86,32 @@
                 return false;
             };
 
+            // 총 사용 휴가일수
+            async function getBreakTotalDay() {
+                try {
+                    const response = await fetch("/getBreakTotalDay");
+                    const data = await response.json();
+                    return parseFloat(data.useDays);
+                } catch (e) {
+                    console.error("조회 실패", e);
+                    return 0;
+                }
+            }
 
             async function regist() {
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
-
+                let totalUseDays = await getBreakTotalDay();
                 let formData = {
                     'startDate': document.querySelector('input[name="startDate"]').value,
                     'endDate': document.querySelector('input[name="endDate"]').value,
                     useDays: useDays, // input 없이 전역 변수 사용
                     'type': document.querySelector('input[name="type"]:checked')?.value || '',
                     'reason': document.querySelector('textarea[name="reason"]').value,
-                    'totalDays': document.querySelector('input[name="totalDays"]').value
+                    'totalDays': document.querySelector('input[name="totalDays"]').value,
+                    totalUseDays: totalUseDays
                 };
-                console.log(formData);
+                console.log("formaDate1 " + formData);
+                console.log("totalDays " + formData.totalDays);
 
                 if (validator(formData)) {
                     return;
@@ -115,44 +128,17 @@
                         return true;
                     }
                 }
-                /**
-                //총 휴가사용횟수와 휴가부여횟수를 비교하여 남은 휴가일수가 되는지 체크한다
-                var totalDays = formData.totalDays; // 부여받은 휴가 일수
-                console.log(totalDays);
-                var useDays = formData.useDays; //현재 신청 휴가 일수
-                console.log(useDays);
-                //console.log("int_day_num:"+int_day_num);
-                //console.log(typeof int_day_num);
-                // 반차선택시 *0.5
-                if (isHalfDayChecked) {
-                    int_day_num = int_day_num * 0.5; // 반차 계산
-                    console.log("int_day_num:", int_day_num); // 값 확인
-                    day_num = int_day_num;
-                    console.log("day_num:", day_num); // day_num 값 확인
-                }
-                $("#day_num").val(int_day_num); // 실제로 적용될 day_num 값을 업데이트
-                console.log("지금 신청일수 : ", $("#day_num").val());
-                var use_day = ${break_info.day_num}; //이번년도 총 휴가사용 횟수
-                console.log("올해 사용한 휴가 일수 :", ${break_info.day_num});
-                var totalDays = formData.totalDays; //이번년도 휴가부여 횟수
-                console.log("받은 휴가 일수 :"+ totalDays);
-                var rest_day = total_day-use_day; //이번년도 휴가 사용가능 횟수
-                if(rest_day >= int_day_num){ //휴가사용가능
-                    //console.log("휴가 사용가능");
-                    if(status == 'save'){
-                        popOpen('#savePop');
-                    }
-                    if(status == 'submit'){
-                        popOpen('#submitPop');
-                    }
 
-                }else{ //휴가사용 불가
-                    //console.log("휴가사용 불가");
-                    var notMsg = "남은 휴가일수가 부족 합니다, 확인 하세요.<br>( 남은 휴가일수: "+rest_day+"일"+" , 신청 휴가일수: "+int_day_num+"일 )";
-                    $("#notUseBreakMessage").html(notMsg);
-                    popOpen('#notUseBreak');
+                var totalDays = formData.totalDays;
+                console.log(document.querySelector('input[name="totalDays"]'));  // null 이면 해당 input 없음
+                console.log(document.querySelector('input[name="totalDays"]').value);  // ""이면 value가 안 들어감
+
+
+                if (totalDays > totalUseDays){
+                    alert('휴가일수가 부족합니다.');
+                    return false;
                 }
-                 **/
+
 
 
                 await fetch('/insertBreak', {
@@ -180,6 +166,7 @@
                         console.log(error);
                     });
             };
+
 
             function endChange(){
 
@@ -472,7 +459,7 @@
                                 부여휴가일수
                             </th>
                             <td th:text="${employeeVO.totalDays}"></td>
-                            <input type="hidden" name="totalDays">
+                            <input type="hidden" name="totalDays" th:value="${employeeDTO.totalDays}">
                         </tr>
                         <tr>
                             <th>

@@ -8,6 +8,7 @@ import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.mapper.BreakMapper;
 import com.example.vacation.mvc.service.mngr.BreakService;
 import com.example.vacation.mvc.service.mngr.EmployeeService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,18 @@ public class BreakController {
         return ResponseEntity.ok(rs);
     }
 
+    /** 총 사용휴가일수 가져오기 **/
+    @GetMapping("/getBreakTotalDay")
+    @ResponseBody
+    public Map<String, Object> getBreakTotalDay(HttpSession session) throws Exception {
+        String empNo = (String) session.getAttribute(SessionConstant.SESSION_MANAGER_ID);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("empNo", empNo);
+
+        return breakService.getBreakTotalDay(paramMap);
+    }
+
+
     /** 휴가 신청 list **/
     @GetMapping("/site/UserBreak/list")
     public String BreakListPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
@@ -65,6 +78,8 @@ public class BreakController {
         System.out.println("controller: " + breakService.BreakView(breakdto));
         return "site/UserBreak/view";
     }
+
+
 
 
 

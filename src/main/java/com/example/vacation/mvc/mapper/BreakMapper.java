@@ -9,6 +9,7 @@ import com.example.vacation.mvc.vo.EmployeeVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @DBMapper
 @Repository
@@ -27,5 +28,8 @@ public interface BreakMapper {
 
 	// 신청자 정보 + 휴가 데이터 가져오기
 	public BreakVO breakVO(BreakDTO breakdto) throws Exception;
+
+	// 신청자별 총 신청 휴가일수
+	Map<String, Object> getBreakTotalDay(Map<String, Object> paramMap) throws Exception;
 
 }
