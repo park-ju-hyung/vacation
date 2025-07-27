@@ -29,7 +29,7 @@ public class MultiSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/res/css/**", "/res/js/**").permitAll()
+                        .requestMatchers("/", "/res/css/**", "/res/js/**", "/mngr/Employee/regist", "/employee/regist").permitAll()
                         .requestMatchers("/mngr/**").hasRole("ADMIN")
                         .requestMatchers("/site/**").hasRole("USER")
                         .anyRequest().authenticated()

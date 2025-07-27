@@ -25,5 +25,5 @@ public class BreakDTO extends BaseDTO {
     private BigDecimal totalDays; // 부여받은 휴가 일수
     private String reason; // 사유
     private String approval; // 승인 여부
-    private String regDate; // 신청 일자
+    private Date regDate; // 신청 일자
 }
