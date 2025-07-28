@@ -51,13 +51,17 @@ public class MngrLoginSuccessHandler implements AuthenticationSuccessHandler {
 		RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 		// 로그인 이후 가야할 목적지 지정
-		if ("admin".equalsIgnoreCase(role)) {
+		if ("mngr".equalsIgnoreCase(role)) {
 			System.out.println("role: " + role);
-			String targetUrl = "/mngr/Employee/list";
+			String targetUrl = "/mngr/UserAppBreak/list";
 			redirectStrategy.sendRedirect(request, response, targetUrl);
 		} else if ("user".equalsIgnoreCase(role)) {
 			System.out.println("role: " + role);
 			String targetUrl = "/site/informodify/modify";
+			redirectStrategy.sendRedirect(request, response, targetUrl);
+		} else if ("super".equalsIgnoreCase(role)) {
+			System.out.println("role: " + role);
+			String targetUrl = "/admin/Employee/list";
 			redirectStrategy.sendRedirect(request, response, targetUrl);
 		}
 

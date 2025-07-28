@@ -49,14 +49,18 @@ public class MngrAuthenticationProvider implements AuthenticationProvider {
 		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		String role = employeeVo.getRole(); // DB 값: "admin" 또는 "user" 등
 
-		if ("admin".equalsIgnoreCase(role)) {
+		if ("mngr".equalsIgnoreCase(role)) {
 			System.out.println("role: " + role);
-			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			authorities.add(new SimpleGrantedAuthority("ROLE_MNGR"));
 			authorities.add(new SimpleGrantedAuthority("MANAGER"));
 		} else if ("user".equalsIgnoreCase(role)) {
 			System.out.println("role: " + role);
 			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 			authorities.add(new SimpleGrantedAuthority("USER"));
+		} else if ("super".equalsIgnoreCase(role)) {
+			System.out.println("role: " + role);
+			authorities.add(new SimpleGrantedAuthority("ROLE_SUPER"));
+			authorities.add(new SimpleGrantedAuthority("SUPER"));
 		}
 
 

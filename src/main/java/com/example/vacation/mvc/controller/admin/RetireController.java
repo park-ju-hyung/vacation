@@ -1,4 +1,4 @@
-package com.example.vacation.mvc.controller.mngr;
+package com.example.vacation.mvc.controller.admin;
 
 import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.service.mngr.EmployeeService;
@@ -23,24 +23,24 @@ public class RetireController {
     private final RetireService retireService;
 
     /**퇴직자 관리 list**/
-    @GetMapping("/mngr/retire/list")
+    @GetMapping("/admin/retire/list")
     public String RetiredListPage(EmployeeDTO employeeDTO, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeeDTO);
-        return "mngr/retire/list";
+        return "admin/retire/list";
     }
 
-    @PostMapping("/mngr/retire/list")
+    @PostMapping("/admin/retire/list")
     @ResponseBody
     public ResponseEntity<?> list(@RequestBody EmployeeDTO employeeDTO) throws Exception {
         return new ResponseEntity<>(retireService.retirelist(employeeDTO), HttpStatus.OK);
     }
 
     /**퇴직자 관리 view**/
-    @GetMapping("/mngr/retire/view")
+    @GetMapping("/admin/retire/view")
     public String RetiredViewPage(EmployeeDTO employeeDTO, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeeDTO);
         modelMap.addAttribute("employeeVO", retireService.view(employeeDTO));
-        return "mngr/retire/view";
+        return "admin/retire/view";
     }
 
 }

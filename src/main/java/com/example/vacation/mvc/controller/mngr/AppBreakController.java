@@ -1,4 +1,4 @@
-package com.example.vacation.mvc.controller.site;
+package com.example.vacation.mvc.controller.mngr;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AppBreakController {
 
     /** 휴가 신청 **/
-    @GetMapping("/site/UserAppBreak/AppBreak_list")
+    @GetMapping("/mngr/UserAppBreak/list")
     public String AppBreakListPage() {
-        return "site/UserAppBreak/AppBreak_list";
+        return "mngr/UserAppBreak/list";
     }
 
     /** 휴가 승인 **/
-    @GetMapping("/site/UserAppBreak/AppBreak_view")
+    @GetMapping("/mngr/UserAppBreak/view")
     public String AppBreakViewPage() {
-        return "site/UserAppBreak/AppBreak_view";
+        return "mngr/UserAppBreak/view";
     }
 
 

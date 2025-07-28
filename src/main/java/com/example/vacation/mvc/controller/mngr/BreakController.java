@@ -1,13 +1,9 @@
-package com.example.vacation.mvc.controller.site;
+package com.example.vacation.mvc.controller.mngr;
 
 import com.example.vacation.common.constant.SessionConstant;
-import com.example.vacation.common.util.SessionManager;
 import com.example.vacation.mvc.dto.BreakDTO;
-import com.example.vacation.mvc.dto.BreakFormDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
-import com.example.vacation.mvc.mapper.BreakMapper;
 import com.example.vacation.mvc.service.mngr.BreakService;
-import com.example.vacation.mvc.service.mngr.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +25,7 @@ public class BreakController {
     private final BreakService breakService;
 
     /** 휴가 신청 regist **/
-    @GetMapping("/site/UserBreak/regist")
+    @GetMapping("/mngr/UserBreak/regist")
     public String UserBreakRegistPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeedto);
         modelMap.addAttribute("employeeVO", breakService.view(employeedto));
@@ -58,7 +54,7 @@ public class BreakController {
 
 
     /** 휴가 신청 list **/
-    @GetMapping("/site/UserBreak/list")
+    @GetMapping("/mngr/UserBreak/list")
     public String BreakListPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("breakDTO", breakdto);
         return "site/UserBreak/list";
@@ -71,7 +67,7 @@ public class BreakController {
     }
 
     /** 상세보기 **/
-    @GetMapping("/site/UserBreak/view")
+    @GetMapping("/mngr/UserBreak/view")
     public String BreakViewPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("breakDTO", breakdto);
         modelMap.addAttribute("breakVO", breakService.BreakView(breakdto));

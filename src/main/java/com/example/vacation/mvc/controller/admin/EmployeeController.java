@@ -22,11 +22,11 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     /**직원 관리 및 등록 regist**/
-    @GetMapping("/mngr/Employee/regist")
+    @GetMapping("/admin/Employee/regist")
     public String EmployeeRegistPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
         System.out.println("empBirth 값 확인2: " + employeedto.getEmpBirth());
         modelMap.addAttribute("employeeDTO", employeedto);
-        return "mngr/Employee/regist";
+        return "admin/Employee/regist";
     }
 
     @PostMapping("/employee/regist")
@@ -39,19 +39,19 @@ public class EmployeeController {
     }
 
     /**직원 관리 및 등록 list**/
-    @GetMapping("/mngr/Employee/list")
+    @GetMapping("/admin/Employee/list")
     public String EmployeeListPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeedto);
-        return "mngr/Employee/list";
+        return "admin/Employee/list";
     }
 
-    @PostMapping("/mngr/Employee/list")
+    @PostMapping("/admin/Employee/list")
     @ResponseBody
     public ResponseEntity<?> list(@RequestBody EmployeeDTO employeedto) throws Exception {
         return new ResponseEntity<>(employeeService.Employeelist(employeedto), HttpStatus.OK);
     }
 
-    @PostMapping("/mngr/EmployeeStatus/list")
+    @PostMapping("/admin/EmployeeStatus/list")
     @ResponseBody
     public ResponseEntity<?> StatusList(@RequestBody EmployeeStatusDTO employeestatusdto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeestatusDTO", employeestatusdto);
@@ -59,11 +59,11 @@ public class EmployeeController {
     }
 
     /**직원 관리 및 등록 modify**/
-    @GetMapping("/mngr/Employee/modify")
+    @GetMapping("/admin/Employee/modify")
     public String EmployeeModifyPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeedto);
         modelMap.addAttribute("employeeVO", employeeService.view(employeedto));
-        return "mngr/Employee/modify";
+        return "admin/Employee/modify";
     }
 
     @PostMapping("/Employee/modify")
@@ -73,12 +73,12 @@ public class EmployeeController {
     }
 
     /**직원 관리 및 등록 view**/
-    @GetMapping("/mngr/Employee/view")
+    @GetMapping("/admin/Employee/view")
     public String EmployeeViewPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeedto);
         modelMap.addAttribute("employeeDTO", employeedto);
         modelMap.addAttribute("employeeVO", employeeService.view(employeedto));
-        return "mngr/Employee/view";
+        return "admin/Employee/view";
     }
 
 

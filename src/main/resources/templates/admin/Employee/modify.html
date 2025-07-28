@@ -58,7 +58,7 @@
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
 
                 button.list.addEventListener('click', () => {
-                    window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
+                    window.location.replace('/admin/Employee/list?' + getQueryStr(searchData));
                 });
 
                 button.regist.addEventListener('click', regist);
@@ -222,7 +222,7 @@
                         console.log(data);
                         if(data.result){
                             alert('수정 성공');
-                            window.location.replace('/mngr/Employee/list?' + getQueryStr(searchData));
+                            window.location.replace('/admin/Employee/list?' + getQueryStr(searchData));
                         } else {
                             alert('수정 실패');
                         }
@@ -274,7 +274,7 @@
     <th:block layout:fragment="content">
         <div style="display: flex;">
             <!--sidebar-->
-            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+            <th:block th:replace="~{admin/fragment/basic_aside :: aside}"></th:block>
             <!--content-->
             <div class="content">
                 <!--상단-->
@@ -514,6 +514,7 @@
                                         <option value="">권한 선택</option>
                                         <option value="user" th:selected="${employeeVO.role == 'user'}">일반</option>
                                         <option value="admin" th:selected="${employeeVO.role == 'admin'}">관리자</option>
+                                        <option value="super" th:selected="${employeeVO.role == 'super'}">최고 관리자</option>
                                     </select>
                                 </td>
                             </tr>

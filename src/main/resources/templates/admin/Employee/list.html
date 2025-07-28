@@ -53,7 +53,7 @@
 
                 // 등록버튼 클릭 이벤트
                 button.regist.addEventListener('click', () => {
-                    location.href = '/mngr/Employee/regist?';
+                    location.href = '/admin/Employee/regist?';
                 });
 
                 // 키다운(Enter) 이벤트
@@ -85,7 +85,7 @@
                 let formData = new FormData(document.querySelector('[name="searchForm"]'));
                 formData = getJSONData(getSearchParam(formData));
 
-                await fetch('/mngr/Employee/list', {
+                await fetch('/admin/Employee/list', {
                     method : 'POST',
                     headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
                     body : JSON.stringify(formData),
@@ -173,7 +173,7 @@
     <th:block layout:fragment="content">
         <div style="display: flex;">
             <!--sidebar-->
-            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+            <th:block th:replace="~{admin/fragment/basic_aside :: aside}"></th:block>
             <!--content-->
             <div class="content">
                 <!--상단-->
