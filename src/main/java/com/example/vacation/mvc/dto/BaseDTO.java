@@ -14,6 +14,9 @@ public class BaseDTO {
 	private String searchKwd;//검색 단어
 	private String schDtStart;
 	private String schDtEnd;
+
+	private String schDtStart2;
+	private String schDtEnd2;
 	
 	// 첨부파일 키
 	private List<String> fileKeys;
@@ -74,12 +77,19 @@ public class BaseDTO {
 	public String getSchDtStart() {
 		return schDtStart;
 	}
+
+	public String getSchDtStart2() {
+		return schDtStart2;
+	}
 	public void setSchDtStart(String schDtStart) {
 		this.schDtStart = schDtStart;
 	}
 
 	public String getSchDtEnd() {
 		return schDtEnd;
+	}
+	public String getSchDtEnd2() {
+		return schDtEnd2;
 	}
 	public void setSchDtEnd(String schDtEnd) {
 		this.schDtEnd = schDtEnd;

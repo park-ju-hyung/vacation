@@ -39,6 +39,8 @@
 
                 $('input[name="schDtStart"]').datepicker(dtPickerJSON);
                 $('input[name="schDtEnd"]').datepicker(dtPickerJSON);
+                $('input[name="schDtStart2"]').datepicker(dtPickerJSON);
+                $('input[name="schDtEnd2"]').datepicker(dtPickerJSON);
             };
 
             const registEvent = function() {
@@ -73,6 +75,8 @@
                 // 검색 조건 추가
                 searchParam.append('schDtStart', document.querySelector('[name="schDtStart"]').value);
                 searchParam.append('schDtEnd', document.querySelector('[name="schDtEnd"]').value);
+                searchParam.append('schDtStart2', document.querySelector('[name="schDtStart2"]').value);
+                searchParam.append('schDtEnd2', document.querySelector('[name="schDtEnd2"]').value);
                 return searchParam;
             };
 
@@ -220,16 +224,16 @@
                         <!--신청일자-->
                         <div>
                             <span>신청일자</span>
-                            <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${breakDTO.regDate}">
+                            <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${breakDTO.schDtStart}">
                             <span class="dpi">~</span>
-                            <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${breakDTO.regDate}">
+                            <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${breakDTO.schDtEnd}">
                         </div>
                         <!--휴가일자-->
                         <div>
                             <span>휴가일자</span>
-                            <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${breakDTO.startDate}">
+                            <input type="text" name="schDtStart2" class="sch-input form-control w-40 dpi" th:value="${breakDTO.schDtStart2}">
                             <span class="dpi">~</span>
-                            <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${breakDTO.endDate}">
+                            <input type="text" name="schDtEnd2" class="sch-input form-control w-40 dpi" th:value="${breakDTO.schDtEnd2}">
                         </div>
                     </div>
                 </div>
