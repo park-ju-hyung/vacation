@@ -1,4 +1,4 @@
-package com.example.vacation.mvc.controller.mngr;
+package com.example.vacation.mvc.controller.site;
 
 import com.example.vacation.common.constant.SessionConstant;
 import com.example.vacation.mvc.dto.BreakDTO;
@@ -25,7 +25,7 @@ public class BreakController {
     private final BreakService breakService;
 
     /** 휴가 신청 regist **/
-    @GetMapping("/mngr/UserBreak/regist")
+    @GetMapping("/site/UserBreak/regist")
     public String UserBreakRegistPage(EmployeeDTO employeedto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("employeeDTO", employeedto);
         modelMap.addAttribute("employeeVO", breakService.view(employeedto));
@@ -54,7 +54,7 @@ public class BreakController {
 
 
     /** 휴가 신청 list **/
-    @GetMapping("/mngr/UserBreak/list")
+    @GetMapping("/site/UserBreak/list")
     public String BreakListPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("breakDTO", breakdto);
         return "site/UserBreak/list";
@@ -67,7 +67,7 @@ public class BreakController {
     }
 
     /** 상세보기 **/
-    @GetMapping("/mngr/UserBreak/view")
+    @GetMapping("/site/UserBreak/view")
     public String BreakViewPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
         modelMap.addAttribute("breakDTO", breakdto);
         modelMap.addAttribute("breakVO", breakService.BreakView(breakdto));

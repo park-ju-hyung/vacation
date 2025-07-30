@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
+<head>
+    <title>휴가 관리 - 상세보기</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+                setDefault();
+                registEvent();
+            });
+
+            const csrf = { 'header' : null, 'value' : null };
+
+            const button = { 'list' : null};
+
+            const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                button.list = document.querySelector('.btn-view');
+                // button.modify = document.querySelector('.btn-regist');
+            };
+
+            const registEvent = function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                /**
+                 button.list.addEventListener('click', () => {
+                 window.location.replace('/mngr/gov/policy/list?' + getQueryStr(searchData));
+                 });
+                 **/
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/mngr/manage/list?' + getQueryStr(searchData));
+                });
+
+                /**
+                 button.modify.addEventListener('click', () => {
+                 let id = document.querySelector('input[name="empId"]').value;
+                 window.location.replace('/mngr/Employee/modify?&empId='+ id +'&'+ getQueryStr(searchData));
+                 //http://localhost:8892/mngr/gov/policy/modify?&govId=79
+                 });
+                 **/
+            };
+            // 초기화 - 제출로 돌림
+            $( document ).ready(function() {
+                $('.btn-request').on('click',function(e){
+                    e.preventDefault();
+                    const empNo = document.querySelector('[name="empNo"]').value;
+                    const holidayId = document.querySelector('[name="holidayId"]').value;
+
+                    const formData = {
+                        status: '002',
+                        empNo: empNo,
+                        holidayId: holidayId
+                    };
+                    console.log(formData)
+
+                    $.ajax({
+                        data : JSON.stringify(formData),
+                        url : '/updateStatus',
+                        type : 'post',
+                        dataType : 'json',
+                        contentType : 'application/json'
+                    }).done(function (result, status, xhr) {
+                        alert("정상적으로 처리되었습니다.");
+                        location.reload();
+                    }).fail(function (xhr, status, error) {
+                        alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                    });
+                });
+
+            });
+
+            // 반려
+            $( document ).ready(function() {
+                $('.btn-return').on('click',function(e){
+                    e.preventDefault();
+                    const empNo = document.querySelector('[name="empNo"]').value;
+                    const holidayId = document.querySelector('[name="holidayId"]').value;
+
+                    const formData = {
+                        status: '003',
+                        empNo: empNo,
+                        holidayId: holidayId
+                    };
+                    console.log(formData)
+
+                    $.ajax({
+                        data : JSON.stringify(formData),
+                        url : '/updateStatus',
+                        type : 'post',
+                        dataType : 'json',
+                        contentType : 'application/json'
+                    }).done(function (result, status, xhr) {
+                        alert("정상적으로 처리되었습니다.");
+                        location.reload();
+                    }).fail(function (xhr, status, error) {
+                        alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                    });
+                });
+
+            });
+
+            // 승인
+            $( document ).ready(function() {
+                $('.btn-confirm').on('click',function(e){
+                    e.preventDefault();
+                    const empNo = document.querySelector('[name="empNo"]').value;
+                    const holidayId = document.querySelector('[name="holidayId"]').value;
+
+                    const formData = {
+                        status: '004',
+                        empNo: empNo,
+                        holidayId: holidayId
+                    };
+                    console.log(formData)
+
+                    $.ajax({
+                        data : JSON.stringify(formData),
+                        url : '/updateStatus',
+                        type : 'post',
+                        dataType : 'json',
+                        contentType : 'application/json'
+                    }).done(function (result, status, xhr) {
+                        alert("정상적으로 처리되었습니다.");
+                        location.reload();
+                    }).fail(function (xhr, status, error) {
+                        alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                    });
+                });
+
+            });
+
+
+
+
+
+
+
+
+
+        </script>
+    </th:block>
+</head>
+
+<body>
+    <th:block layout:fragment="content">
+        <div style="display: flex;">
+        <!--sidebar-->
+            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+
+        <!--content-->
+        <div class="content">
+            <!--상단-->
+            <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
+            <!--content-->
+            <div class="content-box">
+                <!--경로-->
+                <div class="current-site-path">
+                    <ul>
+                        <li>
+                            <span>
+                                휴가 관리
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                상세보기
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 검색 form -->
+                <form name="searchForm" method="post" onsubmit="return false;">
+                    <!-- 검색 조건 -->
+                    <input type="hidden" name="holidayId" th:value="${breakDTO.holidayId}">
+                    <input type="hidden" name="empName" th:value="${breakDTO.empName}"> <!--이름-->
+                    <input type="hidden" name="department" th:value="${breakDTO.department}"> <!--부서-->
+                    <input type="hidden" name="position" th:value="${breakDTO.position}"> <!--직급-->
+                    <input type="hidden" name="regDate" th:value="${breakDTO.regDate}"> <!--신청일-->
+                    <input type="hidden" name="startDate" th:value="${breakDTO.startDate}"><!--휴가기간-->
+                    <input type="hidden" name="endDate" th:value="${breakDTO.endDate}"><!--휴가기간-->
+                    <input type="hidden" name="useDays" th:value="${breakDTO.useDays}"><!--신청일수-->
+                    <input type="hidden" name="totalDays" th:value="${breakDTO.totalDays}"><!--부여받은 일수-->
+
+                    <input type="hidden" name="empNo" th:value="${breakVO.empNo}">
+                    <input type="hidden" name="holidayId" th:value="${breakVO.holidayId}">
+                </form>
+
+                <!--content-table-->
+                <div class="view-table">
+                    <table>
+                        <colgroup>
+                            <col width="12%">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>
+                                이름
+                            </th>
+                            <td th:text="${breakVO.empName}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사번
+                            </th>
+                            <td th:text="${breakVO.empNo}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부서
+                            </th>
+                            <td th:text="${breakVO.department}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                직급
+                            </th>
+                            <td th:text="${breakVO.position}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                신청일
+                            </th>
+                            <td th:text="${breakVO.regDate}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                휴가기간
+                            </th>
+                            <td>
+                                <span th:text="${breakVO.startDate}"></span>
+                                <span>~</span>
+                                <span th:text="${breakVO.endDate}"></span>
+                                <span th:text="${breakVO.useDays}"></span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부여휴가일수
+                            </th>
+                            <td th:text="${breakVO.totalDays}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                잔여휴가일수
+                            </th>
+                            <!--
+                            <td th:text="${breakVO.totalDays - breakVO.useDays}"></td>
+                            -->
+                        </tr>
+
+                        <tr>
+                            <th>
+                                반려사유
+                            </th>
+                            <td>
+                                <textarea class="form-control" style="height: 150px;"></textarea>
+                            </td>
+                        </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <!--버튼-->
+                <div class="search-button">
+                    <button type="button" class="btn btn-confirm w75">승인</button>
+                    <button type="button" class="btn btn-return w75">반려</button>
+                    <button type="button" class="btn btn-request w75">초기화</button>
+                    <button type="button" class="btn btn-view w75">목록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </th:block>
+
+
+
+</body>
+
+</html>

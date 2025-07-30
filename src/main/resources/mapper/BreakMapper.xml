@@ -7,8 +7,8 @@
 
 	<!--휴가 신청-->
 	<insert id="insertBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
-			INSERT INTO break (holidayId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, totalDays, reason, approval)
-			VALUES (#{holidayId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{totalDays}, #{reason}, #{approval})
+			INSERT INTO break (holidayId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, totalDays, reason, approval, status )
+			VALUES (#{holidayId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{totalDays}, #{reason}, #{approval}, #{status})
 	</insert>
 
 	<!-- 신청자 정보 가져오기-->

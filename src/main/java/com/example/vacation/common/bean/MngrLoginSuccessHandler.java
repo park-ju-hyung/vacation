@@ -53,7 +53,7 @@ public class MngrLoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 로그인 이후 가야할 목적지 지정
 		if ("mngr".equalsIgnoreCase(role)) {
 			System.out.println("role: " + role);
-			String targetUrl = "/mngr/UserAppBreak/list";
+			String targetUrl = "/mngr/manage/list";
 			redirectStrategy.sendRedirect(request, response, targetUrl);
 		} else if ("user".equalsIgnoreCase(role)) {
 			System.out.println("role: " + role);
