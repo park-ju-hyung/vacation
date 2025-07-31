@@ -206,8 +206,10 @@
                             <th>
                                 반려사유
                             </th>
-                            <td>
-                                반려사유
+                            <td th:text="${breakVO.reason}">
+                            </td>
+                            <td th:if="${not #strings.isEmpty(breakVO.reason)}">
+                                <span th:text="${breakVO.reason}"></span>
                             </td>
                         </tr>
 
