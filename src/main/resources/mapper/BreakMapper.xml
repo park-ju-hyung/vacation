@@ -111,5 +111,11 @@
 		WHERE empNo = #{empNo}
 	</select>
 
+	<!-- 휴가 삭제 -->
+	<delete id="breakDelete" parameterType="com.example.vacation.mvc.dto.BreakDTO">
+		DELETE FROM break
+		WHERE holidayId = #{holidayId}
+	</delete>
+
 
 </mapper>

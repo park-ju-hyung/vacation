@@ -75,6 +75,14 @@ public class BreakController {
         return "site/UserBreak/view";
     }
 
+    /** 휴가 삭제 **/
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<?> breakDelete(@RequestBody BreakDTO breakdto, ModelMap modelMap) throws Exception {
+        return new ResponseEntity<>(breakService.breakDelete(breakdto), HttpStatus.OK);
+    }
+
+
 
 
 

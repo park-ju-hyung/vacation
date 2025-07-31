@@ -32,4 +32,7 @@ public interface BreakMapper {
 	// 신청자별 총 신청 휴가일수
 	Map<String, Object> getBreakTotalDay(Map<String, Object> paramMap) throws Exception;
 
+	// 휴가 삭제
+	public int breakDelete(BreakDTO breakdto) throws Exception;
+
 }

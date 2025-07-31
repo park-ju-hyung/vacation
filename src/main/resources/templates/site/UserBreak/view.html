@@ -9,7 +9,6 @@
             document.addEventListener("DOMContentLoaded", () => {
                 setDefault();
                 registEvent();
-                getList();
             });
 
             const csrf = { 'header' : null, 'value' : null };
@@ -42,6 +41,43 @@
                     //http://localhost:8892/mngr/gov/policy/modify?&govId=79
                 });
                  **/
+
+                // 삭제
+                button.del = document.querySelectorAll('.bttn-del');
+                for(del of button.del) {
+                    del.addEventListener('click', delt);
+                }
+            };
+
+            async function delt(e) {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                console.log(searchData);
+
+                const holidayId = document.querySelector('[name="holidayId"]').value;
+
+                const formData = {
+                    searchData: searchData,
+                    holidayId: holidayId
+                };
+
+                await fetch('/delete', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if(data.result) {
+                            alert('삭제 성공');
+                            window.location.replace('/site/UserBreak/list?' + getQueryStr(searchData));
+                        } else {
+                            alert('게시물을 삭제하는데 실패하였습니다.');
+                        }
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
             };
 
 
@@ -96,6 +132,10 @@
                     <input type="hidden" name="endDate" th:value="${breakDTO.endDate}"><!--휴가기간-->
                     <input type="hidden" name="useDays" th:value="${breakDTO.useDays}"><!--신청일수-->
                     <input type="hidden" name="totalDays" th:value="${breakDTO.totalDays}"><!--부여받은 일수-->
+
+                    <!--페이지 네이션-->
+                    <input type="hidden" name="pageNo" th:value="${breakDTO.pageNo}">
+                    <input type="hidden" name="pageBlock" th:value="${breakDTO.pageBlock}">
                 </form>
 
                 <!--content-table-->
@@ -182,7 +222,7 @@
 
                 <!--버튼-->
                 <div class="search-button">
-                    <button type="button" class="btn btn-danger w75">삭제</button>
+                    <button type="button" class="btn bttn-del w75">삭제</button>
                     <button type="button" class="btn btn-view w75">목록</button>
                 </div>
 

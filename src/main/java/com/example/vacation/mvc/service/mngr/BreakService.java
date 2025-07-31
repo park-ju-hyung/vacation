@@ -19,10 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.io.File;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -120,6 +118,14 @@ public class BreakService {
     public BreakVO BreakView(BreakDTO breakdto) throws Exception {
         System.out.println("service: " + breakMapper.breakVO(breakdto));
         return breakMapper.breakVO(breakdto);
+    }
+
+    //휴가 삭제
+    public Map<String, Object> breakDelete(BreakDTO breakdto) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+        breakMapper.breakDelete(breakdto);
+        rs.put("result", true);
+        return rs;
     }
 
 
