@@ -81,7 +81,7 @@
 	</select>
 
 	<!--001:임시저장,002:제출,003:반려,004:승인-->
-	<!--승인 처리-->
+	<!--제출 처리-->
 	<update id="requestBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
 		UPDATE break
 		SET status = '002',
@@ -90,11 +90,12 @@
 		  AND holidayId = #{holidayId}
 	</update>
 
-	<!--승인 처리-->
+	<!--반려 처리-->
 	<update id="returnBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
 		UPDATE break
 		SET status = '003',
-			approval = '반려'
+			approval = '반려',
+		    reason = #{reason}
 		WHERE empNo = #{empNo}
 		  AND holidayId = #{holidayId}
 	</update>

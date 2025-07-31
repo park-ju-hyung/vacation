@@ -46,6 +46,7 @@
             $( document ).ready(function() {
                 $('.btn-request').on('click',function(e){
                     e.preventDefault();
+                    let searchData = new FormData(document.querySelector('[name="searchForm"]'));
                     const empNo = document.querySelector('[name="empNo"]').value;
                     const holidayId = document.querySelector('[name="holidayId"]').value;
 
@@ -56,54 +57,90 @@
                     };
                     console.log(formData)
 
-                    $.ajax({
-                        data : JSON.stringify(formData),
-                        url : '/updateStatus',
-                        type : 'post',
-                        dataType : 'json',
-                        contentType : 'application/json'
-                    }).done(function (result, status, xhr) {
-                        alert("정상적으로 처리되었습니다.");
-                        location.reload();
-                    }).fail(function (xhr, status, error) {
-                        alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
-                    });
+                    fetch('/updateStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('서버 오류: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            alert("정상적으로 처리되었습니다.");
+                            window.location.replace('/mngr/manage/list?' + getQueryStr(searchData));
+                        })
+                        .catch(error => {
+                            alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                            console.error(error);
+                        });
                 });
 
             });
 
+            const isEmpty = (value) => {
+                if (value == null || typeof value == 'undefined' || value == '')
+                    return true;
+                else
+                    return false;
+            };
+
             // 반려
             $( document ).ready(function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
                 $('.btn-return').on('click',function(e){
                     e.preventDefault();
+
                     const empNo = document.querySelector('[name="empNo"]').value;
                     const holidayId = document.querySelector('[name="holidayId"]').value;
+                    const reason = document.querySelector('textarea[name="reason"]').value;
+                    console.log("reason" + reason)
+
+                    if (isEmpty(reason)) {
+                        alert('반려사유를 입력해주세요.');
+                        return true;
+                    }
 
                     const formData = {
                         status: '003',
                         empNo: empNo,
-                        holidayId: holidayId
+                        holidayId: holidayId,
+                        reason: reason
                     };
                     console.log(formData)
-
-                    $.ajax({
-                        data : JSON.stringify(formData),
-                        url : '/updateStatus',
-                        type : 'post',
-                        dataType : 'json',
-                        contentType : 'application/json'
-                    }).done(function (result, status, xhr) {
-                        alert("정상적으로 처리되었습니다.");
-                        location.reload();
-                    }).fail(function (xhr, status, error) {
-                        alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
-                    });
+                    fetch('/updateStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('서버 오류: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            alert("정상적으로 처리되었습니다.");
+                            window.location.replace('/mngr/manage/list?' + getQueryStr(searchData));
+                        })
+                        .catch(error => {
+                            alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                            console.error(error);
+                        });
                 });
 
             });
 
             // 승인
             $( document ).ready(function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
                 $('.btn-confirm').on('click',function(e){
                     e.preventDefault();
                     const empNo = document.querySelector('[name="empNo"]').value;
@@ -116,18 +153,27 @@
                     };
                     console.log(formData)
 
-                    $.ajax({
-                        data : JSON.stringify(formData),
-                        url : '/updateStatus',
-                        type : 'post',
-                        dataType : 'json',
-                        contentType : 'application/json'
-                    }).done(function (result, status, xhr) {
-                        alert("정상적으로 처리되었습니다.");
-                        location.reload();
-                    }).fail(function (xhr, status, error) {
-                        alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
-                    });
+                    fetch('/updateStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('서버 오류: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            alert("정상적으로 처리되었습니다.");
+                            window.location.replace('/mngr/manage/list?' + getQueryStr(searchData));
+                        })
+                        .catch(error => {
+                            alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                            console.error(error);
+                        });
                 });
 
             });
@@ -184,9 +230,12 @@
                     <input type="hidden" name="endDate" th:value="${breakDTO.endDate}"><!--휴가기간-->
                     <input type="hidden" name="useDays" th:value="${breakDTO.useDays}"><!--신청일수-->
                     <input type="hidden" name="totalDays" th:value="${breakDTO.totalDays}"><!--부여받은 일수-->
-
                     <input type="hidden" name="empNo" th:value="${breakVO.empNo}">
                     <input type="hidden" name="holidayId" th:value="${breakVO.holidayId}">
+
+                    <!--페이지 네이션-->
+                    <input type="hidden" name="pageNo" th:value="${breakDTO.pageNo}">
+                    <input type="hidden" name="pageBlock" th:value="${breakDTO.pageBlock}">
                 </form>
 
                 <!--content-table-->
@@ -260,7 +309,7 @@
                                 반려사유
                             </th>
                             <td>
-                                <textarea class="form-control" style="height: 150px;"></textarea>
+                                <textarea class="form-control" name="reason" style="height: 150px;"></textarea>
                             </td>
                         </tr>
 
