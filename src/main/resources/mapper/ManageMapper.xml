@@ -20,6 +20,7 @@
 			type,
 			totalDays,
 			reason,
+			rejectReason,
 			approval,
 			regDate,
 			status
@@ -42,6 +43,7 @@
 			   type,
 			   totalDays,
 			   reason,
+			   rejectReason,
 			   approval,
 			   regDate,
 			   status
@@ -95,7 +97,7 @@
 		UPDATE break
 		SET status = '003',
 			approval = '반려',
-		    reason = #{reason}
+			rejectReason = #{rejectReason}
 		WHERE empNo = #{empNo}
 		  AND holidayId = #{holidayId}
 	</update>

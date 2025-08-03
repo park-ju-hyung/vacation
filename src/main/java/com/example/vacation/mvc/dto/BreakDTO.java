@@ -27,4 +27,5 @@ public class BreakDTO extends BaseDTO {
     private String approval = "제출";; // 승인 여부
     private String status = "002"; // 상태 코드
     private String regDate; // 신청 일자
+    private String rejectReason; // 반려사유
 }

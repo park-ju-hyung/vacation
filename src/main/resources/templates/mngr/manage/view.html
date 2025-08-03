@@ -98,10 +98,10 @@
 
                     const empNo = document.querySelector('[name="empNo"]').value;
                     const holidayId = document.querySelector('[name="holidayId"]').value;
-                    const reason = document.querySelector('textarea[name="reason"]').value;
-                    console.log("reason" + reason)
+                    const rejectReason = document.querySelector('textarea[name="rejectReason"]').value;
+                    console.log("rejectReason" + rejectReason)
 
-                    if (isEmpty(reason)) {
+                    if (isEmpty(rejectReason)) {
                         alert('반려사유를 입력해주세요.');
                         return true;
                     }
@@ -110,7 +110,7 @@
                         status: '003',
                         empNo: empNo,
                         holidayId: holidayId,
-                        reason: reason
+                        rejectReason: rejectReason
                     };
                     console.log(formData)
                     fetch('/updateStatus', {
@@ -309,7 +309,7 @@
                                 반려사유
                             </th>
                             <td>
-                                <textarea class="form-control" name="reason" style="height: 150px;"></textarea>
+                                <textarea class="form-control" name="rejectReason" style="height: 150px;"></textarea>
                             </td>
                         </tr>
 

@@ -48,6 +48,7 @@
 			   type,
 			   totalDays,
 			   reason,
+			   rejectReason,
 			   approval,
 			   regDate
 		FROM break
@@ -98,8 +99,10 @@
 			type,
 			totalDays,
 			reason,
+			rejectReason,
 			approval,
-			regDate
+			regDate,
+			status
 		FROM break
 		WHERE holidayId = #{holidayId}
 	</select>

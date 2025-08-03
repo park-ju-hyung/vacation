@@ -132,6 +132,8 @@
                     <input type="hidden" name="endDate" th:value="${breakDTO.endDate}"><!--휴가기간-->
                     <input type="hidden" name="useDays" th:value="${breakDTO.useDays}"><!--신청일수-->
                     <input type="hidden" name="totalDays" th:value="${breakDTO.totalDays}"><!--부여받은 일수-->
+                    <input type="hidden" name="rejectReason" th:value="${breakDTO.rejectReason}"><!--부여받은 일수-->
+                    <input type="hidden" name="rejectReason" th:value="${breakDTO.remainDays}"><!--남은 일수-->
 
                     <!--페이지 네이션-->
                     <input type="hidden" name="pageNo" th:value="${breakDTO.pageNo}">
@@ -184,32 +186,37 @@
                                 <span th:text="${breakVO.startDate}"></span>
                                 <span>~</span>
                                 <span th:text="${breakVO.endDate}"></span>
+                                <span th:text="${breakVO.useDays % 1 == 0} ? ${breakVO.useDays.intValue()} : ${breakVO.useDays}"></span>일
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 부여휴가일수
                             </th>
-                            <td th:text="${breakVO.totalDays}">
+                            <td>
+                                <span th:text="${breakVO.totalDays}"></span>일
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 잔여휴가일수
                             </th>
-                            <!--
-                            <td th:text="${breakVO.totalDays - breakVO.useDays}"></td>
-                            -->
+                            <td th:text="${remainingDays}"></td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                사유
+                            </th>
+                            <td th:text="${breakVO.reason}">
+                            </td>
                         </tr>
 
                         <tr>
                             <th>
                                 반려사유
                             </th>
-                            <td th:text="${breakVO.reason}">
-                            </td>
-                            <td th:if="${not #strings.isEmpty(breakVO.reason)}">
-                                <span th:text="${breakVO.reason}"></span>
+                            <td th:text="${breakVO.rejectReason}">
                             </td>
                         </tr>
 
