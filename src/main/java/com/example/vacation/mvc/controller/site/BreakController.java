@@ -4,6 +4,7 @@ import com.example.vacation.common.constant.SessionConstant;
 import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.service.mngr.BreakService;
+import com.example.vacation.mvc.vo.BreakVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -69,9 +70,12 @@ public class BreakController {
     /** 상세보기 **/
     @GetMapping("/site/UserBreak/view")
     public String BreakViewPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
+        BreakVO breakvo = breakService.BreakView(breakdto);
+
         modelMap.addAttribute("breakDTO", breakdto);
-        modelMap.addAttribute("breakVO", breakService.BreakView(breakdto));
-        System.out.println("controller: " + breakService.BreakView(breakdto));
+        modelMap.addAttribute("breakVO", breakvo);
+        System.out.println("controller: " + breakvo.getRemainDays());
+
         return "site/UserBreak/view";
     }
 

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -116,8 +117,28 @@ public class BreakService {
     // 신청자 정보 + 휴가 데이터
     @Transactional(readOnly = true)
     public BreakVO BreakView(BreakDTO breakdto) throws Exception {
-        System.out.println("service: " + breakMapper.breakVO(breakdto));
-        return breakMapper.breakVO(breakdto);
+        BreakVO breakvo = breakMapper.breakVO(breakdto);
+
+
+        BigDecimal totalDays = breakvo.getTotalDays();
+        BigDecimal useDays = breakvo.getUseDays();
+        BigDecimal remainDay = totalDays.subtract(useDays);
+        BigDecimal result;
+        if (remainDay.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) {
+            result = new BigDecimal(remainDay.intValue());
+        } else {
+            result = remainDay;
+        }
+
+        breakvo.setRemainDays(result); // ✅ 안전하게 저장됨
+
+        System.out.println("totalDays: " + totalDays);
+        System.out.println("useDays: " + useDays);
+        System.out.println("remainDay: " + remainDay);
+        System.out.println("remainDays: " + result);
+
+        return breakvo;
+
     }
 
     //휴가 삭제

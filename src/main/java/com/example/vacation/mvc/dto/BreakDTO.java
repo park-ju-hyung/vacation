@@ -28,4 +28,11 @@ public class BreakDTO extends BaseDTO {
     private String status = "002"; // 상태 코드
     private String regDate; // 신청 일자
     private String rejectReason; // 반려사유
+    private BigDecimal remainDays; // 부여받은 휴가 일수 - 신청 휴가 일수
+    public void setRemainDays(BigDecimal remainDays) {
+        this.remainDays = remainDays;
+    }
+    public BigDecimal getRemainDays() {
+        return remainDays;
+    }
 }
