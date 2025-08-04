@@ -194,14 +194,16 @@
                                 부여휴가일수
                             </th>
                             <td>
-                                <span th:text="${breakVO.totalDays}"></span>일
+                                <span th:text="${breakVO.totalDays}"></span><span>일</span>
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 잔여휴가일수
                             </th>
-                            <td th:text="${breakVO.remainDays}"></td>
+                            <td>
+                                <span th:text="${breakVO.remainDays}"></span><span>일</span>
+                            </td>
                         </tr>
 
                         <tr>

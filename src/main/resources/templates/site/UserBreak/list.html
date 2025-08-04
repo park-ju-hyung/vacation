@@ -141,7 +141,7 @@
                     html += '<td class="txt-cter">' + (el.approval) + '</td>';
                     html += '<td class="txt-cter">' + (regDate) + '</td>';
                     html += '<td class="txt-cter">';
-                    html += '	<button class="bttn-del" data-id="'+ (el.holidayId) +'">삭제</button>';
+                    html += '	<button class="bttn-del" data-id="' + el.holidayId + '" data-approval="' + el.approval + '">삭제</button>';
                     html += '</td>';
 
                     html += '</tr>';
@@ -187,10 +187,18 @@
 
             };
             async function delt(e) {
-                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
-                searchData = getSearchParam(searchData);
+                const approval = e.target.getAttribute('data-approval'); // status 값 가져오기
 
-                formData = {'holidayId' : e.target.getAttribute('data-id') };
+                if (approval === '승인') {
+                    alert('승인된 신청은 삭제할 수 없습니다.');
+                    return;
+                }
+
+
+                formData = {
+                    'holidayId' : e.target.getAttribute('data-id')
+                };
+
 
                 await fetch('/delete', {
                     method : 'POST',
