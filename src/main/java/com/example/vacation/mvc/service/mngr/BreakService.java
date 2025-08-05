@@ -118,11 +118,12 @@ public class BreakService {
     @Transactional(readOnly = true)
     public BreakVO BreakView(BreakDTO breakdto) throws Exception {
         BreakVO breakvo = breakMapper.breakVO(breakdto);
-
-
-        BigDecimal totalDays = breakvo.getTotalDays();
-        BigDecimal useDays = breakvo.getUseDays();
-        BigDecimal remainDay = totalDays.subtract(useDays);
+        BigDecimal totalDays = breakvo.getTotalDays(); // 부여받은 일수
+        BigDecimal useDays = BigDecimal.ZERO; // 총 사용일수
+        if ("승인".equals(breakdto.getApproval()) || "제출".equals(breakdto.getApproval())) {
+            useDays = breakvo.getUseDays();
+        }
+        BigDecimal remainDay = totalDays.subtract(useDays); // 부여받은 일수 - 총 사용일수
         BigDecimal result;
         if (remainDay.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) {
             result = new BigDecimal(remainDay.intValue());

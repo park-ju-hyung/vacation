@@ -111,7 +111,7 @@
 	<select id="getBreakTotalDay" parameterType="map" resultType="map">
 		SELECT COALESCE(SUM(useDays), 0) AS useDays
 		FROM break
-		WHERE empNo = #{empNo}
+		WHERE empNo = #{empNo} AND approval IN ('승인', '제출')
 	</select>
 
 	<!-- 휴가 삭제 -->
