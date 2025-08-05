@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,28 @@ public class ManageService {
     // 신청자 정보 + 휴가 데이터
     @Transactional(readOnly = true)
     public BreakVO ManageView(BreakDTO breakdto) throws Exception {
-        return manageMapper.breakVO(breakdto);
+        BreakVO breakvo = manageMapper.breakVO(breakdto);
+        BigDecimal totalDays = breakvo.getTotalDays(); // 부여받은 일수
+        BigDecimal useDays = BigDecimal.ZERO; // 총 사용일수
+        if ("승인".equals(breakdto.getApproval()) || "제출".equals(breakdto.getApproval())) {
+            useDays = breakvo.getUseDays();
+        }
+        BigDecimal remainDay = totalDays.subtract(useDays); // 부여받은 일수 - 총 사용일수
+        BigDecimal result;
+        if (remainDay.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0) {
+            result = new BigDecimal(remainDay.intValue());
+        } else {
+            result = remainDay;
+        }
+
+        breakvo.setRemainDays(result); // ✅ 안전하게 저장됨
+
+        System.out.println("totalDays: " + totalDays);
+        System.out.println("useDays: " + useDays);
+        System.out.println("remainDay: " + remainDay);
+        System.out.println("remainDays: " + result);
+
+        return breakvo;
     }
 
     /**001:임시저장,002:제출,003:반려,004:승인**/

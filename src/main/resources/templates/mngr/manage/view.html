@@ -232,6 +232,8 @@
                     <input type="hidden" name="totalDays" th:value="${breakDTO.totalDays}"><!--부여받은 일수-->
                     <input type="hidden" name="empNo" th:value="${breakVO.empNo}">
                     <input type="hidden" name="holidayId" th:value="${breakVO.holidayId}">
+                    <input type="hidden" name="remainDays" th:value="${breakVO.remainDays}"><!--남은 일수-->
+                    <input type="hidden" name="rejectReason" th:value="${breakVO.rejectReason}">
 
                     <!--페이지 네이션-->
                     <input type="hidden" name="pageNo" th:value="${breakDTO.pageNo}">
@@ -284,24 +286,31 @@
                                 <span th:text="${breakVO.startDate}"></span>
                                 <span>~</span>
                                 <span th:text="${breakVO.endDate}"></span>
-                                <span th:text="${breakVO.useDays}"></span>
-
+                                <span th:text="${breakVO.useDays % 1 == 0} ? ${breakVO.useDays.intValue()} : ${breakVO.useDays}"></span>일
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 부여휴가일수
                             </th>
-                            <td th:text="${breakVO.totalDays}">
+                            <td>
+                                <span th:text="${breakVO.totalDays}"></span><span>일</span>
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 잔여휴가일수
                             </th>
-                            <!--
-                            <td th:text="${breakVO.totalDays - breakVO.useDays}"></td>
-                            -->
+                            <td>
+                                <span th:text="${breakVO.remainDays}"></span><span>일</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                사유
+                            </th>
+                            <td th:text="${breakVO.reason}">
+                            </td>
                         </tr>
 
                         <tr>
@@ -309,7 +318,7 @@
                                 반려사유
                             </th>
                             <td>
-                                <textarea class="form-control" name="rejectReason" style="height: 150px;"></textarea>
+                                <textarea class="form-control" name="rejectReason" th:text="${breakVO.rejectReason}" style="height: 150px;"></textarea>
                             </td>
                         </tr>
 
