@@ -1,4 +1,4 @@
-package com.example.vacation.mvc.service.mngr;
+package com.example.vacation.mvc.service.site;
 
 import com.example.vacation.common.constant.SessionConstant;
 import com.example.vacation.common.util.AppPagingUtil;

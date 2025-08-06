@@ -2,8 +2,7 @@ package com.example.vacation.mvc.controller.site;
 
 import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.EmployeeFormDTO;
-import com.example.vacation.mvc.service.mngr.EmployeeService;
-import com.example.vacation.mvc.service.mngr.InformationService;
+import com.example.vacation.mvc.service.site.InformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

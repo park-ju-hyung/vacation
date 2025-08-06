@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.vacation.mvc.mapper.SpecialBreakMapper">
+
+	<!--휴가 신청-->
+	<insert id="insertSpecialBreak" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO">
+			INSERT INTO special_break (specialId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, reason, approval, status )
+			VALUES (#{specialId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status})
+	</insert>
+
+	<!-- 신청자 정보 가져오기-->
+	<select id="employeeVO" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+		SELECT
+			empId,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			empNo,
+			position,
+			email,
+			phoneNumber,
+			emerNumber,
+			bankName,
+			accountNumber,
+			department,
+			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
+			status,
+			role,
+			totalDays
+		FROM employee
+		WHERE empNo = #{empNo}
+	</select>
+
+
+
+
+
+</mapper>

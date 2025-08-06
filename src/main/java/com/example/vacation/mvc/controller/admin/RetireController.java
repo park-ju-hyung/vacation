@@ -1,7 +1,7 @@
 package com.example.vacation.mvc.controller.admin;
 
 import com.example.vacation.mvc.dto.EmployeeDTO;
-import com.example.vacation.mvc.service.mngr.EmployeeService;
+import com.example.vacation.mvc.service.admin.EmployeeService;
 import com.example.vacation.mvc.service.mngr.RetireService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.example.vacation.mvc.service.mngr;
+package com.example.vacation.mvc.service.admin;
 
 import com.example.vacation.common.util.AppPagingUtil;
 import com.example.vacation.mvc.dto.EmployeeDTO;

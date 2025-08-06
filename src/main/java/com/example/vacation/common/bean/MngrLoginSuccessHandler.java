@@ -1,7 +1,7 @@
 package com.example.vacation.common.bean;
 
 import com.example.vacation.common.util.SessionManager;
-import com.example.vacation.mvc.service.mngr.EmployeeService;
+import com.example.vacation.mvc.service.admin.EmployeeService;
 import com.example.vacation.mvc.vo.EmployeeVO;
 import groovy.util.logging.Slf4j;
 import jakarta.servlet.ServletException;

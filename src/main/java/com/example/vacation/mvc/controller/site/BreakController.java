@@ -3,7 +3,7 @@ package com.example.vacation.mvc.controller.site;
 import com.example.vacation.common.constant.SessionConstant;
 import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
-import com.example.vacation.mvc.service.mngr.BreakService;
+import com.example.vacation.mvc.service.site.BreakService;
 import com.example.vacation.mvc.vo.BreakVO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
