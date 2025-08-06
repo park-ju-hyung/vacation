@@ -26,4 +26,5 @@ public class SpecialBreakDTO extends BaseDTO {
     private String status = "002"; // 상태 코드
     private String regDate; // 신청 일자
     private String rejectReason; // 반려사유
+    private String specialType;
 }

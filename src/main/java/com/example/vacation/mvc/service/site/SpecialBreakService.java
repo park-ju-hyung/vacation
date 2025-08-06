@@ -10,6 +10,7 @@ import com.example.vacation.mvc.mapper.BreakMapper;
 import com.example.vacation.mvc.mapper.SpecialBreakMapper;
 import com.example.vacation.mvc.vo.BreakVO;
 import com.example.vacation.mvc.vo.EmployeeVO;
+import com.example.vacation.mvc.vo.SpecialBreakVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,15 +27,6 @@ import java.util.Map;
 public class SpecialBreakService {
 
     private final SpecialBreakMapper specialBreakMapper;
-
-    // 신청자 정보 가져오기
-    @Transactional(readOnly = true)
-    public EmployeeVO view(EmployeeDTO employeedto) throws Exception {
-        String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
-        employeedto.setEmpNo(empNo);
-        System.out.println("view empNo: " + empNo);
-        return specialBreakMapper.employeeVO(employeedto);
-    }
 
     // 휴가 신청
     @Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -63,6 +55,51 @@ public class SpecialBreakService {
         rs.put("result", "SUCCESS");
         return rs;
     }
+
+    //list
+    @Transactional(readOnly = false)
+    public Map<String, Object> SpecialBreakList(SpecialBreakDTO Specialbreakdto) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+
+        int pageNo = Specialbreakdto.getPageNo() == 0 ? 1 : Specialbreakdto.getPageNo();
+        int pageSize = Specialbreakdto.getPageSize() == 0 ? 10 : Specialbreakdto.getPageSize();
+        int pageBlock = Specialbreakdto.getPageBlock() == 0 ? 10 : Specialbreakdto.getPageBlock();
+        Specialbreakdto.setPageNo(pageNo);
+        Specialbreakdto.setPageSize(pageSize);
+        Specialbreakdto.setPageBlock(pageBlock);
+        Specialbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+
+        List<SpecialBreakVO> list = specialBreakMapper.SpecialBreakList(Specialbreakdto);
+
+        if (pageNo != 1 && list.size() == 0) {
+            pageNo = 1;
+            Specialbreakdto.setPageNo(pageNo);
+            Specialbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+            list = specialBreakMapper.SpecialBreakList(Specialbreakdto);
+        }
+
+        int totalCount = specialBreakMapper.SpecialBreakCount(Specialbreakdto);
+        int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
+        String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
+
+        rs.put("employeeDTO", Specialbreakdto);
+        rs.put("list", list);
+        rs.put("totalCount", totalCount);
+        rs.put("totalPageNo", totalPageNo);
+        rs.put("pagingHTML", pagingHTML);
+
+        return rs;
+    }
+
+    // 신청자 정보 가져오기
+    @Transactional(readOnly = true)
+    public EmployeeVO view(EmployeeDTO employeedto) throws Exception {
+        String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
+        employeedto.setEmpNo(empNo);
+        System.out.println("view empNo: " + empNo);
+        return specialBreakMapper.employeeVO(employeedto);
+    }
+
 
 
 

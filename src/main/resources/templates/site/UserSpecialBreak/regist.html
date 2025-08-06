@@ -61,6 +61,10 @@
                 const start = new Date(formData['startDate']);
                 const end = new Date(formData['endDate']);
 
+                if (isEmpty(formData['specialType'])) {
+                    alert('분류를 선택하여 주십시오.');
+                    return true;
+                }
                 if (isEmpty(formData['startDate'])) {
                     alert('신청기간을 입력하여 주십시오.');
                     return true;
@@ -107,6 +111,7 @@
                     useDays: useDays, // input 없이 전역 변수 사용
                     'type': document.querySelector('input[name="type"]:checked')?.value || '연차',
                     'reason': document.querySelector('textarea[name="reason"]').value,
+                    'specialType': document.querySelector('select[name="specialType"]').value,
                 };
                 console.log(formData);
 
@@ -439,6 +444,21 @@
                                 직급
                             </th>
                             <td th:text="${employeeVO.position}"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                분류
+                            </th>
+                            <td>
+                                <select name="specialType" class="form-control w22p">
+                                    <option value="">분류 선택</option>
+                                    <option value="결혼">결혼</option>
+                                    <option value="철야">철야</option>
+                                    <option value="주말출근">주말출근</option>
+                                    <option value="가족상">가족상</option>
+                                    <option value="기타">기타</option>
+                                </select>
+                            </td>
                         </tr>
 
                         <tr>
