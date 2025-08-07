@@ -3,7 +3,7 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.vacation.mvc.mapper.EmployeeMapper">
+<mapper namespace="com.example.vacation.mvc.mapper.admin.EmployeeMapper">
 	<!--등록-->
 	<insert id="insertEmployee" parameterType="com.example.vacation.mvc.dto.EmployeeDTO">
 		INSERT INTO employee ( empId, empName, empBirth, empNo, position, department, status, hireDate, email, phoneNumber, emerNumber, bankName, accountNumber, empPassword, role, totalDays )

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
+<head>
+    <title>특별휴가 - 관리자</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefault();
+                registEvent();
+                getList();
+            });
+
+            const csrf = { 'header' : null, 'value' : null };
+
+            const button = {
+                'regist' : null, 'view' : null, 'page' : null, 'search' : null
+            };
+
+            const dtPickerJSON = {
+                dateFormat: "yy-mm-dd",
+                startView: 3,
+                todayBtn:"linked",
+                language: "kr",
+                orientation: "top auto",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            };
+
+            const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                button.regist = document.querySelector('.btn-regist');
+                button.search = document.querySelector('.sch-btn');
+
+                $('input[name="schDtStart"]').datepicker(dtPickerJSON);
+                $('input[name="schDtEnd"]').datepicker(dtPickerJSON);
+                $('input[name="schDtStart2"]').datepicker(dtPickerJSON);
+                $('input[name="schDtEnd2"]').datepicker(dtPickerJSON);
+            };
+
+            const registEvent = function() {
+
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                searchData = getSearchParam(searchData);
+
+                // 검색 버튼 클릭 이벤트
+                button.search.addEventListener('click', () => {
+                    getList();
+                });
+
+                // 등록버튼 클릭 이벤트
+                button.regist.addEventListener('click', () => {
+                    location.href = '/site/UserSpecialBreak/regist?';
+                });
+
+                // 키다운(Enter) 이벤트
+                for(search of document.querySelectorAll('.sch-input')) {
+                    search.addEventListener('keydown', (e) => {
+                        if(e.key == 'Enter') getList();
+                    });
+                }
+
+                // 검색버튼 클릭 이벤트
+                button.search.addEventListener('click', getList());
+
+            };
+
+
+            const getSearchParam = (searchParam) => {
+                // 검색 조건 추가
+                searchParam.append('schDtStart', document.querySelector('[name="schDtStart"]').value);
+                searchParam.append('schDtEnd', document.querySelector('[name="schDtEnd"]').value);
+                searchParam.append('schDtStart2', document.querySelector('[name="schDtStart2"]').value);
+                searchParam.append('schDtEnd2', document.querySelector('[name="schDtEnd2"]').value);
+                searchParam.append('empName', document.querySelector('[name="empName"]').value);
+                searchParam.append('specialType', document.querySelector('[name="specialType"]').value);
+
+                return searchParam;
+            };
+
+            async function getList() {
+                let formData = new FormData(document.querySelector('[name="searchForm"]'));
+                formData = getJSONData(getSearchParam(formData));
+
+                await fetch('/site/UserSpecialBreak/list', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        let totalCount = data.totalCount;
+                        let totalPageNo = data.totalPageNo;
+                        let list = data.list;
+
+                        let html = '';
+
+                        if (totalCount == 0) {
+                            html += '<tr><td class="text-center h-200px align-middle" colspan="8">데이터가 존재하지 않습니다.</td></tr>';
+                        } else {
+                            html += drawList(list);
+                        }
+
+                        document.querySelector('.list-table tbody').innerHTML = html;
+                        document.querySelector('.pagination').innerHTML = data.pagingHTML;
+
+                        viewFunc();
+                        pagingFunc();
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
+            };
+
+            // 날짜 포맷 함수
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                const yyyy = date.getFullYear();
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const dd = String(date.getDate()).padStart(2, '0');
+                return `${yyyy}-${mm}-${dd}`;
+            };
+
+            const drawList = (list) => {
+                let html = '';
+
+                for (el of list) {
+                    html += '<tr>';
+                    html += '<td class="txt-cter">' + (el.seq) + '</td>';
+
+                    const startDate = formatDate(el.startDate);
+                    const endDate = formatDate(el.endDate);
+                    const regDate = formatDate(el.regDate);
+
+                    html += '<td><span class="mv-view pointer txt-lf" data-id="'+ (el.specialId) +'">'+ (startDate) + '<span> ~ </span>' + (endDate) +'</span></td>';
+                    html += '<td class="txt-cter">' + (el.useDays) + '</td>';
+                    html += '<td class="txt-cter">' + (el.type) + '</td>';
+                    html += '<td class="txt-cter">' + (el.approval) + '</td>';
+                    html += '<td class="txt-cter">' + (el.specialType) + '</td>';
+                    html += '<td class="txt-cter">' + (regDate) + '</td>';
+                    html += '<td class="txt-cter">';
+                    html += '	<button class="bttn-del" data-id="' + el.specialId + '" data-approval="' + el.approval + '">삭제</button>';
+                    html += '</td>';
+
+
+                    html += '</tr>';
+                }
+                return html;
+            };
+
+            const pagingFunc = () => {
+                button.page = document.querySelectorAll('.pagination .pageNo');
+
+                for(page of button.page) {
+                    page.addEventListener('click', (e) => {
+                        let target = e.target;
+                        let pageNo = target.getAttribute('data-pageNo');
+
+                        if(target.classList.contains('pg-active') == false) {
+                            document.querySelector('[name="pageNo"]').value = pageNo;
+                            getList();
+                        }
+                    });
+                }
+            };
+
+            const viewFunc = () => {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                searchData = getSearchParam(searchData);
+
+                // 조회 화면으로 이동
+                button.view = document.querySelectorAll('span[class^="mv"]');
+                for(view of button.view) {
+                    view.addEventListener('click', (e) => {
+                        let id = e.target.getAttribute('data-id');
+                        // window.location.href = '/mngr/gov/policy/view?' + getQueryStr(searchData) + '&govId=' + id;
+                        window.location.href = '/site/UserSpecialBreak/view?' + '&specialId=' + id;
+                    });
+                }
+
+                // 삭제
+                button.del = document.querySelectorAll('.bttn-del');
+                for(del of button.del) {
+                    del.addEventListener('click', delt);
+                }
+
+            };
+
+            async function delt(e) {
+                const approval = e.target.getAttribute('data-approval');
+
+                if (approval === '승인') {
+                    alert('승인된 신청은 삭제할 수 없습니다.');
+                    return;
+                }
+
+
+                formData = {
+                    'specialId' : e.target.getAttribute('data-id')
+                };
+
+
+                await fetch('/SpecialBreakDelete', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if(data.result) {
+                            alert('삭제 성공');
+                            location.reload();
+                        } else {
+                            alert('게시물을 삭제하는데 실패하였습니다.');
+                        }
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
+            };
+
+        </script>
+    </th:block>
+
+</head>
+
+<body>
+    <th:block layout:fragment="content">
+        <div style="display: flex;">
+            <!--sidebar-->
+            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+
+            <!--content-->
+            <div class="content">
+                <!--상단-->
+                <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
+                <!--content-->
+                <div class="content-box">
+                    <!--경로-->
+                    <div class="current-site-path">
+                        <ul>
+                            <li>
+                            <span>
+                                특별 휴가 신청
+                            </span>
+                            </li>
+                            <li>
+                            <span>
+                                목록
+                            </span>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- 검색 form -->
+                    <form name="searchForm" method="post" onsubmit="return false;">
+                        <!-- 페이지네이션 -->
+                        <input type="hidden" name="pageNo" th:value="${SpecialBreakDTO.pageNo}">
+                        <input type="hidden" name="pageBlock" th:value="${SpecialBreakDTO.pageBlock}">
+                        <!-- // 페이지네이션 -->
+                    </form>
+                    <!--검색영역-->
+                    <div class="search-box">
+                        <p>검색영역</p>
+                        <div class="search-content">
+                            <!--신청일자-->
+                            <div>
+                                <span>신청일자</span>
+                                <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${SpecialBreakDTO.schDtStart}">
+                                <span class="dpi">~</span>
+                                <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${SpecialBreakDTO.schDtEnd}">
+                            </div>
+                            <!--휴가일자-->
+                            <div>
+                                <span>휴가일자</span>
+                                <input type="text" name="schDtStart2" class="sch-input form-control w-40 dpi" th:value="${SpecialBreakDTO.schDtStart2}">
+                                <span class="dpi">~</span>
+                                <input type="text" name="schDtEnd2" class="sch-input form-control w-40 dpi" th:value="${SpecialBreakDTO.schDtEnd2}">
+                            </div>
+                        </div>
+                        <div class="search-content">
+                            <!--이름-->
+                            <div>
+                                <span>이름</span>
+                                <input type="text" name="empName" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${SpecialBreakDTO.empName}">
+                            </div>
+                            <!--분류-->
+                            <div>
+                                <span>분류</span>
+                                <select name="specialType" class="form-control w22p" style="width: 300px;">
+                                    <option value="">분류 선택</option>
+                                    <option value="결혼" th:selected="${SpecialBreakDTO.specialType == '결혼'}">결혼</option>
+                                    <option value="철야" th:selected="${SpecialBreakDTO.specialType == '철야'}">철야</option>
+                                    <option value="주말출근" th:selected="${SpecialBreakDTO.specialType == '주말출근'}">주말출근</option>
+                                    <option value="가족상" th:selected="${SpecialBreakDTO.specialType == '가족상'}">가족상</option>
+                                    <option value="기타" th:selected="${SpecialBreakDTO.specialType == '기타'}">기타</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--검색버튼-->
+                    <div class="search-button">
+                        <button type="button" class="sch-btn btn btn-primary w75">검색</button>
+                    </div>
+
+                    <!--content-table-->
+                    <div class="list-table">
+                        <table>
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>휴가기간</th>
+                                <th>신청일수</th>
+                                <th>종류</th>
+                                <th>상태</th>
+                                <th>분류</th>
+                                <th>신청일자</th>
+                                <th>삭제</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!--등록-->
+                    <div class="search-button">
+                        <button id="btn-search" type="button" class="btn btn-regist w75">신청</button>
+                    </div>
+
+
+
+
+
+
+
+                    <!--페이지네이션-->
+                    <div class="pagination">
+                        <div class="pageNo-group">
+                            <span class="pageNo prev" data-pageno="1">&lt;</span>
+                            <span class="pageNo pg-active">1</span>
+                            <span class="pageNo" data-pageno="2">2</span>
+                            <span class="pageNo next" data-pageno="2">&gt;</span>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const pageNumbers = document.querySelectorAll(".pagination .pageNo");
+
+                            pageNumbers.forEach(page => {
+                                page.addEventListener("click", function () {
+                                    // 모든 페이지 번호에서 pg-active 클래스 제거
+                                    pageNumbers.forEach(p => p.classList.remove("pg-active"));
+
+                                    // 클릭한 페이지 번호에 pg-active 클래스 추가
+                                    this.classList.add("pg-active");
+                                });
+                            });
+                        });
+                    </script>
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </th:block>
+
+
+
+
+</body>
+
+</html>

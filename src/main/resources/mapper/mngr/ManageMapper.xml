@@ -3,7 +3,7 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.vacation.mvc.mapper.ManageMapper">
+<mapper namespace="com.example.vacation.mvc.mapper.mngr.ManageMapper">
 	<!-- 신청자 정보 + 휴가 데이터 가져오기-->
 	<select id="breakVO" parameterType="com.example.vacation.mvc.dto.BreakDTO"
 			resultType="com.example.vacation.mvc.vo.BreakVO">

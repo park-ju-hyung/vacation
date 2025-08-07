@@ -1,4 +1,4 @@
-package com.example.vacation.mvc.mapper;
+package com.example.vacation.mvc.mapper.admin;
 
 import com.example.vacation.common.config.DBMapper;
 import com.example.vacation.mvc.dto.EmployeeDTO;

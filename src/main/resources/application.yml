@@ -53,5 +53,6 @@ spring:
       transaction-isolation: TRANSACTION_READ_UNCOMMITTED
 
 mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true

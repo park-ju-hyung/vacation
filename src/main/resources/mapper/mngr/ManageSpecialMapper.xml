@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.vacation.mvc.mapper.mngr.ManageSpecialMapper">
+
+	<!--휴가 신청-->
+	<insert id="insertSpecialBreak" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO">
+			INSERT INTO special_break (specialId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, reason, approval, status, specialType )
+			VALUES (#{specialId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status}, #{specialType})
+	</insert>
+
+	<!-- 신청자 정보 가져오기-->
+	<select id="employeeVO" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeVO">
+		SELECT
+			empId,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			empNo,
+			position,
+			email,
+			phoneNumber,
+			emerNumber,
+			bankName,
+			accountNumber,
+			department,
+			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
+			status,
+			role,
+			totalDays
+		FROM employee
+		WHERE empNo = #{empNo}
+	</select>
+
+	<!--리스트-->
+	<sql id="basicTable">
+		SELECT ROW_NUMBER() OVER(order by regDate) AS seq,
+			  specialId,
+			   empName,
+			   DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			   empNo,
+			   position,
+			   department,
+			   DATE_FORMAT(startDate, '%Y-%m-%d') as startDate,
+			   DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
+			   useDays,
+			   type,
+			   approval,
+			   DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
+			   status,
+			   rejectReason,
+			   reason,
+			   specialType
+		FROM special_break
+	</sql>
+
+	<sql id="where">
+		WHERE 1=1
+		<if test="schDtStart != '' and schDtStart != null">
+			AND DATE_FORMAT(regDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
+		</if>
+		<if test="schDtEnd != '' and schDtEnd != null">
+			AND DATE_FORMAT(regDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
+		</if>
+		<if test="schDtStart2 != '' and schDtStart2 != null">
+			AND DATE_FORMAT(startDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
+		</if>
+		<if test="schDtEnd2 != '' and schDtEnd2 != null">
+			AND DATE_FORMAT(endDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
+		</if>
+		<if test="empName != null and empName != ''">
+			AND empName LIKE CONCAT('%', #{empName}, '%')
+		</if>
+		<if test="specialType != null and specialType != ''">
+			AND specialType LIKE CONCAT('%', #{specialType}, '%')
+		</if>
+	</sql>
+
+	<select id="SpecialBreakCount" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO" resultType="integer">
+		SELECT count(*) FROM special_break
+		<include refid="where"/>
+	</select>
+
+	<select id="SpecialBreakList" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO"
+			resultType="com.example.vacation.mvc.vo.SpecialBreakVO">
+		<include refid="basicTable"/>
+		<include refid="where"/>
+		ORDER BY seq DESC
+		LIMIT #{pageSize} OFFSET #{pageOffset}
+	</select>
+
+	<!-- 신청자 정보 + 휴가 데이터 가져오기-->
+	<select id="SpecialBreakVO" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO"
+			resultType="com.example.vacation.mvc.vo.SpecialBreakVO">
+		SELECT
+			specialId,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			empNo,
+			position,
+			department,
+			DATE_FORMAT(startDate, '%Y-%m-%d') as startDate,
+			DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
+			useDays,
+			type,
+			approval,
+			DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
+			status,
+			rejectReason,
+			reason,
+			specialType
+		FROM special_break
+		WHERE specialId = #{specialId}
+	</select>
+
+	<!-- 휴가 삭제 -->
+	<delete id="SpecialBreakDelete" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO">
+		DELETE FROM special_break
+		WHERE specialId = #{specialId}
+	</delete>
+
+
+
+
+
+
+</mapper>

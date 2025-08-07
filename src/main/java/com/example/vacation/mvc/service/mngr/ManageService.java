@@ -5,7 +5,7 @@ import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.EmployeeFormDTO;
 import com.example.vacation.mvc.dto.EmployeeStatusDTO;
-import com.example.vacation.mvc.mapper.ManageMapper;
+import com.example.vacation.mvc.mapper.mngr.ManageMapper;
 import com.example.vacation.mvc.vo.BreakVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

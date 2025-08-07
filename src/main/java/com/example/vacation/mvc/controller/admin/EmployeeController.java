@@ -4,7 +4,7 @@ import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.EmployeeFormDTO;
 import com.example.vacation.mvc.dto.EmployeeStatusDTO;
 import com.example.vacation.mvc.service.admin.EmployeeService;
-import com.example.vacation.mvc.mapper.EmployeeMapper;
+import com.example.vacation.mvc.mapper.admin.EmployeeMapper;
 import com.example.vacation.mvc.service.admin.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
