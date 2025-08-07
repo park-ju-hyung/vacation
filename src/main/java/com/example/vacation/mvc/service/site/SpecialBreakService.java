@@ -28,7 +28,7 @@ public class SpecialBreakService {
 
     private final SpecialBreakMapper specialBreakMapper;
 
-    // 휴가 신청
+    // 특별휴가 신청
     @Transactional(readOnly = false, rollbackFor = Exception.class)
     public Map<String, Object> insertSpecialBreak(SpecialBreakDTO Specialbreakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
@@ -82,7 +82,7 @@ public class SpecialBreakService {
         int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
         String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
 
-        rs.put("employeeDTO", Specialbreakdto);
+        rs.put("SpecialBreakDTO", Specialbreakdto);
         rs.put("list", list);
         rs.put("totalCount", totalCount);
         rs.put("totalPageNo", totalPageNo);
@@ -98,6 +98,20 @@ public class SpecialBreakService {
         employeedto.setEmpNo(empNo);
         System.out.println("view empNo: " + empNo);
         return specialBreakMapper.employeeVO(employeedto);
+    }
+
+    // 신청자 정보 + 휴가 데이터
+    @Transactional(readOnly = true)
+    public SpecialBreakVO SpecialBreakView(SpecialBreakDTO Specialbreakdto) throws Exception {
+        return specialBreakMapper.SpecialBreakVO(Specialbreakdto);
+    }
+
+    // 특별휴가 삭제
+    public Map<String, Object> SpecialBreakDelete(SpecialBreakDTO Specialbreakdto) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+        specialBreakMapper.SpecialBreakDelete(Specialbreakdto);
+        rs.put("result", true);
+        return rs;
     }
 
 

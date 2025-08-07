@@ -37,19 +37,21 @@
 	<!--리스트-->
 	<sql id="basicTable">
 		SELECT ROW_NUMBER() OVER(order by regDate) AS seq,
-				specialType,
+			  specialId,
 			   empName,
 			   DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
 			   empNo,
 			   position,
+			   department,
 			   DATE_FORMAT(startDate, '%Y-%m-%d') as startDate,
 			   DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
 			   useDays,
 			   type,
-			   reason,
-			   rejectReason,
 			   approval,
-			   regDate,
+			   DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
+			   status,
+			   rejectReason,
+			   reason,
 			   specialType
 		FROM special_break
 	</sql>
@@ -88,6 +90,36 @@
 		ORDER BY seq DESC
 		LIMIT #{pageSize} OFFSET #{pageOffset}
 	</select>
+
+	<!-- 신청자 정보 + 휴가 데이터 가져오기-->
+	<select id="SpecialBreakVO" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO"
+			resultType="com.example.vacation.mvc.vo.SpecialBreakVO">
+		SELECT
+			specialId,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
+			empNo,
+			position,
+			department,
+			DATE_FORMAT(startDate, '%Y-%m-%d') as startDate,
+			DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
+			useDays,
+			type,
+			approval,
+			DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
+			status,
+			rejectReason,
+			reason,
+			specialType
+		FROM special_break
+		WHERE specialId = #{specialId}
+	</select>
+
+	<!-- 휴가 삭제 -->
+	<delete id="SpecialBreakDelete" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO">
+		DELETE FROM special_break
+		WHERE specialId = #{specialId}
+	</delete>
 
 
 

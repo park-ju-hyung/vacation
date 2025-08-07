@@ -101,7 +101,7 @@
                         let html = '';
 
                         if (totalCount == 0) {
-                            html += '<tr><td class="text-center h-200px align-middle" colspan="6">데이터가 존재하지 않습니다.</td></tr>';
+                            html += '<tr><td class="text-center h-200px align-middle" colspan="8">데이터가 존재하지 않습니다.</td></tr>';
                         } else {
                             html += drawList(list);
                         }
@@ -137,14 +137,17 @@
                     const startDate = formatDate(el.startDate);
                     const endDate = formatDate(el.endDate);
                     const regDate = formatDate(el.regDate);
-                    html += '<td><span class="mv-view pointer txt-lf" data-id="'+ (el.specialId) +'">'+ (el.empName) +'</span></td>';
-                    html += '<td class="txt-cter">' + (el.empNo) + '</td>';
-                    html += '<td class="txt-cter">' + (el.empBirth) + '</td>';
-                    html += '<td class="txt-cter">'+ (startDate) + '<span> ~ </span>' + (endDate) +'</span></td>';
+
+                    html += '<td><span class="mv-view pointer txt-lf" data-id="'+ (el.specialId) +'">'+ (startDate) + '<span> ~ </span>' + (endDate) +'</span></td>';
                     html += '<td class="txt-cter">' + (el.useDays) + '</td>';
                     html += '<td class="txt-cter">' + (el.type) + '</td>';
+                    html += '<td class="txt-cter">' + (el.approval) + '</td>';
                     html += '<td class="txt-cter">' + (el.specialType) + '</td>';
                     html += '<td class="txt-cter">' + (regDate) + '</td>';
+                    html += '<td class="txt-cter">';
+                    html += '	<button class="bttn-del" data-id="' + el.specialId + '" data-approval="' + el.approval + '">삭제</button>';
+                    html += '</td>';
+
 
                     html += '</tr>';
                 }
@@ -181,6 +184,46 @@
                     });
                 }
 
+                // 삭제
+                button.del = document.querySelectorAll('.bttn-del');
+                for(del of button.del) {
+                    del.addEventListener('click', delt);
+                }
+
+            };
+
+            async function delt(e) {
+                const approval = e.target.getAttribute('data-approval');
+
+                if (approval === '승인') {
+                    alert('승인된 신청은 삭제할 수 없습니다.');
+                    return;
+                }
+
+
+                formData = {
+                    'specialId' : e.target.getAttribute('data-id')
+                };
+
+
+                await fetch('/SpecialBreakDelete', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if(data.result) {
+                            alert('삭제 성공');
+                            location.reload();
+                        } else {
+                            alert('게시물을 삭제하는데 실패하였습니다.');
+                        }
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
             };
 
         </script>
@@ -281,12 +324,13 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>아이디</th>
-                            <th>이름</th>
-                            <th>E-MAIL</th>
-                            <th>뉴스레터 수신동의</th>
-                            <th>가입일자</th>
-                            <th>수정일자</th>
+                            <th>휴가기간</th>
+                            <th>신청일수</th>
+                            <th>종류</th>
+                            <th>상태</th>
+                            <th>분류</th>
+                            <th>신청일자</th>
+                            <th>삭제</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -5,6 +5,8 @@ import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.SpecialBreakDTO;
 import com.example.vacation.mvc.service.site.BreakService;
 import com.example.vacation.mvc.service.site.SpecialBreakService;
+import com.example.vacation.mvc.vo.BreakVO;
+import com.example.vacation.mvc.vo.SpecialBreakVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,15 +56,14 @@ public class UserSpecialBreakController {
         return new ResponseEntity<>(specialBreakService.SpecialBreakList(Specialbreakdto), HttpStatus.OK);
     }
 
-
-
-
-
-
-
     /** 특별휴가 신청 view **/
     @GetMapping("/site/UserSpecialBreak/view")
-    public String UserSpecialViewPage() {
+    public String UserSpecialViewPage(SpecialBreakDTO Specialbreakdto, ModelMap modelMap) throws Exception {
+        SpecialBreakVO specialBreakVO = specialBreakService.SpecialBreakView(Specialbreakdto);
+
+        modelMap.addAttribute("SpecialBreakDTO", Specialbreakdto);
+        modelMap.addAttribute("SpecialBreakVO", specialBreakVO);
+
         return "site/UserSpecialBreak/view";
     }
 
@@ -73,6 +74,12 @@ public class UserSpecialBreakController {
     public String UserSpecialModifyPage() {
         return "site/UserSpecialBreak/modify";
     }
-    
+
+    /** 휴가 삭제 **/
+    @PostMapping("/SpecialBreakDelete")
+    @ResponseBody
+    public ResponseEntity<?> SpecialBreakDelete(@RequestBody SpecialBreakDTO Specialbreakdto, ModelMap modelMap) throws Exception {
+        return new ResponseEntity<>(specialBreakService.SpecialBreakDelete(Specialbreakdto), HttpStatus.OK);
+    }
 
 }

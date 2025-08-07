@@ -27,6 +27,12 @@ public interface SpecialBreakMapper {
 
 	public int SpecialBreakCount(SpecialBreakDTO Specialbreakdto) throws Exception;
 
+	// 신청자 정보 + 휴가 데이터 가져오기
+	public SpecialBreakVO SpecialBreakVO(SpecialBreakDTO Specialbreakdto) throws Exception;
+
+	// 휴가 삭제
+	public int SpecialBreakDelete(SpecialBreakDTO Specialbreakdto) throws Exception;
+
 
 
 
