@@ -3,7 +3,7 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.vacation.mvc.mapper.SpecialBreakMapper">
+<mapper namespace="com.example.vacation.mvc.mapper.site.SpecialBreakMapper">
 
 	<!--휴가 신청-->
 	<insert id="insertSpecialBreak" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO">
@@ -57,7 +57,7 @@
 	</sql>
 
 	<sql id="where">
-		WHERE 1=1
+		WHERE 1=1 AND empNo = #{empNo}
 		<if test="schDtStart != '' and schDtStart != null">
 			AND DATE_FORMAT(regDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
 		</if>

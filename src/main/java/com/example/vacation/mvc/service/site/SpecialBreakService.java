@@ -7,7 +7,7 @@ import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.SpecialBreakDTO;
 import com.example.vacation.mvc.mapper.BreakMapper;
-import com.example.vacation.mvc.mapper.SpecialBreakMapper;
+import com.example.vacation.mvc.mapper.site.SpecialBreakMapper;
 import com.example.vacation.mvc.vo.BreakVO;
 import com.example.vacation.mvc.vo.EmployeeVO;
 import com.example.vacation.mvc.vo.SpecialBreakVO;
@@ -60,6 +60,11 @@ public class SpecialBreakService {
     @Transactional(readOnly = false)
     public Map<String, Object> SpecialBreakList(SpecialBreakDTO Specialbreakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
+
+        // 로그인한 empNO 정보 가져오기
+        String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
+        Specialbreakdto.setEmpNo(empNo);
+
 
         int pageNo = Specialbreakdto.getPageNo() == 0 ? 1 : Specialbreakdto.getPageNo();
         int pageSize = Specialbreakdto.getPageSize() == 0 ? 10 : Specialbreakdto.getPageSize();
