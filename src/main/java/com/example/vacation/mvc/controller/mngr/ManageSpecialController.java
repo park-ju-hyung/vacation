@@ -1,5 +1,6 @@
 package com.example.vacation.mvc.controller.mngr;
 
+import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.SpecialBreakDTO;
 import com.example.vacation.mvc.service.mngr.ManageSpecialService;
 import com.example.vacation.mvc.service.site.SpecialBreakService;
@@ -37,11 +38,15 @@ public class ManageSpecialController {
     @GetMapping("/mngr/ManageSpecial/view")
     public String SpecialBreakViewPage(SpecialBreakDTO Specialbreakdto, ModelMap modelMap) throws Exception {
         SpecialBreakVO specialBreakVO = manageSpecialService.SpecialBreakView(Specialbreakdto);
-
         modelMap.addAttribute("SpecialBreakDTO", Specialbreakdto);
         modelMap.addAttribute("SpecialBreakVO", specialBreakVO);
-
         return "mngr/ManageSpecial/view";
+    }
+
+    @ResponseBody
+    @PostMapping("/ManageSpecial")
+    public ResponseEntity<?> ManageSpecial(@RequestBody SpecialBreakDTO Specialbreakdto, ModelMap modelMap) throws Exception {
+        return new ResponseEntity<>(manageSpecialService.updateStatus(Specialbreakdto), HttpStatus.OK);
     }
 
 

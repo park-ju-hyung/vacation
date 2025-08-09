@@ -3,7 +3,191 @@
       layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
-    <title>퇴직자 관리 - 상세보기</title>
+    <title>특별휴가 관리 - view</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+                setDefault();
+                registEvent();
+            });
+
+            const csrf = { 'header' : null, 'value' : null };
+
+            const button = { 'list' : null};
+
+            const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                button.list = document.querySelector('.btn-view');
+                // button.modify = document.querySelector('.btn-regist');
+            };
+
+            const registEvent = function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                /**
+                 button.list.addEventListener('click', () => {
+                 window.location.replace('/mngr/gov/policy/list?' + getQueryStr(searchData));
+                 });
+                 **/
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/mngr/ManageSpecial/list?' + getQueryStr(searchData));
+                });
+
+                /**
+                 button.modify.addEventListener('click', () => {
+                 let id = document.querySelector('input[name="empId"]').value;
+                 window.location.replace('/mngr/Employee/modify?&empId='+ id +'&'+ getQueryStr(searchData));
+                 //http://localhost:8892/mngr/gov/policy/modify?&govId=79
+                 });
+                 **/
+            };
+            // 초기화 - 제출로 돌림
+            $( document ).ready(function() {
+                $('.btn-request').on('click',function(e){
+                    e.preventDefault();
+                    let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                    const empNo = document.querySelector('[name="empNo"]').value;
+                    const specialId = document.querySelector('[name="specialId"]').value;
+
+                    const formData = {
+                        status: '002',
+                        empNo: empNo,
+                        specialId: specialId
+                    };
+                    console.log(formData)
+
+                    fetch('/ManageSpecial', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('서버 오류: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            alert("정상적으로 처리되었습니다.");
+                            window.location.replace('/mngr/ManageSpecial/list?' + getQueryStr(searchData));
+                        })
+                        .catch(error => {
+                            alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                            console.error(error);
+                        });
+                });
+
+            });
+
+            const isEmpty = (value) => {
+                if (value == null || typeof value == 'undefined' || value == '')
+                    return true;
+                else
+                    return false;
+            };
+
+            // 반려
+            $( document ).ready(function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+
+                $('.btn-return').on('click',function(e){
+                    e.preventDefault();
+
+                    const empNo = document.querySelector('[name="empNo"]').value;
+                    const specialId = document.querySelector('[name="specialId"]').value;
+                    const rejectReason = document.querySelector('textarea[name="rejectReason"]').value;
+                    console.log("rejectReason" + rejectReason)
+
+                    if (isEmpty(rejectReason)) {
+                        alert('반려사유를 입력해주세요.');
+                        return true;
+                    }
+
+                    const formData = {
+                        status: '003',
+                        empNo: empNo,
+                        specialId: specialId,
+                        rejectReason: rejectReason
+                    };
+                    console.log(formData)
+                    fetch('/ManageSpecial', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('서버 오류: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            alert("정상적으로 처리되었습니다.");
+                            window.location.replace('/mngr/ManageSpecial/list?' + getQueryStr(searchData));
+                        })
+                        .catch(error => {
+                            alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                            console.error(error);
+                        });
+                });
+
+            });
+
+            // 승인
+            $( document ).ready(function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                $('.btn-confirm').on('click',function(e){
+                    e.preventDefault();
+                    const empNo = document.querySelector('[name="empNo"]').value;
+                    const specialId = document.querySelector('[name="specialId"]').value;
+
+                    const formData = {
+                        status: '004',
+                        empNo: empNo,
+                        specialId: specialId
+                    };
+                    console.log(formData)
+
+                    fetch('/ManageSpecial', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('서버 오류: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            alert("정상적으로 처리되었습니다.");
+                            window.location.replace('/mngr/ManageSpecial/list?' + getQueryStr(searchData));
+                        })
+                        .catch(error => {
+                            alert("처리중 오류가 발생했습니다. 운영팀에 문의하십시오.");
+                            console.error(error);
+                        });
+                });
+
+            });
+
+
+
+
+
+
+
+
+
+        </script>
+    </th:block>
 
 </head>
 
@@ -16,20 +200,7 @@
             <!--content-->
             <div class="content">
                 <!--상단-->
-                <div class="account">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                <span>admin</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span>로그아웃</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
                 <!--content-->
                 <div class="content-box">
                     <!--경로-->
@@ -48,6 +219,26 @@
                         </ul>
                     </div>
 
+                    <!-- 검색 form -->
+                    <form name="searchForm" method="post" onsubmit="return false;">
+                        <!-- 검색 조건 -->
+                        <input type="hidden" name="specialId" th:value="${SpecialBreakVO.specialId}">
+                        <input type="hidden" name="empNo" th:value="${SpecialBreakVO.empNo}"> <!--사번-->
+                        <input type="hidden" name="empName" th:value="${SpecialBreakVO.empName}"> <!--이름-->
+                        <input type="hidden" name="department" th:value="${SpecialBreakVO.department}"> <!--부서-->
+                        <input type="hidden" name="position" th:value="${SpecialBreakVO.position}"> <!--직급-->
+                        <input type="hidden" name="specialType" th:value="${SpecialBreakVO.specialType}"> <!--분류-->
+                        <input type="hidden" name="regDate" th:value="${SpecialBreakVO.regDate}"> <!--신청일-->
+                        <input type="hidden" name="startDate" th:value="${SpecialBreakVO.startDate}"><!--휴가기간-->
+                        <input type="hidden" name="endDate" th:value="${SpecialBreakVO.endDate}"><!--휴가기간-->
+                        <input type="hidden" name="useDays" th:value="${SpecialBreakVO.useDays}"><!--신청일수-->
+                        <input type="hidden" name="rejectReason" th:value="${SpecialBreakVO.rejectReason}"><!--반려사유-->
+
+                        <!--페이지 네이션-->
+                        <input type="hidden" name="pageNo" th:value="${SpecialBreakDTO.pageNo}">
+                        <input type="hidden" name="pageBlock" th:value="${SpecialBreakDTO.pageBlock}">
+                    </form>
+
                     <!--content-table-->
                     <div class="view-table">
                         <table>
@@ -60,33 +251,31 @@
                                 <th>
                                     이름
                                 </th>
-                                <td>
-                                    이름
-                                </td>
+                                <td th:text="${SpecialBreakVO.empName}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     사번
                                 </th>
-                                <td>
-                                    사번
-                                </td>
+                                <td th:text="${SpecialBreakVO.empNo}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     부서
                                 </th>
-                                <td>
-                                    부서
-                                </td>
+                                <td th:text="${SpecialBreakVO.department}"></td>
                             </tr>
                             <tr>
                                 <th>
                                     직급
                                 </th>
-                                <td>
-                                    직급
-                                </td>
+                                <td th:text="${SpecialBreakVO.position}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    분류
+                                </th>
+                                <td th:text="${SpecialBreakVO.specialType}"></td>
                             </tr>
 
                             <tr>
@@ -94,15 +283,25 @@
                                     신청일자
                                 </th>
                                 <td>
-                                    신청일자
+                                    <span th:text="${SpecialBreakVO.startDate}"></span>
+                                    <span>~</span>
+                                    <span th:text="${SpecialBreakVO.endDate}"></span>
+                                    <span th:text="${SpecialBreakVO.useDays % 1 == 0} ? ${SpecialBreakVO.useDays.intValue()} : ${SpecialBreakVO.useDays}"></span>일
                                 </td>
                             </tr>
                             <tr>
                                 <th>
                                     사유
                                 </th>
+                                <td th:text="${SpecialBreakVO.reason}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    반려사유
+                                </th>
                                 <td>
-                                    사유
+                                    <textarea class="form-control" name="rejectReason" th:text="${SpecialBreakVO.rejectReason}" style="height: 150px;"></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -111,14 +310,6 @@
                                 </th>
                                 <td>
                                     첨부파일
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    특별휴가 일수
-                                </th>
-                                <td>
-                                    <input type="text" class="form-control w20p">
                                 </td>
                             </tr>
 
@@ -131,9 +322,10 @@
 
                     <!--버튼-->
                     <div class="search-button">
-                        <button id="btn-search" type="button" class="btn btn-sucess w75">승인</button>
-                        <button id="btn-search" type="button" class="btn btn-regist w75">반려</button>
-                        <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
+                        <button type="button" class="btn btn-confirm w75">승인</button>
+                        <button type="button" class="btn btn-return w75">반려</button>
+                        <button type="button" class="btn btn-request w75">초기화</button>
+                        <button type="button" class="btn btn-view w75">목록</button>
                     </div>
 
 

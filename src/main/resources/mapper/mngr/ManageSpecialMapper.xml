@@ -121,6 +121,36 @@
 		WHERE specialId = #{specialId}
 	</delete>
 
+	<!--001:임시저장,002:제출,003:반려,004:승인-->
+	<!--제출 처리-->
+	<update id="requestBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
+		UPDATE special_break
+		SET status = '002',
+			approval = '제출'
+		WHERE empNo = #{empNo}
+		  AND specialId = #{specialId}
+	</update>
+
+	<!--반려 처리-->
+	<update id="returnBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
+		UPDATE special_break
+		SET status = '003',
+			approval = '반려',
+			rejectReason = #{rejectReason}
+		WHERE empNo = #{empNo}
+		  AND specialId = #{specialId}
+	</update>
+
+	<!--승인 처리-->
+	<update id="confirmBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
+		UPDATE special_break
+		SET status = '004',
+			approval = '승인'
+		WHERE empNo = #{empNo}
+		  AND specialId = #{specialId}
+	</update>
+
+
 
 
 

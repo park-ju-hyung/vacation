@@ -123,6 +123,7 @@
                 <form name="searchForm" method="post" onsubmit="return false;">
                     <!-- 검색 조건 -->
                     <input type="hidden" name="specialId" th:value="${SpecialBreakVO.specialId}">
+                    <input type="hidden" name="empNo" th:value="${SpecialBreakVO.empNo}"> <!--사번-->
                     <input type="hidden" name="empName" th:value="${SpecialBreakVO.empName}"> <!--이름-->
                     <input type="hidden" name="department" th:value="${SpecialBreakVO.department}"> <!--부서-->
                     <input type="hidden" name="position" th:value="${SpecialBreakVO.position}"> <!--직급-->

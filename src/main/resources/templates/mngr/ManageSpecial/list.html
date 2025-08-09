@@ -3,7 +3,7 @@
       layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
-    <title>특별휴가 - 관리자</title>
+    <title>특별휴가 관리 - list</title>
     <th:block layout:fragment="script">
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', () => {
@@ -87,7 +87,7 @@
                 let formData = new FormData(document.querySelector('[name="searchForm"]'));
                 formData = getJSONData(getSearchParam(formData));
 
-                await fetch('/site/UserSpecialBreak/list', {
+                await fetch('/mngr/ManageSpecial/list', {
                     method : 'POST',
                     headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
                     body : JSON.stringify(formData),
@@ -180,7 +180,7 @@
                     view.addEventListener('click', (e) => {
                         let id = e.target.getAttribute('data-id');
                         // window.location.href = '/mngr/gov/policy/view?' + getQueryStr(searchData) + '&govId=' + id;
-                        window.location.href = '/site/UserSpecialBreak/view?' + '&specialId=' + id;
+                        window.location.href = '/mngr/ManageSpecial/view?' + '&specialId=' + id;
                     });
                 }
 

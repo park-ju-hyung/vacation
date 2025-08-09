@@ -3,6 +3,7 @@ package com.example.vacation.mvc.service.mngr;
 import com.example.vacation.common.constant.SessionConstant;
 import com.example.vacation.common.util.AppPagingUtil;
 import com.example.vacation.common.util.SessionManager;
+import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.SpecialBreakDTO;
 import com.example.vacation.mvc.mapper.mngr.ManageSpecialMapper;
@@ -63,6 +64,23 @@ public class ManageSpecialService {
     @Transactional(readOnly = true)
     public SpecialBreakVO SpecialBreakView(SpecialBreakDTO Specialbreakdto) throws Exception {
         return manageSpecialMapper.SpecialBreakVO(Specialbreakdto);
+    }
+
+    /**001:임시저장,002:제출,003:반려,004:승인**/
+    // 승인 처리
+    @Transactional(readOnly = false, rollbackFor = {Exception.class})
+    public Map<String, Object> updateStatus(SpecialBreakDTO Specialbreakdto) throws Exception {
+        Map<String, Object> rs = new HashMap<>();
+        if ("004".equals(Specialbreakdto.getStatus())){
+            manageSpecialMapper.confirmBreak(Specialbreakdto);
+        } else if("003".equals(Specialbreakdto.getStatus())){
+            manageSpecialMapper.returnBreak(Specialbreakdto);
+        } else if("002".equals(Specialbreakdto.getStatus())){
+            manageSpecialMapper.requestBreak(Specialbreakdto);
+        }
+
+        rs.put("result", Specialbreakdto);
+        return rs;
     }
 
 

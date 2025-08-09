@@ -132,6 +132,26 @@
                     formData.useDays = 0.5;
                 }
                 const useDay = formData.useDays;// 신청일수
+                const specialType = formData.specialType;
+
+                // 휴가 종류별 최대 허용 일수 설정
+                const maxDays = {
+                    '결혼': 3,
+                    '철야': 5,
+                    '주말출근': 2,
+                    '가족상': 7
+                };
+
+                // 선택된 휴가 종류가 제한이 있는 경우
+                if (maxDays[specialType] !== undefined) {
+                    if (useDay > maxDays[specialType]) {
+                        console.log(`if useDay: ${useDay}`);
+                        alert(`${specialType} 휴가는 최대 ${maxDays[specialType]}일까지만 신청 가능합니다.`);
+                        return false;
+                    }
+                }
+
+
                 console.log("사용한휴가" + totalUseDays)
                 console.log("신청휴가일수" + useDay)
 
