@@ -103,7 +103,7 @@
 			reason,
 			rejectReason,
 			approval,
-			regDate,
+			DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
 			status
 		FROM sick_break
 		WHERE sickId = #{sickId}
