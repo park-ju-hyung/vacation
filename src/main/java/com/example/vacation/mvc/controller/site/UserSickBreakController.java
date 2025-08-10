@@ -5,6 +5,8 @@ import com.example.vacation.mvc.dto.SickBreakDTO;
 import com.example.vacation.mvc.dto.SpecialBreakDTO;
 import com.example.vacation.mvc.service.site.BreakService;
 import com.example.vacation.mvc.service.site.SickBreakService;
+import com.example.vacation.mvc.vo.SickBreakVO;
+import com.example.vacation.mvc.vo.SpecialBreakVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +43,6 @@ public class UserSickBreakController {
         return ResponseEntity.ok(rs);
     }
 
-
-
-
-
     /** 병가 신청 list **/
     @GetMapping("/site/UserSickBreak/list")
     public String UserSickListPage(SickBreakDTO Sickbreakdto, ModelMap modelMap) throws Exception {
@@ -60,7 +58,12 @@ public class UserSickBreakController {
 
     /** 병가 신청 view **/
     @GetMapping("/site/UserSickBreak/view")
-    public String UserSickViewPage() {
+    public String UserSickViewPage(SickBreakDTO Sickbreakdto, ModelMap modelMap) throws Exception {
+        SickBreakVO sickBreakVO = sickBreakService.SickBreakView(Sickbreakdto);
+
+        modelMap.addAttribute("SickBreakDTO", Sickbreakdto);
+        modelMap.addAttribute("SickBreakVO", sickBreakVO);
+
         return "site/UserSickBreak/view";
     }
 

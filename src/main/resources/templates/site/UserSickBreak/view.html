@@ -4,7 +4,91 @@
 
 <head>
     <title>병가 신청 - 상세보기</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+                setDefault();
+                registEvent();
+            });
 
+            const csrf = { 'header' : null, 'value' : null };
+
+            const button = { 'list' : null};
+
+            const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                button.list = document.querySelector('.btn-view');
+                // button.modify = document.querySelector('.btn-regist');
+            };
+
+            const registEvent = function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                /**
+                 button.list.addEventListener('click', () => {
+                 window.location.replace('/mngr/gov/policy/list?' + getQueryStr(searchData));
+                 });
+                 **/
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/site/UserSickBreak/list?' + getQueryStr(searchData));
+                });
+
+                /**
+                 button.modify.addEventListener('click', () => {
+                 let id = document.querySelector('input[name="empId"]').value;
+                 window.location.replace('/mngr/Employee/modify?&empId='+ id +'&'+ getQueryStr(searchData));
+                 //http://localhost:8892/mngr/gov/policy/modify?&govId=79
+                 });
+                 **/
+
+                // 삭제
+                button.del = document.querySelectorAll('.bttn-del');
+                for(del of button.del) {
+                    del.addEventListener('click', delt);
+                }
+            };
+
+            async function delt(e) {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                console.log(searchData);
+
+                const sickId = document.querySelector('[name="sickId"]').value;
+
+                const formData = {
+                    searchData: searchData,
+                    sickId: sickId
+                };
+
+                await fetch('/delete', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if(data.result) {
+                            alert('삭제 성공');
+                            window.location.replace('/site/UserSickBreak/list?' + getQueryStr(searchData));
+                        } else {
+                            alert('게시물을 삭제하는데 실패하였습니다.');
+                        }
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
+            };
+
+
+
+
+
+
+
+
+        </script>
+    </th:block>
 </head>
 
 <body>
@@ -16,20 +100,7 @@
         <!--content-->
         <div class="content">
             <!--상단-->
-            <div class="account">
-                <ul>
-                    <li>
-                        <a href="#">
-                            <span>admin</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>로그아웃</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
             <!--content-->
             <div class="content-box">
                 <!--경로-->
@@ -48,6 +119,25 @@
                     </ul>
                 </div>
 
+                <!-- 검색 form -->
+                <form name="searchForm" method="post" onsubmit="return false;">
+                    <!-- 검색 조건 -->
+                    <input type="hidden" name="sickId" th:value="${SickBreakVO.sickId}">
+                    <input type="hidden" name="empNo" th:value="${SickBreakVO.empNo}"> <!--사번-->
+                    <input type="hidden" name="empName" th:value="${SickBreakVO.empName}"> <!--이름-->
+                    <input type="hidden" name="department" th:value="${SickBreakVO.department}"> <!--부서-->
+                    <input type="hidden" name="position" th:value="${SickBreakVO.position}"> <!--직급-->
+                    <input type="hidden" name="regDate" th:value="${SickBreakVO.regDate}"> <!--신청일-->
+                    <input type="hidden" name="startDate" th:value="${SickBreakVO.startDate}"><!--휴가기간-->
+                    <input type="hidden" name="endDate" th:value="${SickBreakVO.endDate}"><!--휴가기간-->
+                    <input type="hidden" name="useDays" th:value="${SickBreakVO.useDays}"><!--신청일수-->
+                    <input type="hidden" name="rejectReason" th:value="${SickBreakVO.rejectReason}"><!--반려사유-->
+
+                    <!--페이지 네이션-->
+                    <input type="hidden" name="pageNo" th:value="${SickBreakDTO.pageNo}">
+                    <input type="hidden" name="pageBlock" th:value="${SickBreakDTO.pageBlock}">
+                </form>
+
                 <!--content-table-->
                 <div class="view-table">
                     <table>
@@ -60,33 +150,25 @@
                             <th>
                                 이름
                             </th>
-                            <td>
-                                이름
-                            </td>
+                            <td th:text="${SickBreakVO.empName}"></td>
                         </tr>
                         <tr>
                             <th>
                                 사번
                             </th>
-                            <td>
-                                사번
-                            </td>
+                            <td th:text="${SickBreakVO.empNo}"></td>
                         </tr>
                         <tr>
                             <th>
                                 부서
                             </th>
-                            <td>
-                                부서
-                            </td>
+                            <td th:text="${SickBreakVO.department}"></td>
                         </tr>
                         <tr>
                             <th>
                                 직급
                             </th>
-                            <td>
-                                직급
-                            </td>
+                            <td th:text="${SickBreakVO.position}"></td>
                         </tr>
 
                         <tr>
@@ -94,15 +176,24 @@
                                 신청일자
                             </th>
                             <td>
-                                신청일자
+                                <span th:text="${SickBreakVO.startDate}"></span>
+                                <span>~</span>
+                                <span th:text="${SickBreakVO.endDate}"></span>
+                                <span th:text="${SickBreakVO.useDays % 1 == 0} ? ${SickBreakVO.useDays.intValue()} : ${SickBreakVO.useDays}"></span>일
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 사유
                             </th>
-                            <td>
-                                사유
+                            <td th:text="${SickBreakVO.reason}">
+                            </td>
+                        </tr>
+                        <tr th:if="${SickBreakVO.approval == '반려'}">
+                            <th>
+                                반려사유
+                            </th>
+                            <td th:text="${SickBreakVO.rejectReason}">
                             </td>
                         </tr>
                         <tr>
@@ -111,14 +202,6 @@
                             </th>
                             <td>
                                 첨부파일
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                병가 일수
-                            </th>
-                            <td>
-                                병가 일수
                             </td>
                         </tr>
 
@@ -131,8 +214,8 @@
 
                 <!--버튼-->
                 <div class="search-button">
-                    <button id="btn-search" type="button" class="btn btn-regist w75">수정</button>
-                    <button id="btn-search" type="button" class="btn btn-view w75">목록</button>
+                    <button type="button" class="btn btn-regist w75">수정</button>
+                    <button type="button" class="btn btn-view w75">목록</button>
                 </div>
 
 
