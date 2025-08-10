@@ -1,4 +1,4 @@
-package com.example.vacation.mvc.mapper;
+package com.example.vacation.mvc.mapper.site;
 
 import com.example.vacation.common.config.DBMapper;
 import com.example.vacation.mvc.dto.BreakDTO;

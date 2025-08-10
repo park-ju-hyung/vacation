@@ -5,11 +5,14 @@ import com.example.vacation.common.util.AppPagingUtil;
 import com.example.vacation.common.util.SessionManager;
 import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
+import com.example.vacation.mvc.dto.SickBreakDTO;
 import com.example.vacation.mvc.dto.SpecialBreakDTO;
 import com.example.vacation.mvc.mapper.site.BreakMapper;
+import com.example.vacation.mvc.mapper.site.SickBreakMapper;
 import com.example.vacation.mvc.mapper.site.SpecialBreakMapper;
 import com.example.vacation.mvc.vo.BreakVO;
 import com.example.vacation.mvc.vo.EmployeeVO;
+import com.example.vacation.mvc.vo.SickBreakVO;
 import com.example.vacation.mvc.vo.SpecialBreakVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +27,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SpecialBreakService {
+public class SickBreakService {
 
-    private final SpecialBreakMapper specialBreakMapper;
+    private final SickBreakMapper sickBreakMapper;
 
-    // 특별휴가 신청
+    // 병가 신청
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public Map<String, Object> insertSpecialBreak(SpecialBreakDTO Specialbreakdto) throws Exception {
+    public Map<String, Object> insertSickBreak(SickBreakDTO sickbreakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
 
         // 로그인한 empNO 정보 가져오기
@@ -38,19 +41,19 @@ public class SpecialBreakService {
 
         EmployeeDTO empDto = new EmployeeDTO();
         empDto.setEmpNo(empNo);
-        EmployeeVO employee = specialBreakMapper.employeeVO(empDto);
+        EmployeeVO employee = sickBreakMapper.employeeVO(empDto);
         System.out.println("employeeVo: " + employee);
 
         // 직원 정보 가져오기
-        Specialbreakdto.setEmpNo(employee.getEmpNo());
-        Specialbreakdto.setEmpName(employee.getEmpName());
-        Specialbreakdto.setEmpBirth(employee.getEmpBirth());
-        Specialbreakdto.setPosition(employee.getPosition());
-        Specialbreakdto.setDepartment(employee.getDepartment());
+        sickbreakdto.setEmpNo(employee.getEmpNo());
+        sickbreakdto.setEmpName(employee.getEmpName());
+        sickbreakdto.setEmpBirth(employee.getEmpBirth());
+        sickbreakdto.setPosition(employee.getPosition());
+        sickbreakdto.setDepartment(employee.getDepartment());
         System.out.println("employeeVo: " + employee.getEmpNo());
         System.out.println("부여휴가일수 " + employee.getTotalDays());
 
-        specialBreakMapper.insertSpecialBreak(Specialbreakdto);
+        sickBreakMapper.insertSickBreak(sickbreakdto);
 
         rs.put("result", "SUCCESS");
         return rs;
@@ -58,36 +61,36 @@ public class SpecialBreakService {
 
     //list
     @Transactional(readOnly = false)
-    public Map<String, Object> SpecialBreakList(SpecialBreakDTO Specialbreakdto) throws Exception {
+    public Map<String, Object> SickBreakList(SickBreakDTO Sickbreakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
 
         // 로그인한 empNO 정보 가져오기
         String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
-        Specialbreakdto.setEmpNo(empNo);
+        Sickbreakdto.setEmpNo(empNo);
 
 
-        int pageNo = Specialbreakdto.getPageNo() == 0 ? 1 : Specialbreakdto.getPageNo();
-        int pageSize = Specialbreakdto.getPageSize() == 0 ? 10 : Specialbreakdto.getPageSize();
-        int pageBlock = Specialbreakdto.getPageBlock() == 0 ? 10 : Specialbreakdto.getPageBlock();
-        Specialbreakdto.setPageNo(pageNo);
-        Specialbreakdto.setPageSize(pageSize);
-        Specialbreakdto.setPageBlock(pageBlock);
-        Specialbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+        int pageNo = Sickbreakdto.getPageNo() == 0 ? 1 : Sickbreakdto.getPageNo();
+        int pageSize = Sickbreakdto.getPageSize() == 0 ? 10 : Sickbreakdto.getPageSize();
+        int pageBlock = Sickbreakdto.getPageBlock() == 0 ? 10 : Sickbreakdto.getPageBlock();
+        Sickbreakdto.setPageNo(pageNo);
+        Sickbreakdto.setPageSize(pageSize);
+        Sickbreakdto.setPageBlock(pageBlock);
+        Sickbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
 
-        List<SpecialBreakVO> list = specialBreakMapper.SpecialBreakList(Specialbreakdto);
+        List<SickBreakVO> list = sickBreakMapper.SickBreakList(Sickbreakdto);
 
         if (pageNo != 1 && list.size() == 0) {
             pageNo = 1;
-            Specialbreakdto.setPageNo(pageNo);
-            Specialbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
-            list = specialBreakMapper.SpecialBreakList(Specialbreakdto);
+            Sickbreakdto.setPageNo(pageNo);
+            Sickbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+            list = sickBreakMapper.SickBreakList(Sickbreakdto);
         }
 
-        int totalCount = specialBreakMapper.SpecialBreakCount(Specialbreakdto);
+        int totalCount = sickBreakMapper.SickBreakCount(Sickbreakdto);
         int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
         String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
 
-        rs.put("SpecialBreakDTO", Specialbreakdto);
+        rs.put("SickBreakDTO", Sickbreakdto);
         rs.put("list", list);
         rs.put("totalCount", totalCount);
         rs.put("totalPageNo", totalPageNo);
@@ -102,28 +105,22 @@ public class SpecialBreakService {
         String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
         employeedto.setEmpNo(empNo);
         System.out.println("view empNo: " + empNo);
-        return specialBreakMapper.employeeVO(employeedto);
+        return sickBreakMapper.employeeVO(employeedto);
     }
 
     // 신청자 정보 + 휴가 데이터
     @Transactional(readOnly = true)
-    public SpecialBreakVO SpecialBreakView(SpecialBreakDTO Specialbreakdto) throws Exception {
-        return specialBreakMapper.SpecialBreakVO(Specialbreakdto);
+    public SickBreakVO SickBreakView(SickBreakDTO sickbreakdto) throws Exception {
+        return sickBreakMapper.SickBreakVO(sickbreakdto);
+
     }
 
     // 특별휴가 삭제
-    public Map<String, Object> SpecialBreakDelete(SpecialBreakDTO Specialbreakdto) throws Exception {
+    public Map<String, Object> SickBreakDelete(SickBreakDTO sickbreakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
-        specialBreakMapper.SpecialBreakDelete(Specialbreakdto);
+        sickBreakMapper.SickBreakDelete(sickbreakdto);
         rs.put("result", true);
         return rs;
     }
-
-
-
-
-
-
-
 
 }

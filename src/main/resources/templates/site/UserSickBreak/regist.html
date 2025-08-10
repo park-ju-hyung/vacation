@@ -3,7 +3,7 @@
       layout:decorate="~{common/layout/basic_layout.html}">
 
 <head>
-    <title>특별휴가 신청 - 등록</title>
+    <title>병가 신청 - 등록</title>
     <th:block layout:fragment="script">
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', () => {
@@ -43,7 +43,7 @@
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
                 console.log(searchData);
                 button.list.addEventListener('click', () => {
-                    window.location.replace('/site/UserBreak/list?' + getQueryStr(searchData));
+                    window.location.replace('/site/UserSickBreak/list?' + getQueryStr(searchData));
                 });
 
                 button.regist.addEventListener('click', regist);
@@ -61,10 +61,6 @@
                 const start = new Date(formData['startDate']);
                 const end = new Date(formData['endDate']);
 
-                if (isEmpty(formData['specialType'])) {
-                    alert('분류를 선택하여 주십시오.');
-                    return true;
-                }
                 if (isEmpty(formData['startDate'])) {
                     alert('신청기간을 입력하여 주십시오.');
                     return true;
@@ -97,8 +93,7 @@
                     'endDate': document.querySelector('input[name="endDate"]').value,
                     useDays: useDays, // input 없이 전역 변수 사용
                     'type': document.querySelector('input[name="type"]:checked')?.value || '연차',
-                    'reason': document.querySelector('textarea[name="reason"]').value,
-                    'specialType': document.querySelector('select[name="specialType"]').value,
+                    'reason': document.querySelector('textarea[name="reason"]').value
                 };
                 console.log(formData);
 
@@ -119,32 +114,12 @@
                     formData.useDays = 0.5;
                 }
                 const useDay = formData.useDays;// 신청일수
-                const specialType = formData.specialType;
 
-                // 휴가 종류별 최대 허용 일수 설정
-                const maxDays = {
-                    '결혼': 3,
-                    '철야': 5,
-                    '주말출근': 2,
-                    '가족상': 7
-                };
-
-                // 선택된 휴가 종류가 제한이 있는 경우
-                if (maxDays[specialType] !== undefined) {
-                    if (useDay > maxDays[specialType]) {
-                        console.log(`if useDay: ${useDay}`);
-                        alert(`${specialType} 휴가는 최대 ${maxDays[specialType]}일까지만 신청 가능합니다.`);
-                        return false;
-                    }
-                }
-
-
-                console.log("사용한휴가" + totalUseDays)
                 console.log("신청휴가일수" + useDay)
 
 
 
-                await fetch('/insertSpecialBreak', {
+                await fetch('/insertSickBreak', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -158,7 +133,7 @@
 
                         if (data.result === 'SUCCESS') {
                             alert('등록 성공');
-                            window.location.replace('/site/UserSpecialBreak/list?' + getQueryStr(searchData));
+                            window.location.replace('/site/UserSickBreak/list?' + getQueryStr(searchData));
                         } else {
                             alert('등록 실패');
                         }
@@ -391,7 +366,6 @@
         <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
         <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
     </form>
-
     <div style="display: flex;">
         <!--sidebar-->
         <th:block th:replace="~{site/fragment/basic_aside :: aside}"></th:block>
@@ -407,7 +381,7 @@
                     <ul>
                         <li>
                             <span>
-                                특별 휴가 신청
+                                병가 신청
                             </span>
                         </li>
                         <li>
@@ -452,22 +426,6 @@
                             </th>
                             <td th:text="${employeeVO.position}"></td>
                         </tr>
-                        <tr>
-                            <th>
-                                분류
-                            </th>
-                            <td>
-                                <select name="specialType" class="form-control w22p">
-                                    <option value="">분류 선택</option>
-                                    <option value="결혼">결혼</option>
-                                    <option value="철야">철야</option>
-                                    <option value="주말출근">주말출근</option>
-                                    <option value="가족상">가족상</option>
-                                    <option value="기타">기타</option>
-                                </select>
-                            </td>
-                        </tr>
-
                         <tr>
                             <th>
                                 신청일자
