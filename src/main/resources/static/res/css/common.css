@@ -94,6 +94,34 @@
   border-color: #146c43;
 }
 
+.btn-confirm {
+  background-color: #28a745;
+  color: #fff;
+}
+.bttn-del, .btn-return {
+  background-color: #dc3545;
+  color: #fff;
+}
+.btn-del{
+  color: #fff;
+  margin: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border: none;
+}
+.btn-request {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-confirm:hover { background-color: #218838; }
+.btn-return:hover, .bttn-del:hover { background-color: #c82333; }
+.btn-request:hover  { background-color: #5a6268; }
+
+
+
 
 
 
