@@ -4,6 +4,191 @@
 
 <head>
     <title>연차현황조회 - 목록</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefault();
+                registEvent();
+                getList();
+            });
+
+            const csrf = { 'header' : null, 'value' : null };
+
+            const button = {
+                'regist' : null, 'view' : null, 'page' : null, 'search' : null, 'del' : null
+            };
+
+            const dtPickerJSON = {
+                dateFormat: "yy-mm-dd",
+                startView: 3,
+                todayBtn:"linked",
+                language: "kr",
+                orientation: "top auto",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            };
+
+            const setDefault = function() {
+                csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+                button.regist = document.querySelector('.btn-regist');
+                button.search = document.querySelector('.sch-btn');
+
+                $('input[name="schDtStart"]').datepicker(dtPickerJSON);
+                $('input[name="schDtEnd"]').datepicker(dtPickerJSON);
+                $('input[name="schDtStart2"]').datepicker(dtPickerJSON);
+                $('input[name="schDtEnd2"]').datepicker(dtPickerJSON);
+            };
+
+            const registEvent = function() {
+
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                searchData = getSearchParam(searchData);
+
+                // 검색 버튼 클릭 이벤트
+                button.search.addEventListener('click', () => {
+                    getList();
+                });
+
+                // 등록버튼 클릭 이벤트
+                button.regist.addEventListener('click', () => {
+                    location.href = '/site/UserBreak/regist?';
+                });
+
+                // 키다운(Enter) 이벤트
+                for(search of document.querySelectorAll('.sch-input')) {
+                    search.addEventListener('keydown', (e) => {
+                        if(e.key == 'Enter') getList();
+                    });
+                }
+
+                // 검색버튼 클릭 이벤트
+                button.search.addEventListener('click', getList());
+
+            };
+
+
+            const getSearchParam = (searchParam) => {
+                // 검색 조건 추가
+                searchParam.append('schDtStart', document.querySelector('[name="schDtStart"]').value);
+                searchParam.append('schDtEnd', document.querySelector('[name="schDtEnd"]').value);
+                searchParam.append('schDtStart2', document.querySelector('[name="schDtStart2"]').value);
+                searchParam.append('schDtEnd2', document.querySelector('[name="schDtEnd2"]').value);
+                return searchParam;
+            };
+
+            async function getList() {
+                let formData = new FormData(document.querySelector('[name="searchForm"]'));
+                formData = getJSONData(getSearchParam(formData));
+
+                await fetch('/site/UserBreakList/list', {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
+                    body : JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        let totalCount = data.totalCount;
+                        let totalPageNo = data.totalPageNo;
+                        let list = data.list;
+
+                        let html = '';
+
+                        if (totalCount == 0) {
+                            html += '<tr><td class="text-center h-200px align-middle" colspan="7">데이터가 존재하지 않습니다.</td></tr>';
+                        } else {
+                            html += drawList(list);
+                        }
+
+                        document.querySelector('.list-table tbody').innerHTML = html;
+                        document.querySelector('.pagination').innerHTML = data.pagingHTML;
+
+                        viewFunc();
+                        pagingFunc();
+                    })
+                    .catch((error) => {
+                        alert('데이터를 가져오는데 실패하였습니다.');
+                        console.log(error);
+                    });
+            };
+
+            // 날짜 포맷 함수
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                const yyyy = date.getFullYear();
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const dd = String(date.getDate()).padStart(2, '0');
+                return `${yyyy}-${mm}-${dd}`;
+            };
+
+            const drawList = (list) => {
+                let html = '';
+
+                for (el of list) {
+                    html += '<tr>';
+                    html += '<td class="txt-cter">' + (el.seq) + '</td>';
+
+                    const startDate = formatDate(el.startDate);
+                    const endDate = formatDate(el.endDate);
+                    const regDate = formatDate(el.regDate);
+
+                    html += '<td><span class="mv-view pointer txt-lf" data-id="'+ (el.seq) +'">'+ (startDate) + '<span> ~ </span>' + (endDate) +'</span></td>';
+                    html += '<td class="txt-cter">' + (el.useDays) + '</td>';
+                    html += '<td class="txt-cter">' + (el.type) + '</td>';
+                    html += '<td class="txt-cter">' + (el.approval) + '</td>';
+                    html += '<td class="txt-cter">' + (regDate) + '</td>';
+                    html += '<td class="txt-cter">';
+                    html += '	<button class="bttn-del" data-id="' + el.holidayId + '" data-approval="' + el.approval + '">삭제</button>';
+                    html += '</td>';
+
+                    html += '</tr>';
+                }
+                return html;
+            };
+
+            const pagingFunc = () => {
+                button.page = document.querySelectorAll('.pagination .pageNo');
+
+                for(page of button.page) {
+                    page.addEventListener('click', (e) => {
+                        let target = e.target;
+                        let pageNo = target.getAttribute('data-pageNo');
+
+                        if(target.classList.contains('pg-active') == false) {
+                            document.querySelector('[name="pageNo"]').value = pageNo;
+                            getList();
+                        }
+                    });
+                }
+            };
+
+            const viewFunc = () => {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                searchData = getSearchParam(searchData);
+
+                // 조회 화면으로 이동
+                button.view = document.querySelectorAll('span[class^="mv"]');
+                for(view of button.view) {
+                    view.addEventListener('click', (e) => {
+                        let id = e.target.getAttribute('data-id');
+                        // window.location.href = '/mngr/gov/policy/view?' + getQueryStr(searchData) + '&govId=' + id;
+                        window.location.href = '/site/UserBreak/view?' + '&holidayId=' + id;
+                    });
+                }
+
+                // 삭제
+                button.del = document.querySelectorAll('.bttn-del');
+                for(del of button.del) {
+                    del.addEventListener('click', delt);
+                }
+
+            };
+
+        </script>
+    </th:block>
 
 </head>
 
@@ -16,21 +201,7 @@
         <!--content-->
         <div class="content">
             <!--상단-->
-            <div class="account">
-                <ul>
-                    <!--관리자 아이디 표시-->
-                    <li>
-                        <a href="#">
-                            <span>admin</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>로그아웃</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
             <!--content-->
             <div class="content-box">
                 <!--경로-->
@@ -92,98 +263,7 @@
                             <th>수정일자</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>19</td>
-                            <td><span class="mv-view pointer" data-userid="impnet">impnet</span></td>
-                            <td><span class="mv-view pointer" data-userid="impnet">김재상</span></td>
-                            <td>impnet@hanmail.net</td>
-                            <td>N</td>
-                            <td>2024-03-13</td>
-                            <td>2024-03-13</td>
-                        </tr>
-                        <tr>
-                            <td>18</td>
-                            <td><span class="mv-view pointer" data-userid="jmj1030">jmj1030</span></td>
-                            <td><span class="mv-view pointer" data-userid="jmj1030">조민지</span></td>
-                            <td>whalswl1030@nate.com</td>
-                            <td>N</td>
-                            <td>2022-10-05</td>
-                            <td>2023-12-28</td>
-                        </tr>
-                        <tr>
-                            <td>17</td>
-                            <td><span class="mv-view pointer" data-userid="test02">test02</span></td>
-                            <td><span class="mv-view pointer" data-userid="test02">테스트유저1</span></td>
-                            <td>thswodn1234@naver.com</td>
-                            <td>N</td>
-                            <td>2022-05-17</td>
-                            <td>2023-12-28</td>
-                        </tr>
-                        <tr>
-                            <td>16</td>
-                            <td><span class="mv-view pointer" data-userid="test01">test01</span></td>
-                            <td><span class="mv-view pointer" data-userid="test01">테스트유저1</span></td>
-                            <td>nus2008@hanmail.net</td>
-                            <td>Y</td>
-                            <td>2022-05-17</td>
-                            <td>2023-12-26</td>
-                        </tr>
-                        <tr>
-                            <td>15</td>
-                            <td><span class="mv-view pointer" data-userid="test09">test09</span></td>
-                            <td><span class="mv-view pointer" data-userid="test09">테스트유저1</span></td>
-                            <td>votiveodst@nate.com</td>
-                            <td>N</td>
-                            <td>2022-05-17</td>
-                            <td>2022-12-26</td>
-                        </tr>
-                        <tr>
-                            <td>14</td>
-                            <td><span class="mv-view pointer" data-userid="test_hong">test_hong</span></td>
-                            <td><span class="mv-view pointer" data-userid="test_hong">홍아무개</span></td>
-                            <td>votiveodst@nate.com</td>
-                            <td>N</td>
-                            <td>2024-07-30</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>13</td>
-                            <td><span class="mv-view pointer" data-userid="test07">test07</span></td>
-                            <td><span class="mv-view pointer" data-userid="test07">테스트유저1</span></td>
-                            <td>abcd7@abc.com</td>
-                            <td>N</td>
-                            <td>2022-05-17</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td><span class="mv-view pointer" data-userid="test03">test03</span></td>
-                            <td><span class="mv-view pointer" data-userid="test03">테스트유저1</span></td>
-                            <td>abcd3@abc.com</td>
-                            <td>N</td>
-                            <td>2022-05-17</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td><span class="mv-view pointer" data-userid="test08">test08</span></td>
-                            <td><span class="mv-view pointer" data-userid="test08">테스트유저1</span></td>
-                            <td>abcd8@abc.com</td>
-                            <td>N</td>
-                            <td>2022-05-17</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td><span class="mv-view pointer" data-userid="test04">test04</span></td>
-                            <td><span class="mv-view pointer" data-userid="test04">테스트유저1</span></td>
-                            <td>abcd4@abc.com</td>
-                            <td>N</td>
-                            <td>2022-05-17</td>
-                            <td>-</td>
-                        </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
 
                 </div>
