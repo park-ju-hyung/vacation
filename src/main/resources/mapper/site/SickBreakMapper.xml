@@ -6,8 +6,8 @@
 <mapper namespace="com.example.vacation.mvc.mapper.site.SickBreakMapper">
 	<!--휴가 신청-->
 	<insert id="insertSickBreak" parameterType="com.example.vacation.mvc.dto.SickBreakDTO">
-		INSERT INTO sick_break (sickId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, reason, approval, status )
-		VALUES (#{sickId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status})
+		INSERT INTO sick_break (sickId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, reason, approval, status, vacationType )
+		VALUES (#{sickId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status}, #{vacationType})
 	</insert>
 
 	<!-- 신청자 정보 가져오기-->

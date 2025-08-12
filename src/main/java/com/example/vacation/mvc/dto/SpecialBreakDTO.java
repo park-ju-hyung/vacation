@@ -27,4 +27,5 @@ public class SpecialBreakDTO extends BaseDTO {
     private String regDate; // 신청 일자
     private String rejectReason; // 반려사유
     private String specialType;
+    private String vacationType = "특별휴가";
 }
