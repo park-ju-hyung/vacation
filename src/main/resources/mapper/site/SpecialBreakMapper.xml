@@ -8,7 +8,7 @@
 	<!--휴가 신청-->
 	<insert id="insertSpecialBreak" parameterType="com.example.vacation.mvc.dto.SpecialBreakDTO">
 			INSERT INTO special_break (specialId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, reason, approval, status, specialType, vacationType )
-			VALUES (#{specialId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status}, #{specialType}, {vacationType})
+			VALUES (#{specialId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status}, #{specialType}, #{vacationType})
 	</insert>
 
 	<!-- 신청자 정보 가져오기-->
