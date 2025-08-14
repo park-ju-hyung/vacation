@@ -33,6 +33,12 @@ public class BreakListService {
     public Map<String, Object> AllBreakList(BreakListDTO breakListDTO) throws Exception {
         Map<String, Object> rs = new HashMap<>();
 
+        // 로그인한 empNO 정보 가져오기
+        String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
+        breakListDTO.setEmpNo(empNo);
+        System.out.println("empNo0814: " + breakListDTO.getEmpNo());
+
+
         int pageNo = breakListDTO.getPageNo() == 0 ? 1 : breakListDTO.getPageNo();
         int pageSize = breakListDTO.getPageSize() == 0 ? 10 : breakListDTO.getPageSize();
         int pageBlock = breakListDTO.getPageBlock() == 0 ? 10 : breakListDTO.getPageBlock();

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @Getter
 public class BreakListDTO extends BaseDTO {
     private Long seq; // 순번
+    private Long origSeq; // 순번
     private String empName; // 직원 이름
     private String empBirth; // 직원 생년월일
     private String empNo; // 사번
@@ -25,5 +26,8 @@ public class BreakListDTO extends BaseDTO {
     private String status = "002"; // 상태 코드
     private String regDate; // 신청 일자
     private String rejectReason; // 반려사유
+    private String vacationType;
     private String specialType;
+
+
 }

@@ -11,113 +11,122 @@
 			empName,
 			DATE_FORMAT(empBirth, '%Y-%m-%d') AS empBirth,
 			empNo,
-			position,
+			`position`,
 			department,
 			DATE_FORMAT(startDate, '%Y-%m-%d') AS startDate,
 			DATE_FORMAT(endDate,   '%Y-%m-%d') AS endDate,
 			useDays,
-			type,
+			`type`,
 			totalDays,
 			reason,
 			approval,
-			status,
-			regDate,
-			rejectReason,
-			vacationType
-		FROM break
-		WHERE empNo = #{empNo}
-		UNION ALL
-		SELECT
-			'special' AS src
-			empName,
-			DATE_FORMAT(empBirth, '%Y-%m-%d') AS empBirth,
-			empNo,
-			position,
-			department,
-			DATE_FORMAT(startDate, '%Y-%m-%d') AS startDate,
-			DATE_FORMAT(endDate,   '%Y-%m-%d') AS endDate,
-			useDays,
-			type,
-			totalDays,
-			reason,
-			approval,
-			status,
+			`status`,
 			regDate,
 			rejectReason,
 			vacationType,
-			specialType
-		FROM special_break
+			NULL AS specialType
+		FROM break
 		WHERE empNo = #{empNo}
+
 		UNION ALL
+
 		SELECT
-			'sick' AS src
+			'special' AS src,
 			empName,
 			DATE_FORMAT(empBirth, '%Y-%m-%d') AS empBirth,
 			empNo,
-			position,
+			`position`,
 			department,
 			DATE_FORMAT(startDate, '%Y-%m-%d') AS startDate,
 			DATE_FORMAT(endDate,   '%Y-%m-%d') AS endDate,
 			useDays,
-			type,
-			totalDays,
+			`type`,
+			NULL AS totalDays,       -- ← 콤마 추가
 			reason,
 			approval,
-			status,
+			`status`,
 			regDate,
 			rejectReason,
-			vacationType
+			vacationType,
+			NULL AS specialType     -- 필요 시 여기만 special_type 로 변경 가능
+		FROM special_break
+		WHERE empNo = #{empNo}
+
+		UNION ALL
+
+		SELECT
+			'sick' AS src,
+			empName,
+			DATE_FORMAT(empBirth, '%Y-%m-%d') AS empBirth,
+			empNo,
+			`position`,
+			department,
+			DATE_FORMAT(startDate, '%Y-%m-%d') AS startDate,
+			DATE_FORMAT(endDate,   '%Y-%m-%d') AS endDate,
+			useDays,
+			`type`,
+			NULL AS totalDays,       -- ← 콤마 추가
+			reason,
+			approval,
+			`status`,
+			regDate,
+			rejectReason,
+			vacationType,
+			NULL AS specialType
 		FROM sick_break
 		WHERE empNo = #{empNo}
-		ORDER BY regDate DESC;
-
 	</sql>
+
 
 	<sql id="where">
 		WHERE 1=1
-		<if test="schDtStart != '' and schDtStart != null">
-			AND DATE_FORMAT(regDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
+		<if test="schDtStart != null and schDtStart != ''">
+			AND DATE_FORMAT(t.regDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
 		</if>
-		<if test="schDtEnd != '' and schDtEnd != null">
-			AND DATE_FORMAT(regDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
+		<if test="schDtEnd != null and schDtEnd != ''">
+			AND DATE_FORMAT(t.regDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
 		</if>
-		<if test="schDtStart2 != '' and schDtStart2 != null">
-			AND DATE_FORMAT(startDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
+		<if test="schDtStart2 != null and schDtStart2 != ''">
+			AND DATE_FORMAT(t.startDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart2}
 		</if>
-		<if test="schDtEnd2 != '' and schDtEnd2 != null">
-			AND DATE_FORMAT(endDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd}
+		<if test="schDtEnd2 != null and schDtEnd2 != ''">
+			AND DATE_FORMAT(t.endDate, '%Y-%m-%d') <![CDATA[<=]]> #{schDtEnd2}
 		</if>
 		<if test="vacationType != null and vacationType != ''">
-			AND vacationType LIKE CONCAT('%', #{vacationType}, '%')
+			AND t.vacationType LIKE CONCAT('%', #{vacationType}, '%')
 		</if>
 	</sql>
 
-	<select id="AllBreakCount" parameterType="com.example.vacation.mvc.dto.BreakListDTO" resultType="integer">
-		SELECT count(*) FROM (
+	<select id="AllBreakCount"
+			parameterType="com.example.vacation.mvc.dto.BreakListDTO"
+			resultType="int">
+		SELECT COUNT(*)
+		FROM (
 		SELECT 1
 		FROM (
-			<include refid="basicTable"/>
-		) AS t
+		<include refid="basicTable"/>
+		) t
 		<include refid="where"/>
+		) c
 	</select>
 
 	<select id="AllBreakList"
 			parameterType="com.example.vacation.mvc.dto.BreakListDTO"
-			resultType="com.example.vacation.mvc.vo.SickListVO">
+			resultType="com.example.vacation.mvc.vo.BreakListVO">
 		SELECT
 		t.empName,
-		DATE_FORMAT(t.empBirth,  '%Y-%m-%d') AS empBirth,
+		t.empBirth,
 		t.empNo,
-		t.position,
+		t.`position`,
 		t.department,
-		DATE_FORMAT(t.startDate, '%Y-%m-%d') AS startDate,
-		DATE_FORMAT(t.endDate,   '%Y-%m-%d') AS endDate,
+		t.startDate,
+		t.endDate,
 		t.useDays,
-		t.type,
+		t.`type`,
 		t.totalDays,
 		t.reason,
 		t.approval,
-		t.status,
+		t.`status`,
 		t.regDate,
 		t.rejectReason,
 		t.vacationType,
@@ -130,6 +139,7 @@
 		ORDER BY t.regDate DESC
 		LIMIT #{pageSize} OFFSET #{pageOffset}
 	</select>
+
 
 
 
