@@ -15,23 +15,16 @@
 	<select id="employeeVO" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
 			resultType="com.example.vacation.mvc.vo.EmployeeVO">
 		SELECT
-			empId,
-			empName,
-			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
-			empNo,
-			position,
-			email,
-			phoneNumber,
-			emerNumber,
-			bankName,
-			accountNumber,
-			department,
-			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
-			status,
-			role,
-			totalDays
-		FROM employee
-		WHERE empNo = #{empNo}
+			e.empName,
+			e.empNo,
+			e.department,
+			e.position,
+			b.regDate,
+			e.totalDays,
+			b.remainDays
+		FROM employee e LEFT JOIN break b ON e.empNo = b.empNo
+		WHERE e.empNo = #{empNo}   ORDER BY b.regDate DESC
+			LIMIT 1
 	</select>
 
 	<!--리스트-->
@@ -98,6 +91,7 @@
 			useDays,
 			type,
 			totalDays,
+			remainDays,
 			reason,
 			rejectReason,
 			approval,

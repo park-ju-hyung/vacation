@@ -83,15 +83,6 @@ p {
   font-size: 0.85rem;
 }
 
-.account ul li::after {
-  content: "";
-  position: absolute;
-  top: 24px;
-  right: 72px;
-  width: 0.5px;
-  height: 12px;
-  background: #ccc;
-}
 
 /**content-box**/
 .content-box {

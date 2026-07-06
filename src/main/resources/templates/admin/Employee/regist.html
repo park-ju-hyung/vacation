@@ -204,233 +204,226 @@
         <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
         <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
     </form>
-
     <div style="display: flex;">
         <!--sidebar-->
         <th:block th:replace="~{admin/fragment/basic_aside :: aside}"></th:block>
-        <!--content-->
         <div class="content">
             <!--상단-->
-            <div class="account">
-                <ul>
-                    <li>
-                        <a href="#">
-                        <span>admin</span>
-                            </a>
-                        </li>
+            <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
+            <!--content-->
+            <div class="content-box">
+                <!--경로-->
+                <div class="current-site-path">
+                    <ul>
                         <li>
-                            <a href="#">
-                                <span>로그아웃</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!--content-->
-                <div class="content-box">
-                    <!--경로-->
-                    <div class="current-site-path">
-                        <ul>
-                            <li>
                             <span>
                                 직원등록
                             </span>
-                            </li>
-                            <li>
+                        </li>
+                        <li>
                             <span>
                                 등록
                             </span>
-                            </li>
+                        </li>
 
-                        </ul>
-                    </div>
+                    </ul>
+                </div>
 
-                    <!--content-table-->
-                    <div class="view-table">
-                        <table>
-                            <colgroup>
-                                <col width="12%">
-                                <col>
-                            </colgroup>
-                            <tbody>
-                            <tr>
-                                <th>
-                                    이름
-                                </th>
-                                <td>
-                                    <input type="text" name="empName" class="form-control w20p">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    생년월일
-                                </th>
-                                <td>
-                                    <input type="text" name="empBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    직급
-                                </th>
-                                <td>
-                                    <select name="position" class="form-control w22p">
-                                        <option value="">직급 선택</option>
-                                        <option value="사원">사원</option>
-                                        <option value="주임">주임</option>
-                                        <option value="대리">대리</option>
-                                        <option value="과장">과장</option>
-                                        <option value="차장">차장</option>
-                                        <option value="부장">부장</option>
-                                        <option value="이사">이사</option>
-                                        <option value="상무">상무</option>
-                                        <option value="전무">전무</option>
-                                        <option value="대표이사">대표이사</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    부서
-                                </th>
-                                <td>
-                                    <select name="department" class="form-control w22p">
-                                        <option value="">부서 선택</option>
-                                        <option value="경영지원팀">경영지원팀</option>
-                                        <option value="개발팀">개발팀</option>
-                                        <option value="영업팀">영업팀</option>
-                                        <option value="마케팅팀">마케팅팀</option>
-                                        <option value="디자인팀">디자인팀</option>
-                                        <option value="고객지원팀">고객지원팀</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    입사일
-                                </th>
-                                <td>
-                                    <input type="text" name="hireDate" class="form-control w20p" placeholder="YYYY-MM-DD">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    이메일
-                                </th>
-                                <td>
-                                    <input type="text" name="email1" class="form-control w20p dib">
-                                    <span class="dib">@</span>
-                                    <input type="text" name="email2" class="form-control w20p dib">
+                <!--content-table-->
+                <div class="view-table">
+                    <table>
+                        <colgroup>
+                            <col width="12%">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>
+                                이름
+                            </th>
+                            <td>
+                                <input type="text" name="empName" class="form-control w20p">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                생년월일
+                            </th>
+                            <td>
+                                <input type="text" name="empBirth" class="form-control w20p" placeholder="YYYY-MM-DD">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                직급
+                            </th>
+                            <td>
+                                <select name="position" class="form-control w22p">
+                                    <option value="">직급 선택</option>
+                                    <option value="사원">사원</option>
+                                    <option value="주임">주임</option>
+                                    <option value="대리">대리</option>
+                                    <option value="과장">과장</option>
+                                    <option value="차장">차장</option>
+                                    <option value="부장">부장</option>
+                                    <option value="이사">이사</option>
+                                    <option value="상무">상무</option>
+                                    <option value="전무">전무</option>
+                                    <option value="대표이사">대표이사</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                부서
+                            </th>
+                            <td>
+                                <select name="department" class="form-control w22p">
+                                    <option value="">부서 선택</option>
+                                    <option value="경영지원팀">경영지원팀</option>
+                                    <option value="개발팀">개발팀</option>
+                                    <option value="영업팀">영업팀</option>
+                                    <option value="마케팅팀">마케팅팀</option>
+                                    <option value="디자인팀">디자인팀</option>
+                                    <option value="고객지원팀">고객지원팀</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                입사일
+                            </th>
+                            <td>
+                                <input type="text" name="hireDate" class="form-control w20p" placeholder="YYYY-MM-DD">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                이메일
+                            </th>
+                            <td>
+                                <input type="text" name="email1" class="form-control w20p dib">
+                                <span class="dib">@</span>
+                                <input type="text" name="email2" class="form-control w20p dib">
 
-                                    <select name="domain" class="form-select w20p dib">
-                                        <option value="">직접선택</option>
-                                        <option value="naver.com">naver.com</option>
-                                        <option value="nate.com">nate.com</option>
-                                        <option value="gmail.com">gmail.com</option>
-                                        <option value="kakao.com">kakao.com</option>
-                                    </select>
+                                <select name="domain" class="form-select w20p dib">
+                                    <option value="">직접선택</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="nate.com">nate.com</option>
+                                    <option value="gmail.com">gmail.com</option>
+                                    <option value="kakao.com">kakao.com</option>
+                                </select>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    연락처
-                                </th>
-                                <td>
-                                    <input type="text" name="phoneNumber" class="form-control w20p dib">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    비상연락망
-                                </th>
-                                <td>
-                                    <input type="text" name="emerNumber" class="form-control w20p dib">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    은행명
-                                </th>
-                                <td>
-                                    <select name="bankName" class="form-control w20p dib">
-                                        <option value="">은행 선택</option>
-                                        <option value="국민은행">국민은행</option>
-                                        <option value="신한은행">신한은행</option>
-                                        <option value="우리은행">우리은행</option>
-                                        <option value="하나은행">하나은행</option>
-                                        <option value="기업은행">기업은행</option>
-                                        <option value="농협은행">농협은행</option>
-                                        <option value="카카오뱅크">카카오뱅크</option>
-                                        <option value="토스뱅크">토스뱅크</option>
-                                        <option value="새마을금고">새마을금고</option>
-                                        <option value="신협">신협</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    계좌번호
-                                </th>
-                                <td>
-                                    <input type="text" name="accountNumber" class="form-control w20p dib">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    권한
-                                </th>
-                                <td>
-                                    <select name="role" class="form-control w22p">
-                                        <option value="">권한 선택</option>
-                                        <option value="user">일반</option>
-                                        <option value="mngr">관리자</option>
-                                        <option value="super">최고 관리자</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <!--
-                            <tr>
-                                <th>
-                                    상태
-                                </th>
-                                <td>
-                                    <select name="status" class="form-select w22p">
-                                        <option value="">직접선택</option>
-                                        <option value="재직">재직</option>
-                                        <option value="휴직">휴직</option>
-                                        <option value="퇴직">퇴직</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            -->
-
-
-                            </tbody>
-                        </table>
-
-                    </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                연락처
+                            </th>
+                            <td>
+                                <input type="text" name="phoneNumber" class="form-control w20p dib">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                비상연락망
+                            </th>
+                            <td>
+                                <input type="text" name="emerNumber" class="form-control w20p dib">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                은행명
+                            </th>
+                            <td>
+                                <select name="bankName" class="form-control w20p dib">
+                                    <option value="">은행 선택</option>
+                                    <option value="국민은행">국민은행</option>
+                                    <option value="신한은행">신한은행</option>
+                                    <option value="우리은행">우리은행</option>
+                                    <option value="하나은행">하나은행</option>
+                                    <option value="기업은행">기업은행</option>
+                                    <option value="농협은행">농협은행</option>
+                                    <option value="카카오뱅크">카카오뱅크</option>
+                                    <option value="토스뱅크">토스뱅크</option>
+                                    <option value="새마을금고">새마을금고</option>
+                                    <option value="신협">신협</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                계좌번호
+                            </th>
+                            <td>
+                                <input type="text" name="accountNumber" class="form-control w20p dib">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                권한
+                            </th>
+                            <td>
+                                <select name="role" class="form-control w22p">
+                                    <option value="">권한 선택</option>
+                                    <option value="user">일반</option>
+                                    <option value="mngr">관리자</option>
+                                    <option value="super">최고 관리자</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!--
+                        <tr>
+                            <th>
+                                상태
+                            </th>
+                            <td>
+                                <select name="status" class="form-select w22p">
+                                    <option value="">직접선택</option>
+                                    <option value="재직">재직</option>
+                                    <option value="휴직">휴직</option>
+                                    <option value="퇴직">퇴직</option>
+                                </select>
+                            </td>
+                        </tr>
+                        -->
 
 
-                    <!--검색버튼-->
-                    <div class="search-button">
-                        <button type="button" class="btn-regist btn w75">등록</button>
-                        <button type="button" class="btn-view btn w75">목록</button>
-                    </div>
-
-
-
-
-
-
-
-
-
+                        </tbody>
+                    </table>
 
                 </div>
 
+
+                <!--검색버튼-->
+                <div class="search-button">
+                    <button type="button" class="btn-regist btn w75">등록</button>
+                    <button type="button" class="btn-view btn w75">목록</button>
+                </div>
+
+
+
+
+
+
+
+
+
+
             </div>
         </div>
-    </th:block>
+
+
+    </div>
+
+
+</th:block>
+
+
+
+
+
 
 
 

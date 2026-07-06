@@ -24,11 +24,13 @@ public class SessionManager {
 		}
 		session.setAttribute(SessionConstant.SESSION_MANAGER_NAME, vo.getEmpName()); // 이름
 		session.setAttribute(SessionConstant.SESSION_MANAGER_ID, vo.getEmpNo()); // 사번 = 아이디
+		session.setAttribute(SessionConstant.SESSION_MANAGER_ROLE, vo.getRole()); // 권한
 	}
 	
 	public static void removeSessionMngrInfo(HttpSession session) {
 		session.removeAttribute(SessionConstant.SESSION_MANAGER_NAME);
 		session.removeAttribute(SessionConstant.SESSION_MANAGER_ID);
+		session.removeAttribute(SessionConstant.SESSION_MANAGER_ROLE);
 	}
 	
 }

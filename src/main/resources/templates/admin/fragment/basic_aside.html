@@ -7,22 +7,41 @@
         </div>
         <ul class="menu">
             <li>
-                <a th:href="@{/admin/Employee/list}">
+                <a th:href="@{/mngr/Employee/list}">
                     <span>직원 관리 및 등록</span>
                 </a>
             </li>
 
             <li>
-                <a th:href="@{/admin/retire/list}">
+                <a th:href="@{/mngr/retire/list}">
                     <span>퇴직자 관리</span>
                 </a>
             </li>
             <li>
-                <a th:href="@{/admin/holiday/holiday_list}">
+                <a th:href="@{/mngr/UserAppBreak/list}">
+                    <span>휴가승인</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/mngr/specialBreak/specialBreak_list}">
+                    <span>특별휴가</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/mngr/sickBreak/sickBreak_list}">
+                    <span>병가</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/mngr/holiday/holiday_list}">
                     <span>공휴일 관리</span>
                 </a>
             </li>
-
+            <li>
+                <a th:href="@{/mngr/BreakList/BreakList_list}">
+                    <span>연차현황 조회</span>
+                </a>
+            </li>
         </ul>
     </div>
 </th:block>

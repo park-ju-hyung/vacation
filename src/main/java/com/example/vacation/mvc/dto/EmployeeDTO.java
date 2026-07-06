@@ -27,4 +27,13 @@ public class EmployeeDTO extends BaseDTO {
     private String empPassword; // 패스워드
     private String role; // 권한
     private BigDecimal totalDays; // 부여받은 휴가 일수
+
+    // break 컬럼
+    private BigDecimal remainDays; // 부여받은 휴가 일수 - 신청 휴가 일수
+    private String regDate; // 신청 일자
+    private BigDecimal useDays; // 신청 휴가 일수
+    private String approval = "제출";; // 승인 여부
+    private String breakStatus = "002";
+
+
 }

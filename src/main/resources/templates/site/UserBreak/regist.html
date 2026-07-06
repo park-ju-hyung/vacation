@@ -107,7 +107,7 @@
                     useDays: useDays, // input 없이 전역 변수 사용
                     'type': document.querySelector('input[name="type"]:checked')?.value || '연차',
                     'reason': document.querySelector('textarea[name="reason"]').value,
-                    'totalDays': document.querySelector('input[name="totalDays"]').value,
+                    /**'totalDays': document.querySelector('input[name="totalDays"]').value,**/
                     totalUseDays: totalUseDays
                 };
                 console.log(formData);
@@ -166,7 +166,6 @@
                         console.log(error);
                     });
             };
-
 
             function endChange(){
 
@@ -367,13 +366,6 @@
 
 
 
-
-
-
-
-
-
-
         </script>
     </th:block>
 </head>
@@ -451,7 +443,7 @@
                                 신청일
                             </th>
                             <td>
-                                신청일
+                                <span id="currentTime"></span>
                             </td>
                         </tr>
                         <tr>
@@ -459,15 +451,18 @@
                                 부여휴가일수
                             </th>
                             <td th:text="${employeeVO.totalDays}"></td>
-                            <input type="hidden" name="totalDays" th:value="${employeeVO.totalDays}">
                         </tr>
                         <tr>
                             <th>
                                 잔여휴가일수
                             </th>
                             <td>
-                                잔여휴가일수
+                                <!--<span th:text="${employeeVO.remainDays == null ? employeeVO.totalDays : employeeVO.remainDays}"></span>-->
+                                <span th:text="${#numbers.formatInteger(employeeVO.remainDays == null ? employeeVO.totalDays : employeeVO.remainDays, 0)}"></span>
                             </td>
+
+
+
                         </tr>
                         <tr>
                             <th>
@@ -533,6 +528,22 @@
 
                         </tbody>
                     </table>
+                    <script type="text/javascript">
+                        const today = new Date();
+                        const year = today.getFullYear();
+                        const month = (today.getMonth() + 1).toString().padStart(2, '0');
+                        const day = today.getDate().toString().padStart(2, '0');
+
+                        const hours = ('0' + today.getHours()).slice(-2);
+                        const minutes = ('0' + today.getMinutes()).slice(-2);
+                        const seconds = ('0' + today.getSeconds()).slice(-2);
+
+                        const now = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                        console.log(today);
+
+                        // id가 "currentTime"인 요소를 찾아 현재 시간 문자열을 삽입합니다.
+                        document.getElementById("currentTime").innerText = now;
+                    </script>
 
                 </div>
 
@@ -542,27 +553,9 @@
                     <button type="button" class="btn btn-regist w75">신청</button>
                     <button type="button" class="btn btn-view w75">목록</button>
                 </div>
-
-
-
-
-
-
-
-
-
-
             </div>
 
         </div>
-
-
-
-
-
-
-
-
     </div>
 </th:block>
 

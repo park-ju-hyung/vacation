@@ -42,10 +42,10 @@ spring:
   datasource:
     hikari:
       #jdbc-url: jdbc:p6spy:mariadb://127.0.0.1:13306/management #터널링
-      jdbc-url: jdbc:p6spy:mariadb://management-ptg0131-e7a3.c.aivencloud.com:21249/management #운영
+      jdbc-url: jdbc:p6spy:mariadb://localhost:3307/vacation?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-      username: avnadmin
-      password: AVNS_aGXr1HBraQ4DYSJUkuq
+      username: root
+      password: 1234
       pool-name: pool-
       auto-commit: false
       connection-test-query: SELECT 1

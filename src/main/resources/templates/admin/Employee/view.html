@@ -117,20 +117,7 @@
             <!--content-->
             <div class="content">
                 <!--상단-->
-                <div class="account">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                <span>admin</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span>로그아웃</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <th:block th:replace="~{site/fragment/basic_nav :: nav}"></th:block>
                 <!--content-->
                 <div class="content-box">
                     <!--경로-->
