@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/basic_layout.html}">
+
+<head>
+    <title>퇴직자 관리 - 상세보기</title>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+                setDefault();
+                registEvent();
+            });
+
+            const button = { 'list' : null };
+
+            const setDefault = function() {
+                button.list = document.querySelector('.btn-view');
+            };
+
+            const registEvent = function() {
+                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
+                /**
+                 button.list.addEventListener('click', () => {
+                 window.location.replace('/mngr/gov/policy/list?' + getQueryStr(searchData));
+                 });
+                 **/
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/mngr/retire/list?' + getQueryStr(searchData));
+                });
+
+                button.modify.addEventListener('click', () => {
+                    let id = document.querySelector('input[name="empId"]').value;
+                    window.location.replace('/mngr/Employee/modify?&empId='+ id +'&'+ getQueryStr(searchData));
+                    //http://localhost:8892/mngr/gov/policy/modify?&govId=79
+                });
+            };
+
+        </script>
+    </th:block>
+</head>
+
+<body>
+
+    <!-- layout에 삽입될 본문 fragment -->
+    <th:block layout:fragment="content">
+        <div style="display: flex;">
+            <!--sidebar-->
+            <th:block th:replace="~{admin/fragment/basic_aside :: aside}"></th:block>
+
+            <!--content-->
+            <div class="content">
+                <!--상단-->
+                <div class="account">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <span>admin</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>로그아웃</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--content-->
+                <div class="content-box">
+                    <!--경로-->
+                    <div class="current-site-path">
+                        <ul>
+                            <li>
+                            <span>
+                                퇴직자 관리
+                            </span>
+                            </li>
+                            <li>
+                            <span>
+                                상세보기
+                            </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 검색 form -->
+                    <form name="searchForm" method="post" onsubmit="return false;">
+
+                        <!-- 검색 조건 -->
+                        <input type="hidden" name="empId" th:value="${employeeDTO.empId}">
+                        <input type="hidden" name="empName" th:value="${employeeDTO.empName}">
+                        <input type="hidden" name="empBirth" th:value="${employeeDTO.empBirth}">
+                        <input type="hidden" name="position" th:value="${employeeDTO.position}">
+                        <input type="hidden" name="department" th:value="${employeeDTO.department}">
+                        <input type="hidden" name="email" th:value="${employeeDTO.email}">
+                        <input type="hidden" name="status" th:value="${employeeDTO.status}">
+
+                        <!-- 페이징 -->
+                        <input type="hidden" name="pageNo" th:value="${employeeDTO.pageNo}">
+                        <input type="hidden" name="pageBlock" th:value="${employeeDTO.pageBlock}">
+
+                    </form>
+
+                    <!--content-table-->
+                    <div class="view-table">
+                        <table>
+                            <colgroup>
+                                <col width="12%">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th>
+                                    이름
+                                </th>
+                                <td th:text="${employeeVO.empName}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    사번
+                                </th>
+                                <td th:text="${employeeVO.empNo}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    직급
+                                </th>
+                                <td th:text="${employeeVO.position}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    부서
+                                </th>
+                                <td th:text="${employeeVO.department}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    입사일
+                                </th>
+                                <td th:text="${employeeVO.hireDate}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    이메일
+                                </th>
+                                <td th:text="${employeeVO.email}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    상태
+                                </th>
+                                <td th:text="${employeeVO.status}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    주소
+                                </th>
+                                <td>
+                                    주소
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    연락처1
+                                </th>
+                                <td>
+                                    연락처1
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    연락처2
+                                </th>
+                                <td>
+                                    연락처2
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    은행명
+                                </th>
+                                <td>
+                                    은행명
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    계좌번호
+                                </th>
+                                <td>
+                                    계좌번호
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                    <!--검색버튼-->
+                    <div class="search-button">
+                        <button type="button" class="btn btn-view w75">목록</button>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+    </th:block>
+
+
+
+</body>
+
+</html>

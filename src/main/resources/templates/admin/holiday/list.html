@@ -2,18 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/basic_layout.html}">
 
-<head>
-    <title>공휴일 관리 - 목록</title>
-
-</head>
-
 <body>
-
+    <title>공휴일 관리 - 목록</title>
     <!-- layout에 삽입될 본문 fragment -->
     <th:block layout:fragment="content">
         <div style="display: flex;">
             <!--sidebar-->
-            <th:block th:replace="~{mngr/fragment/basic_aside :: aside}"></th:block>
+            <th:block th:replace="~{admin/fragment/basic_aside :: aside}"></th:block>
 
             <!--content-->
             <div class="content">
