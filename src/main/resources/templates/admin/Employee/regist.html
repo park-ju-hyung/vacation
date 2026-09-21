@@ -69,48 +69,48 @@
             };
 
             const validator = function (formData) {
-                if (isEmpty(formData['empName'])) {
+                if (isEmpty(formData.employee.empName)) {
                     alert('이름을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['empBirth'])) {
+                if (isEmpty(formData.employee.empBirth)) {
                     alert('생년월일을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['position'])) {
-                    alert('직급을 입력하여 주십시오.');
+                if (isEmpty(formData.employee.position)) {
+                    alert('직위를 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['department'])) {
+                if (isEmpty(formData.employee.department)) {
                     alert('부서를 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['hireDate'])) {
+                if (isEmpty(formData.employee.hireDate)) {
                     alert('입사일을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['email'])) {
+                if (isEmpty(formData.employee.email)) {
                     alert('이메일을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['phoneNumber'])) {
+                if (isEmpty(formData.employee.phoneNumber)) {
                     alert('연락처를 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['emerNumber'])) {
+                if (isEmpty(formData.employee.emerNumber)) {
                     alert('비상연락망을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['bankName'])) {
+                if (isEmpty(formData.employee.bankName)) {
                     alert('은행을 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['accountNumber'])) {
+                if (isEmpty(formData.employee.accountNumber)) {
                     alert('계좌번호를 입력하여 주십시오.');
                     return true;
                 }
-                if (isEmpty(formData['role'])) {
-                    alert('직급을 입력하여 주십시오.');
+                if (isEmpty(formData.employee.role)) {
+                    alert('권한을 입력하여 주십시오.');
                     return true;
                 }
                 /**
@@ -140,18 +140,26 @@
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
 
                 let formData = {
-                    'empName': document.querySelector('input[name="empName"]').value,
-                    'empBirth': document.querySelector('input[name="empBirth"]').value,
-                    'position': document.querySelector('select[name="position"]').value,
-                    'department': document.querySelector('select[name="department"]').value,
-                    'hireDate': document.querySelector('input[name="hireDate"]').value,
-                    'email': getEmail(),
-                    'phoneNumber': document.querySelector('input[name="phoneNumber"]').value,
-                    'emerNumber': document.querySelector('input[name="emerNumber"]').value,
-                    'bankName': document.querySelector('select[name="bankName"]').value,
-                    'accountNumber': document.querySelector('input[name="accountNumber"]').value,
-                    'role': document.querySelector('select[name="role"]').value,
-                    //'status': document.querySelector('select[name="status"]').value
+                    employee: {
+                        empName: document.querySelector('input[name="empName"]')?.value || '',
+                        empBirth: document.querySelector('input[name="empBirth"]')?.value || '',
+                        position: document.querySelector('select[name="position"]')?.value || '',
+                        department: document.querySelector('select[name="department"]')?.value || '',
+                        hireDate: document.querySelector('input[name="hireDate"]')?.value || '',
+                        email: getEmail(),
+                        phoneNumber: document.querySelector('input[name="phoneNumber"]')?.value || '',
+                        emerNumber: document.querySelector('input[name="emerNumber"]')?.value || '',
+                        bankName: document.querySelector('select[name="bankName"]')?.value || '',
+                        accountNumber: document.querySelector('input[name="accountNumber"]')?.value || '',
+                        role: document.querySelector('select[name="role"]')?.value || '',
+                        status: '재직'
+                    },
+                    status: {
+                        breakStart: document.querySelector('input[name="breakStart"]')?.value || '',
+                        breakEnd: document.querySelector('input[name="breakEnd"]')?.value || '',
+                        statusDate: document.querySelector('input[name="statusDate"]')?.value || '',
+                        statusReason: document.querySelector('textarea[name="statusReason"]')?.value || ''
+                    }
                 };
                 console.log(formData);
 

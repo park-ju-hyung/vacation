@@ -6,7 +6,7 @@
     <title>퇴직자 관리 - 목록</title>
     <th:block layout:fragment="script">
         <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener("DOMContentLoaded", () => {
                 setDefault();
                 registEvent();
                 getList();
@@ -14,102 +14,78 @@
 
             const csrf = { 'header' : null, 'value' : null };
 
-            const button = {
-                'view' : null, 'page' : null, 'search' : null
-            };
-
-            const dtPickerJSON = {
-                dateFormat: "yy-mm-dd",
-                startView: 3,
-                todayBtn:"linked",
-                language: "kr",
-                orientation: "top auto",
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-                todayHighlight: true
-            };
+            const button = { 'list' : null, 'modify' : null };
 
             const setDefault = function() {
                 csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
                 csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 
-                button.search = document.querySelector('.sch-btn');
-
-                $('input[name="schDtStart"]').datepicker(dtPickerJSON);
-                $('input[name="schDtEnd"]').datepicker(dtPickerJSON);
+                button.list = document.querySelector('.btn-view');
+                button.modify = document.querySelector('.btn-regist');
             };
 
             const registEvent = function() {
-
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
-                searchData = getSearchParam(searchData);
-
-                // 검색 버튼 클릭 이벤트
-                button.search.addEventListener('click', () => {
-                    getList();
+                /**
+                 button.list.addEventListener('click', () => {
+                 window.location.replace('/mngr/gov/policy/list?' + getQueryStr(searchData));
+                 });
+                 **/
+                button.list.addEventListener('click', () => {
+                    window.location.replace('/admin/Employee/list?' + getQueryStr(searchData));
                 });
 
-
-                // 키다운(Enter) 이벤트
-                for(search of document.querySelectorAll('.sch-input')) {
-                    search.addEventListener('keydown', (e) => {
-                        if(e.key == 'Enter') getList();
-                    });
-                }
-
-                // 검색버튼 클릭 이벤트
-                button.search.addEventListener('click', getList());
-
+                button.modify.addEventListener('click', () => {
+                    let id = document.querySelector('input[name="empId"]').value;
+                    window.location.replace('/admin/Employee/modify?&empId='+ id +'&'+ getQueryStr(searchData));
+                    //http://localhost:8892/mngr/gov/policy/modify?&govId=79
+                });
             };
 
 
-            const getSearchParam = (searchParam) => {
-                // 검색 조건 추가
-                searchParam.append('empName', document.querySelector('[name="empName"]').value);
-                searchParam.append('department', document.querySelector('[name="department"]').value);
-                searchParam.append('position', document.querySelector('[name="position"]').value);
-                searchParam.append('schDtStart', document.querySelector('[name="schDtStart"]').value);
-                searchParam.append('schDtEnd', document.querySelector('[name="schDtEnd"]').value);
-
-
-                return searchParam;
-            };
 
             async function getList() {
-                let formData = new FormData(document.querySelector('[name="searchForm"]'));
-                formData = getJSONData(getSearchParam(formData));
+                const empNo = document.querySelector('[name="empNo"]').value;
+                const empBirth = document.querySelector('[name="empBirth"]').value;
 
-                await fetch('/mngr/retire/list', {
-                    method : 'POST',
-                    headers : {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' :  csrf.token },
-                    body : JSON.stringify(formData),
+                const requestData = {
+                    empNo: empNo,
+                    empBirth: empBirth
+                };
+
+                await fetch('/admin/EmployeeStatus/list', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf.token
+                    },
+                    body: JSON.stringify(requestData),
                 })
                     .then((response) => response.json())
                     .then((data) => {
+
                         let totalCount = data.totalCount;
                         let totalPageNo = data.totalPageNo;
                         let list = data.list;
+                        console.log(list);
 
                         let html = '';
 
-                        if (totalCount == 0) {
+                        if (!list || list.length === 0) {
                             html += '<tr><td class="text-center h-200px align-middle" colspan="6">데이터가 존재하지 않습니다.</td></tr>';
                         } else {
                             html += drawList(list);
                         }
 
                         document.querySelector('.list-table tbody').innerHTML = html;
-                        document.querySelector('.pagination').innerHTML = data.pagingHTML;
-
-                        viewFunc();
-                        pagingFunc();
+                        // document.querySelector('.pagination').innerHTML = data.pagingHTML;
                     })
                     .catch((error) => {
                         alert('데이터를 가져오는데 실패하였습니다.');
                         console.log(error);
                     });
-            };
+            }
+
 
             const drawList = (list) => {
                 let html = '';
@@ -117,50 +93,18 @@
                 for (el of list) {
                     html += '<tr>';
                     html += '<td class="txt-cter">' + (el.seq) + '</td>';
-                    html += '<td><span class="mv-view pointer txt-lf" data-id="'+ (el.empId) +'">'+ (el.empName) +'</span></td>';
+                    html += '<td class="txt-cter">' + (el.empName) + '</td>';
                     html += '<td class="txt-cter">' + (el.empBirth) + '</td>';
-                    html += '<td class="txt-cter">' + (el.department) + '</td>';
-                    html += '<td class="txt-cter">' + (el.position) + '</td>';
-                    html += '<td class="txt-cter">' + (el.hireDate) + '</td>';
                     html += '<td class="txt-cter">' + (el.status) + '</td>';
+                    html += '<td class="txt-cter">' + (el.statusDate) + '</td>';
+                    html += '<td class="txt-cter">' + (el.statusReason) + '</td>';
                     html += '</tr>';
                 }
                 return html;
             };
 
-            const pagingFunc = () => {
-                button.page = document.querySelectorAll('.pagination .pageNo');
-
-                for(page of button.page) {
-                    page.addEventListener('click', (e) => {
-                        let target = e.target;
-                        let pageNo = target.getAttribute('data-pageNo');
-
-                        if(target.classList.contains('pg-active') == false) {
-                            document.querySelector('[name="pageNo"]').value = pageNo;
-                            getList();
-                        }
-                    });
-                }
-            };
-
-            const viewFunc = () => {
-                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
-                searchData = getSearchParam(searchData);
-
-                // 조회 화면으로 이동
-                button.view = document.querySelectorAll('span[class^="mv"]');
-                for(view of button.view) {
-                    view.addEventListener('click', (e) => {
-                        let id = e.target.getAttribute('data-id');
-                        // window.location.href = '/mngr/gov/policy/view?' + getQueryStr(searchData) + '&govId=' + id;
-                        window.location.href = '/mngr/retire/view?' + '&empId=' + id;
-                    });
-                }
-
-            };
-
         </script>
+    </th:block>
 
 </head>
 
@@ -264,10 +208,9 @@
                                 <th>번호</th>
                                 <th>이름</th>
                                 <th>생년월일</th>
-                                <th>부서</th>
-                                <th>직책</th>
-                                <th>퇴직일</th>
                                 <th>상태</th>
+                                <th>일자</th>
+                                <th>사유</th>
                             </tr>
                             </thead>
                             <tbody>

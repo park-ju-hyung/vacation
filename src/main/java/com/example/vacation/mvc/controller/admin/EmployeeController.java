@@ -32,9 +32,9 @@ public class EmployeeController {
 
     @PostMapping("/employee/regist")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> regist(@RequestBody EmployeeDTO employeedto) throws Exception {
+    public ResponseEntity<Map<String, Object>> regist(@RequestBody EmployeeFormDTO employeeformdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
-        employeeService.regist(employeedto);
+        employeeService.regist(employeeformdto);
         rs.put("result", "SUCCESS");
         return ResponseEntity.ok(rs);
     }

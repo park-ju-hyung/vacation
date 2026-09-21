@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,26 +38,29 @@ public class EmployeeService {
 
     // 등록
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
-    public Map<String, Object> regist(EmployeeDTO employeedto) throws Exception {
+    public Map<String, Object> regist(EmployeeFormDTO employeeformdto) throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
 
-        //상태 기본 값은 재직
-        if (employeedto.getStatus() == null || employeedto.getStatus().isEmpty()) {
-            employeedto.setStatus("재직");
-        }
+        // dto 세팅
+        EmployeeDTO employeedto = employeeformdto.getEmployee();
+        EmployeeStatusDTO statusdto = employeeformdto.getStatus();
 
-        //생년월일
+        // 사번 번호 만들기
+        // 1. 생년월일
         String birthDate = employeedto.getEmpBirth();
         birthDate = birthDate.replace("-", "");
 
-        //난수만들기
+        // 2. 난수만들기
         Random rand = new Random();
         int randomNum = rand.nextInt(9000) + 1000;
+        String empNo = birthDate + randomNum;
 
-        //최종
+        // 3. 합치기
         employeedto.setEmpNo(birthDate + randomNum);
         employeedto.setEmpPassword(mngrPasswordEncoder.encode(birthDate + randomNum));
 
+
+        // 직급별 연차 부여
         if ("사원".equals(employeedto.getPosition())) {
             employeedto.setTotalDays(BigDecimal.valueOf(3));
         } else if ("주임".equals(employeedto.getPosition())) {
@@ -64,9 +69,15 @@ public class EmployeeService {
             employeedto.setTotalDays(BigDecimal.valueOf(8));
         }
 
-
+        statusdto.setEmpName(employeedto.getEmpName());
+        statusdto.setEmpBirth(employeedto.getEmpBirth());
+        statusdto.setEmpNo(empNo);
+        statusdto.setStatus("입사");
+        statusdto.setStatusDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         employeeMapper.insertEmployee(employeedto);
+        employeeMapper.insertStatus(statusdto);
+
         rs.put("result", employeedto);
         return rs;
     }

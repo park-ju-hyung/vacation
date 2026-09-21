@@ -74,7 +74,7 @@
 			DATE_FORMAT(hireDate, '%Y-%m-%d') as hireDate,
 			status,
 			role,
-			totalDays; // 부여받은 휴가 일수
+			totalDays
 		FROM employee
 		WHERE empId = #{empId}
 	</select>
@@ -99,7 +99,7 @@
 
 	<!--휴직 퇴직시 날짜, 사유 등록-->
 	<insert id="insertStatus" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO">
-		INSERT INTO employeestatus ( statusId, empName, empBirth, empNo, status, statusDate, breakStart, breakEnd, statusReason)
+		INSERT INTO employee_status ( statusId, empName, empBirth, empNo, status, statusDate, breakStart, breakEnd, statusReason)
 		VALUES ( #{statusId}, #{empName}, #{empBirth}, #{empNo}, #{status}, #{statusDate}, #{breakStart}, #{breakEnd}, #{statusReason})
 	</insert>
 
@@ -108,12 +108,12 @@
 		SELECT ROW_NUMBER() OVER (ORDER BY E.statusDate DESC) AS seq,
 				S.empId, S.empName, S.empNo,
 			   E.status, E.empBirth, E.statusDate, E.breakStart, E.breakEnd, E.statusReason
-		FROM employee S JOIN employeestatus E ON S.empNo = E.empNo
+		FROM employee S JOIN employee_status E ON S.empNo = E.empNo
 		WHERE E.empNo = #{empNo}
 	</sql>
 
 	<select id="employeeStatusCount" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO" resultType="integer">
-		SELECT count(*) FROM employeestatus
+		SELECT count(*) FROM employee_status
 	</select>
 
 	<select id="employeeStatuslist" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO"

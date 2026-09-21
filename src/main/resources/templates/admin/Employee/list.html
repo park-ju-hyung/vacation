@@ -159,7 +159,7 @@
                     view.addEventListener('click', (e) => {
                         let id = e.target.getAttribute('data-id');
                         // window.location.href = '/mngr/gov/policy/view?' + getQueryStr(searchData) + '&govId=' + id;
-                        window.location.href = '/mngr/Employee/view?' + '&empId=' + id;
+                        window.location.href = '/admin/Employee/view?' + '&empId=' + id;
                     });
                 }
 
@@ -209,12 +209,32 @@
                             <!--부서-->
                             <div>
                                 <span>부서</span>
-                                <input type="text" name="department" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.department}">
+                                <select name="department" class="sch-input form-control" style="width: 300px; margin-left: 10px;">
+                                    <option value="">부서 선택</option>
+                                    <option value="경영지원팀">경영지원팀</option>
+                                    <option value="개발팀">개발팀</option>
+                                    <option value="영업팀">영업팀</option>
+                                    <option value="마케팅팀">마케팅팀</option>
+                                    <option value="디자인팀">디자인팀</option>
+                                    <option value="고객지원팀">고객지원팀</option>
+                                </select>
                             </div>
                             <!--직책-->
                             <div>
-                                <span>직책</span>
-                                <input type="text" name="position" style="width: 300px; margin-left: 10px;" class="sch-input form-control" th:value="${employeeDTO.position}">
+                                <span>직급</span>
+                                <select name="position" class="sch-input form-control" style="width: 300px; margin-left: 10px;">
+                                    <option value="">직급 선택</option>
+                                    <option value="사원">사원</option>
+                                    <option value="주임">주임</option>
+                                    <option value="대리">대리</option>
+                                    <option value="과장">과장</option>
+                                    <option value="차장">차장</option>
+                                    <option value="부장">부장</option>
+                                    <option value="이사">이사</option>
+                                    <option value="상무">상무</option>
+                                    <option value="전무">전무</option>
+                                    <option value="대표이사">대표이사</option>
+                                </select>
                             </div>
                         </div>
                         <div class="search-content">
@@ -227,7 +247,7 @@
                             <div>
                                 <span>입사일자</span>
                                 <input type="text" name="schDtStart" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtStart}">
-                                <span class="dpi">~</span>
+                                <span class="dpi" style="text-align: center">~</span>
                                 <input type="text" name="schDtEnd" class="sch-input form-control w-40 dpi" th:value="${employeeDTO.schDtEnd}">
                             </div>
                         </div>
@@ -254,7 +274,7 @@
                                 <th>이름</th>
                                 <th>생년월일</th>
                                 <th>부서</th>
-                                <th>직책</th>
+                                <th>직급</th>
                                 <th>입사일</th>
                                 <th>상태</th>
                             </tr>

@@ -53,7 +53,7 @@
                     empBirth: empBirth
                 };
 
-                await fetch('/mngr/EmployeeStatus/list', {
+                await fetch('/admin/EmployeeStatus/list', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -96,7 +96,11 @@
                     html += '<td class="txt-cter">' + (el.empName) + '</td>';
                     html += '<td class="txt-cter">' + (el.empBirth) + '</td>';
                     html += '<td class="txt-cter">' + (el.status) + '</td>';
-                    html += '<td class="txt-cter">' + (el.statusDate) + '</td>';
+                    if(el.status === '휴직'){
+                        html += '<td class="txt-cter">' + (el.breakStart) + ' ~ ' + (el.breakEnd) + '</td>';
+                    } else  {
+                        html += '<td class="txt-cter">' + (el.statusDate) + '</td>';
+                    }
                     html += '<td class="txt-cter">' + (el.statusReason) + '</td>';
                     html += '</tr>';
                 }
@@ -220,6 +224,7 @@
                                 </th>
                                 <td th:if="${employeeVO.role == 'user'}">일반</td>
                                 <td th:if="${employeeVO.role == 'admin'}">관리자</td>
+                                <td th:if="${employeeVO.role == 'super'}">최고 관리자</td>
 
                             </tr>
                             <tr>

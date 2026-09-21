@@ -405,7 +405,7 @@
                                     연락처
                                 </th>
                                 <td>
-                                    <input type="text" name="hireDate" th:value="${employeeVO.phoneNumber}" class="form-control w20p">
+                                    <input type="text" name="phoneNumber" th:value="${employeeVO.phoneNumber}" class="form-control w20p">
                                 </td>
                             </tr>
                             <tr>
@@ -413,7 +413,7 @@
                                     비상연락망
                                 </th>
                                 <td>
-                                    <input type="text" name="hireDate" th:value="${employeeVO.emerNumber}" class="form-control w20p">
+                                    <input type="text" name="emerNumber" th:value="${employeeVO.emerNumber}" class="form-control w20p">
                                 </td>
                             </tr>
                             <tr>
@@ -421,7 +421,7 @@
                                     은행명
                                 </th>
                                 <td>
-                                    <select name="department" class="form-control w22p">
+                                    <select name="bankName" class="form-control w22p">
                                         <option value="">은행 선택</option>
                                         <option value="국민은행" th:selected="${employeeVO.bankName == '국민은행'}">국민은행</option>
                                         <option value="신한은행" th:selected="${employeeVO.bankName == '신한은행'}">신한은행</option>
@@ -442,7 +442,7 @@
                                     계좌번호
                                 </th>
                                 <td>
-                                    <input type="text" name="hireDate" th:value="${employeeVO.accountNumber}" class="form-control w20p">
+                                    <input type="text" name="accountNumber" th:value="${employeeVO.accountNumber}" class="form-control w20p">
                                 </td>
                             </tr>
 
