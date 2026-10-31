@@ -18,4 +18,9 @@ public class EmployeeStatusDTO extends BaseDTO {
     private String statusReason; // 사유
     private String breakStart; // 휴직 시작일
     private String breakEnd; // 휴직 마지막일
+    private String position; // 직책
+    private String department; // 부서
+
+    // employee_status
+    private String hireDate; // 입사일
 }

@@ -35,7 +35,7 @@ public class EmployeeController {
     public ResponseEntity<Map<String, Object>> regist(@RequestBody EmployeeFormDTO employeeformdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
         employeeService.regist(employeeformdto);
-        rs.put("result", "SUCCESS");
+        rs.put("result", "SUCCESS"); // Key(키)로 "result"를 지정,Value(값)로 "SUCCESS"라는 문자열을 담아 응답
         return ResponseEntity.ok(rs);
     }
 

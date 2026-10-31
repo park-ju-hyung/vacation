@@ -6,13 +6,14 @@
     <title>직원 등록 - 등록</title>
     <th:block layout:fragment="script">
         <script type="text/javascript">
+            // 페이지 로드시 초기화
             document.addEventListener('DOMContentLoaded', () => {
                 setDefault();
                 registEvent();
 
             });
 
-
+            //
             document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('select[name="domain"]').addEventListener('change', function () {
                     const selectedValue = this.value;
@@ -35,10 +36,13 @@
                 todayHighlight: true
             };
 
+            // 보안 토큰 저장 객체 (spring security 연동용)
             const csrf = {'header': null, 'value': null};
 
+            // 주요 버튼 선언
             const button = {'list': null, 'regist': null};
 
+            // 토큰(보안)을 담아서 데이터 전달
             const setDefault = function () {
                 csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
                 csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
@@ -51,6 +55,7 @@
                 $('input[name="hireDate"]').datepicker(dtPickerJSON);
             };
 
+            // 버튼 모음
             const registEvent = function () {
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
 
@@ -61,6 +66,7 @@
                 button.regist.addEventListener('click', regist);
             };
 
+            // 빈 문자열 확인
             const isEmpty = (value) => {
                 if (value == null || typeof value == 'undefined' || value == '')
                     return true;
@@ -68,6 +74,7 @@
                     return false;
             };
 
+            // 빈 문자열 alert 창
             const validator = function (formData) {
                 if (isEmpty(formData.employee.empName)) {
                     alert('이름을 입력하여 주십시오.');
@@ -123,6 +130,7 @@
                 return false;
             };
 
+            
             function getEmail() {
                 let email1 = document.querySelector('input[name="email1"]').value;
                 let email2 = document.querySelector('input[name="email2"]').value;

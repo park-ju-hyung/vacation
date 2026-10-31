@@ -6,16 +6,20 @@
     <title>직원 등록 - 상세보기</title>
     <th:block layout:fragment="script">
         <script type="text/javascript">
+            // 페이지 로드시 초기화
             document.addEventListener("DOMContentLoaded", () => {
                 setDefault();
                 registEvent();
                 getList();
             });
 
+            // 보안 토큰 저장 객체 (spring security 연동용)
             const csrf = { 'header' : null, 'value' : null };
 
+            // 주요 버튼 선언
             const button = { 'list' : null, 'modify' : null };
 
+            // 토큰(보안)을 담아서 데이터 전달
             const setDefault = function() {
                 csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
                 csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
@@ -24,6 +28,7 @@
                 button.modify = document.querySelector('.btn-regist');
             };
 
+            // 버튼 모음
             const registEvent = function() {
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
                 /**

@@ -195,7 +195,7 @@ table {
 }
 
 /* 왼쪽 열(부서, 이름)과 오른쪽 열(직급, 입사일자) 사이 간격 */
-.search-content > div:last-child {
+.search-content > div:not(:first-child) {
   margin-left: 50px; /* 이 수치를 조절해서 좌우 사이 거리를 맞추세요 (예: 30px~60px) */
 }
 

@@ -6,18 +6,22 @@
     <title>직원 관리 등록 - 목록</title>
     <th:block layout:fragment="script">
         <script type="text/javascript">
+            // 페이지 로드시 초기화
             document.addEventListener('DOMContentLoaded', () => {
                 setDefault();
                 registEvent();
                 getList();
             });
 
+            // 보안 토큰 저장 객체 (spring security 연동용)
             const csrf = { 'header' : null, 'value' : null };
 
+            // 주요 버튼 선언
             const button = {
                 'regist' : null, 'view' : null, 'page' : null, 'search' : null
             };
 
+            // Bootstrap Datepicker 설정 옵션 (입사일 검색용)
             const dtPickerJSON = {
                 dateFormat: "yy-mm-dd",
                 startView: 3,
@@ -30,6 +34,7 @@
                 todayHighlight: true
             };
 
+            // 토큰(보안)을 담아서 데이터 전달
             const setDefault = function() {
                 csrf.header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
                 csrf.token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
@@ -41,10 +46,8 @@
                 $('input[name="schDtEnd"]').datepicker(dtPickerJSON);
             };
 
+            // 버튼 모음
             const registEvent = function() {
-
-                let searchData = new FormData(document.querySelector('[name="searchForm"]'));
-                searchData = getSearchParam(searchData);
 
                 // 검색 버튼 클릭 이벤트
                 button.search.addEventListener('click', () => {
@@ -63,14 +66,10 @@
                     });
                 }
 
-                // 검색버튼 클릭 이벤트
-                button.search.addEventListener('click', getList());
-
             };
 
-
+            // 검색 조건 값 담기 -> searchForm 부분 들만 담아져 있는 상황이라 다른 것들은 수동으로 담아야함
             const getSearchParam = (searchParam) => {
-                // 검색 조건 추가
                 searchParam.append('empName', document.querySelector('[name="empName"]').value);
                 searchParam.append('department', document.querySelector('[name="department"]').value);
                 searchParam.append('position', document.querySelector('[name="position"]').value);
@@ -81,6 +80,7 @@
                 return searchParam;
             };
 
+            // 비동기(Fetch API) 목록 조회
             async function getList() {
                 let formData = new FormData(document.querySelector('[name="searchForm"]'));
                 formData = getJSONData(getSearchParam(formData));
@@ -107,6 +107,7 @@
                         document.querySelector('.list-table tbody').innerHTML = html;
                         document.querySelector('.pagination').innerHTML = data.pagingHTML;
 
+                        // 초기화 및 새로운 값 주입
                         viewFunc();
                         pagingFunc();
                     })
@@ -134,15 +135,16 @@
             };
 
             const pagingFunc = () => {
-                button.page = document.querySelectorAll('.pagination .pageNo');
+                button.page = document.querySelectorAll('.pagination .pageNo'); // 모든 페이지의 번호 요소를 가져옴
 
-                for(page of button.page) {
-                    page.addEventListener('click', (e) => {
+                for(page of button.page) { // 수집한 번호들을 반복 돌림
+                    page.addEventListener('click', (e) => { // 클릭을 했을때
                         let target = e.target;
                         let pageNo = target.getAttribute('data-pageNo');
+                        // 사용자가 마우스로 누른 번호 태그의 data-pageNo 속성값을 가져옴
 
-                        if(target.classList.contains('pg-active') == false) {
-                            document.querySelector('[name="pageNo"]').value = pageNo;
+                        if(target.classList.contains('pg-active') == false) { // 현재 보고 있는 페이지인지 검사
+                            document.querySelector('[name="pageNo"]').value = pageNo; // searchForm 부분에 데이터 넣음
                             getList();
                         }
                     });

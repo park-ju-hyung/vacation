@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.vacation.mvc.mapper.admin.RetireMapper">
+	<!--휴직 퇴직시 날짜, 사유 list-->
+	<!-- 1. 공통 WHERE 조건 SQL 조각 -->
+	<sql id="retireSearchCondition">
+		<where>
+			AND E.status = '퇴직'
+			<if test="empNo != null and empNo != ''">
+				AND E.empNo = #{empNo}
+			</if>
+			<if test="empName != null and empName != ''">
+				AND S.empName LIKE CONCAT('%', #{empName}, '%')
+			</if>
+			<if test="department != null and department != ''">
+				AND S.department = #{department}
+			</if>
+			<if test="position != null and position != ''">
+				AND S.position = #{position}
+			</if>
+			<if test="schDtStart != null and schDtStart != ''">
+				AND E.statusDate &gt;= #{schDtStart}
+			</if>
+			<if test="schDtEnd != null and schDtEnd != ''">
+				AND E.statusDate &lt;= #{schDtEnd}
+			</if>
+		</where>
+	</sql>
+
+	<!-- 2. 목록 기본 SELECT SQL 조각 -->
+	<sql id="RetireTable">
+		SELECT ROW_NUMBER() OVER (ORDER BY E.statusDate DESC) AS seq,
+		S.empId, S.empName, S.empNo, S.department, S.position,
+		E.status, E.empBirth, E.statusDate, E.statusReason, E.statusId
+		FROM employee S
+		JOIN employee_status E ON S.empNo = E.empNo
+		<include refid="retireSearchCondition"/>
+	</sql>
+
+	<!-- 3. 총 개수 조회 (동일한 검색 조건 적용) -->
+	<select id="RetireStatusCount" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO" resultType="integer">
+		SELECT COUNT(*)
+		FROM employee S
+		JOIN employee_status E ON S.empNo = E.empNo
+		<include refid="retireSearchCondition"/>
+	</select>
+
+	<!-- 4. 목록 페이징 조회 -->
+	<select id="RetireStatusList" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeStatusVO">
+		<include refid="RetireTable"/>
+		ORDER BY seq DESC
+		LIMIT #{pageSize} OFFSET #{pageOffset}
+	</select>
+
+
+	<!--상세보기-->
+	<select id="employeeStatusVO" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO"
+			resultType="com.example.vacation.mvc.vo.EmployeeStatusVO">
+		SELECT
+			E.statusId,
+			E.empName,
+			E.empBirth,
+			S.position,
+			S.department,
+			E.status,
+			S.hireDate,
+			S.empNo
+		FROM employee S
+		JOIN employee_status E ON S.empNo = E.empNo
+		WHERE statusId = #{statusId}
+
+
+
+	</select>
+
+</mapper>
