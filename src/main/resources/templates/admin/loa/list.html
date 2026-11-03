@@ -115,7 +115,8 @@
                     html += '<td class="txt-cter">' + (el.empBirth) + '</td>';
                     html += '<td class="txt-cter">' + (el.department) + '</td>';
                     html += '<td class="txt-cter">' + (el.position) + '</td>';
-                    html += '<td class="txt-cter">' + (el.statusDate) + '</td>';
+                    html += '<td class="txt-cter">' + (el.hireDate) + '</td>';
+                    html += '<td class="txt-cter">' + (el.breakStart) + '~' + (el.breakEnd) + '</td>';
                     html += '<td class="txt-cter">' + (el.status) + '</td>';
                     html += '</tr>';
                 }
@@ -255,13 +256,15 @@
                 <div class="list-table">
                     <table>
                         <colgroup>
-                            <col>
-                            <col>
-                            <col>
-                            <col>
-                            <col>
-                            <col>
-                            <col>
+                            <col style="width: 6%;">   <!-- 번호 -->
+                            <col style="width: 10%;">  <!-- 이름 -->
+                            <col style="width: 13%;">  <!-- 사번 -->
+                            <col style="width: 11%;">  <!-- 생년월일 -->
+                            <col style="width: 10%;">  <!-- 부서 -->
+                            <col style="width: 8%;">   <!-- 직급 -->
+                            <col style="width: 11%;">  <!-- 입사일 -->
+                            <col style="width: 23%;">  <!-- 휴직기간 (줄바꿈 방지용 넓은 폭) -->
+                            <col style="width: 8%;">   <!-- 상태 -->
                         </colgroup>
                         <thead>
                         <tr>
@@ -272,6 +275,7 @@
                             <th>부서</th>
                             <th>직급</th>
                             <th>입사일</th>
+                            <th>휴직기간</th>
                             <th>상태</th>
                         </tr>
                         </thead>

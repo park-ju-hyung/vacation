@@ -33,8 +33,17 @@
 	<!-- 2. 목록 기본 SELECT SQL 조각 -->
 	<sql id="RetireTable">
 		SELECT ROW_NUMBER() OVER (ORDER BY E.statusDate DESC) AS seq,
-		S.empId, S.empName, S.empNo, S.department, S.position,
-		E.status, E.empBirth, E.statusDate, E.statusReason, E.statusId
+			S.empId,
+		    S.empName,
+		    S.empNo,
+		    S.department,
+		    S.position,
+			S.hireDate,
+			E.status,
+			E.empBirth,
+			E.statusDate,
+			E.statusReason,
+			E.statusId
 		FROM employee S
 		JOIN employee_status E ON S.empNo = E.empNo
 		<include refid="retireSearchCondition"/>
@@ -67,6 +76,8 @@
 			S.position,
 			S.department,
 			E.status,
+			E.statusReason,
+			E.statusDate,
 			S.hireDate,
 			S.empNo
 		FROM employee S

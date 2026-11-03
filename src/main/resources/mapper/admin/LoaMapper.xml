@@ -33,8 +33,18 @@
 	<!-- 2. 목록 기본 SELECT SQL 조각 -->
 	<sql id="LoaTable">
 		SELECT ROW_NUMBER() OVER (ORDER BY E.statusDate DESC) AS seq,
-		S.empId, S.empName, S.empNo, S.department, S.position,
-		E.status, E.empBirth, E.statusDate, E.statusReason, E.statusId
+			S.empId,
+		    S.empName,
+		    S.empNo,
+		    S.department,
+		    S.position,
+		    S.hireDate,
+			E.status,
+			E.empBirth,
+			E.breakStart,
+			E.breakEnd,
+			E.statusReason,
+			E.statusId
 		FROM employee S
 		JOIN employee_status E ON S.empNo = E.empNo
 		<include refid="LoaSearchCondition"/>
@@ -66,9 +76,12 @@
 			E.empBirth,
 			S.position,
 			S.department,
-			E.status,
 			S.hireDate,
-			S.empNo
+			S.empNo,
+			E.status,
+			E.breakStart,
+			E.breakEnd,
+			E.statusReason
 		FROM employee S
 		JOIN employee_status E ON S.empNo = E.empNo
 		WHERE statusId = #{statusId}

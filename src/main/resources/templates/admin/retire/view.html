@@ -88,6 +88,8 @@
                         <input type="hidden" name="position" th:value="${employeeStatusDTO.position}">
                         <input type="hidden" name="department" th:value="${employeeStatusDTO.department}">
                         <input type="hidden" name="status" th:value="${employeeStatusDTO.status}">
+                        <input type="hidden" name="status" th:value="${employeeStatusDTO.statusDate}">
+                        <input type="hidden" name="status" th:value="${employeeStatusDTO.statusReason}">
 
                         <!-- 페이징 -->
                         <input type="hidden" name="pageNo" th:value="${employeeStatusDTO.pageNo}">
@@ -135,56 +137,24 @@
                             </tr>
                             <tr>
                                 <th>
+                                    퇴직일
+                                </th>
+                                <td th:text="${employeeStatusVO.statusDate}"></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    퇴직사유
+                                </th>
+                                <td th:text="${employeeStatusVO.statusReason}"></td>
+                            </tr>
+                            <tr>
+                                <th>
                                     상태
                                 </th>
                                 <td th:text="${employeeStatusVO.status}"></td>
                             </tr>
-                            <tr>
-                                <th>
-                                    지급
-                                </th>
-                                <td th:text="${employeeStatusVO.position}"></td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    주소
-                                </th>
-                                <td>
-                                    주소
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    연락처1
-                                </th>
-                                <td>
-                                    연락처1
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    연락처2
-                                </th>
-                                <td>
-                                    연락처2
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    은행명
-                                </th>
-                                <td>
-                                    은행명
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    계좌번호
-                                </th>
-                                <td>
-                                    계좌번호
-                                </td>
-                            </tr>
+
+
 
 
                             </tbody>
