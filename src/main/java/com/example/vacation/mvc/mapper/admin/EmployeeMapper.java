@@ -26,6 +26,8 @@ public interface EmployeeMapper {
 	// 수정
 	public int employeeUpdate(EmployeeDTO employeedto) throws Exception;
 
+	public int statusUpdate(EmployeeStatusDTO employeeStatusdto) throws Exception;
+
 	// 퇴직 휴직 사유 등록
 	public void insertStatus(EmployeeStatusDTO employeeStatusdto) throws Exception;
 
@@ -36,4 +38,9 @@ public interface EmployeeMapper {
 
 	// login
 	public EmployeeVO loadUserByUsername(EmployeeDTO employeedto);
+
+	// 기존 이력 존재 여부 확인 쿼리
+	public EmployeeVO selectStatusByEmpNo(EmployeeDTO employeedto);
+
+	EmployeeStatusDTO selectStatusByEmpNo(String empNo);
 }

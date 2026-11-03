@@ -103,11 +103,38 @@
 		VALUES ( #{statusId}, #{empName}, #{empBirth}, #{empNo}, #{status}, #{statusDate}, #{breakStart}, #{breakEnd}, #{statusReason})
 	</insert>
 
+	<!--휴직 퇴직시 날짜, 사유 수정-->
+	<update id="statusUpdate" parameterType="com.example.vacation.mvc.dto.EmployeeStatusDTO">
+		UPDATE employee_status
+		SET status       = #{status},
+			statusDate   = #{statusDate},
+			breakStart   = #{breakStart},
+			breakEnd     = #{breakEnd},
+			statusReason = #{statusReason}
+		WHERE statusId   = #{statusId}
+	</update>
+
+	<!-- 기존 이력 존재 여부 확인 쿼리 -->
+	<select id="selectStatusByEmpNo" parameterType="String" resultType="com.example.vacation.mvc.dto.EmployeeStatusDTO">
+		SELECT statusId, empNo, status, statusDate, breakStart, breakEnd, statusReason
+		FROM employee_status
+		WHERE empNo = #{empNo}
+		ORDER BY statusId DESC
+		LIMIT 1
+	</select>
+
 	<!--휴직 퇴직시 날짜, 사유 list-->
 	<sql id="statusTable">
 		SELECT ROW_NUMBER() OVER (ORDER BY E.statusDate DESC) AS seq,
-				S.empId, S.empName, S.empNo,
-			   E.status, E.empBirth, E.statusDate, E.breakStart, E.breakEnd, E.statusReason
+			   S.empId,
+		       S.empName,
+		       S.empNo,
+			   E.status,
+			   E.empBirth,
+			   E.statusDate,
+			   E.breakStart,
+			   E.breakEnd,
+			   E.statusReason
 		FROM employee S JOIN employee_status E ON S.empNo = E.empNo
 		WHERE E.empNo = #{empNo}
 	</sql>

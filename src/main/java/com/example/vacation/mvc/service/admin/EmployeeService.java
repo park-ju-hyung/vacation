@@ -135,15 +135,35 @@ public class EmployeeService {
         // 기본 정보 업데이트
         employeeMapper.employeeUpdate(employeedto);
 
-        if ("휴직".equals(employeedto.getStatus()) || "퇴직".equals(employeedto.getStatus())) {
-            // 먼저 상태 DTO에 필요한 값들을 세팅
+        String status = employeedto != null ? employeedto.getStatus() : null;
+
+
+        // 2. 휴직 또는 퇴직일 경우 상태 테이블 처리
+        if ("휴직".equals(status) || "퇴직".equals(status)) {
+            if (statusdto == null) {
+                statusdto = new EmployeeStatusDTO();
+            }
+
+            // 기본 매핑
+            statusdto.setEmpNo(employeedto.getEmpNo());
             statusdto.setEmpName(employeedto.getEmpName());
             statusdto.setEmpBirth(employeedto.getEmpBirth());
-            statusdto.setEmpNo(employeedto.getEmpNo());
-            statusdto.setStatus(employeedto.getStatus());
+            statusdto.setStatus(status);
 
-            // 그런 다음 insert
-            employeeMapper.insertStatus(statusdto);
+            // 3. 상태 테이블에 해당 사원의 기존 데이터가 있는지 확인
+            EmployeeStatusDTO existingStatus = employeeMapper.selectStatusByEmpNo(employeedto.getEmpNo());
+
+            if (existingStatus == null) {
+                // 기존 데이터가 전혀 없으므로 신규 등록 (INSERT)
+                System.out.println("신규 상태 이력 등록 (INSERT)");
+                employeeMapper.insertStatus(statusdto);
+            } else {
+                // 이미 등록된 상태 데이터가 있으므로 수정 (UPDATE)
+                System.out.println("기존 상태 이력 수정 (UPDATE)");
+                // 기존 PK(statusId)를 세팅해 해당 로우만 정확히 타겟팅하여 수정
+                statusdto.setStatusId(existingStatus.getStatusId());
+                employeeMapper.statusUpdate(statusdto);
+            }
         }
 
         rs.put("result", employeedto);
