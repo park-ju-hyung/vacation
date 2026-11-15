@@ -22,7 +22,6 @@
 			approval,
 			`status`,
 			regDate,
-			rejectReason,
 			vacationType,
 			NULL AS specialType
 		FROM break
@@ -46,7 +45,6 @@
 			approval,
 			`status`,
 			regDate,
-			rejectReason,
 			vacationType,
 			NULL AS specialType     -- 필요 시 여기만 special_type 로 변경 가능
 		FROM special_break
@@ -70,7 +68,6 @@
 			approval,
 			`status`,
 			regDate,
-			rejectReason,
 			vacationType,
 			NULL AS specialType
 		FROM sick_break
@@ -128,7 +125,6 @@
 		t.approval,
 		t.`status`,
 		t.regDate,
-		t.rejectReason,
 		t.vacationType,
 		t.specialType,
 		t.src

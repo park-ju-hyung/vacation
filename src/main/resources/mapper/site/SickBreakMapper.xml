@@ -49,7 +49,6 @@
 			   approval,
 			   DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
 			   status,
-			   rejectReason,
 			   reason
 		FROM sick_break
 	</sql>
@@ -101,7 +100,6 @@
 			useDays,
 			type,
 			reason,
-			rejectReason,
 			approval,
 			DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
 			status
