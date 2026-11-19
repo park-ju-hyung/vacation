@@ -4,11 +4,17 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.vacation.mvc.mapper.site.SickBreakMapper">
-	<!--휴가 신청-->
+	<!--병가 신청-->
+	<insert id="insertSickBreak" parameterType="com.example.vacation.mvc.dto.BreakDTO">
+		INSERT INTO break (holidayId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, reason, approval, status, vacationType )
+		VALUES (#{holidayId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status}, #{vacationType})
+	</insert>
+	<!--
 	<insert id="insertSickBreak" parameterType="com.example.vacation.mvc.dto.SickBreakDTO">
 		INSERT INTO sick_break (sickId, empName, empBirth, empNo, position, department, startDate, endDate, useDays, type, reason, approval, status, vacationType )
 		VALUES (#{sickId}, #{empName}, #{empBirth}, #{empNo}, #{position}, #{department}, #{startDate}, #{endDate}, #{useDays}, #{type}, #{reason}, #{approval}, #{status}, #{vacationType})
 	</insert>
+	-->
 
 	<!-- 신청자 정보 가져오기-->
 	<select id="employeeVO" parameterType="com.example.vacation.mvc.dto.EmployeeDTO"
@@ -36,25 +42,28 @@
 	<!--리스트-->
 	<sql id="basicTable">
 		SELECT ROW_NUMBER() OVER(order by regDate) AS seq,
-			   sickId,
+			   holidayId,
 			   empName,
 			   DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
 			   empNo,
 			   position,
-			   department,
 			   DATE_FORMAT(startDate, '%Y-%m-%d') as startDate,
 			   DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
 			   useDays,
 			   type,
+			   totalDays,
+			   reason,
+			   rejectReason,
 			   approval,
-			   DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
-			   status,
-			   reason
-		FROM sick_break
+			   regDate,
+			   vacationtype
+		FROM break
 	</sql>
 
 	<sql id="where">
-		WHERE 1=1 AND empNo = #{empNo}
+		WHERE 1=1
+		AND empNo = #{empNo}
+		AND vacationtype = '병가'
 		<if test="schDtStart != '' and schDtStart != null">
 			AND DATE_FORMAT(regDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
 		</if>
@@ -72,13 +81,13 @@
 		</if>
 	</sql>
 
-	<select id="SickBreakCount" parameterType="com.example.vacation.mvc.dto.SickBreakDTO" resultType="integer">
-		SELECT count(*) FROM sick_break
+	<select id="SickBreakCount" parameterType="com.example.vacation.mvc.dto.BreakDTO" resultType="integer">
+		SELECT count(*) FROM break
 		<include refid="where"/>
 	</select>
 
-	<select id="SickBreakList" parameterType="com.example.vacation.mvc.dto.SickBreakDTO"
-			resultType="com.example.vacation.mvc.vo.SickBreakVO">
+	<select id="SickBreakList" parameterType="com.example.vacation.mvc.dto.BreakDTO"
+			resultType="com.example.vacation.mvc.vo.BreakVO">
 		<include refid="basicTable"/>
 		<include refid="where"/>
 		ORDER BY seq DESC
@@ -86,10 +95,10 @@
 	</select>
 
 	<!-- 신청자 정보 + 휴가 데이터 가져오기-->
-	<select id="SickBreakVO" parameterType="com.example.vacation.mvc.dto.SickBreakDTO"
-			resultType="com.example.vacation.mvc.vo.SickBreakVO">
+	<select id="breakVO" parameterType="com.example.vacation.mvc.dto.BreakDTO"
+			resultType="com.example.vacation.mvc.vo.BreakVO">
 		SELECT
-			sickId,
+			holidayId,
 			empName,
 			DATE_FORMAT(empBirth, '%Y-%m-%d') as empBirth,
 			empNo,
@@ -99,12 +108,15 @@
 			DATE_FORMAT(endDate, '%Y-%m-%d') as endDate,
 			useDays,
 			type,
+			totalDays,
+			remainDays,
 			reason,
+			rejectReason,
 			approval,
-			DATE_FORMAT(regDate, '%Y-%m-%d') as regDate,
+			regDate,
 			status
-		FROM sick_break
-		WHERE sickId = #{sickId}
+		FROM break
+		WHERE holidayId = #{holidayId}
 	</select>
 
 	<!-- 휴가 삭제 -->

@@ -33,7 +33,7 @@ public class SickBreakService {
 
     // 병가 신청
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public Map<String, Object> insertSickBreak(SickBreakDTO sickbreakdto) throws Exception {
+    public Map<String, Object> insertSickBreak(BreakDTO breakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
 
         // 로그인한 empNO 정보 가져오기
@@ -45,15 +45,16 @@ public class SickBreakService {
         System.out.println("employeeVo: " + employee);
 
         // 직원 정보 가져오기
-        sickbreakdto.setEmpNo(employee.getEmpNo());
-        sickbreakdto.setEmpName(employee.getEmpName());
-        sickbreakdto.setEmpBirth(employee.getEmpBirth());
-        sickbreakdto.setPosition(employee.getPosition());
-        sickbreakdto.setDepartment(employee.getDepartment());
+        breakdto.setEmpNo(employee.getEmpNo());
+        breakdto.setEmpName(employee.getEmpName());
+        breakdto.setEmpBirth(employee.getEmpBirth());
+        breakdto.setPosition(employee.getPosition());
+        breakdto.setDepartment(employee.getDepartment());
+        breakdto.setVacationType("병가");
         System.out.println("employeeVo: " + employee.getEmpNo());
         System.out.println("부여휴가일수 " + employee.getTotalDays());
 
-        sickBreakMapper.insertSickBreak(sickbreakdto);
+        sickBreakMapper.insertSickBreak(breakdto);
 
         rs.put("result", "SUCCESS");
         return rs;
@@ -61,36 +62,36 @@ public class SickBreakService {
 
     //list
     @Transactional(readOnly = false)
-    public Map<String, Object> SickBreakList(SickBreakDTO Sickbreakdto) throws Exception {
+    public Map<String, Object> SickBreakList(BreakDTO breakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
 
         // 로그인한 empNO 정보 가져오기
         String empNo = (String) SessionManager.getSession().getAttribute(SessionConstant.SESSION_MANAGER_ID);
-        Sickbreakdto.setEmpNo(empNo);
+        breakdto.setEmpNo(empNo);
 
 
-        int pageNo = Sickbreakdto.getPageNo() == 0 ? 1 : Sickbreakdto.getPageNo();
-        int pageSize = Sickbreakdto.getPageSize() == 0 ? 10 : Sickbreakdto.getPageSize();
-        int pageBlock = Sickbreakdto.getPageBlock() == 0 ? 10 : Sickbreakdto.getPageBlock();
-        Sickbreakdto.setPageNo(pageNo);
-        Sickbreakdto.setPageSize(pageSize);
-        Sickbreakdto.setPageBlock(pageBlock);
-        Sickbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+        int pageNo = breakdto.getPageNo() == 0 ? 1 : breakdto.getPageNo();
+        int pageSize = breakdto.getPageSize() == 0 ? 10 : breakdto.getPageSize();
+        int pageBlock = breakdto.getPageBlock() == 0 ? 10 : breakdto.getPageBlock();
+        breakdto.setPageNo(pageNo);
+        breakdto.setPageSize(pageSize);
+        breakdto.setPageBlock(pageBlock);
+        breakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
 
-        List<SickBreakVO> list = sickBreakMapper.SickBreakList(Sickbreakdto);
+        List<SickBreakVO> list = sickBreakMapper.SickBreakList(breakdto);
 
         if (pageNo != 1 && list.size() == 0) {
             pageNo = 1;
-            Sickbreakdto.setPageNo(pageNo);
-            Sickbreakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
-            list = sickBreakMapper.SickBreakList(Sickbreakdto);
+            breakdto.setPageNo(pageNo);
+            breakdto.setPageOffset(AppPagingUtil.getOffset(pageNo, pageSize));
+            list = sickBreakMapper.SickBreakList(breakdto);
         }
 
-        int totalCount = sickBreakMapper.SickBreakCount(Sickbreakdto);
+        int totalCount = sickBreakMapper.SickBreakCount(breakdto);
         int totalPageNo = AppPagingUtil.getTotalPageNo(totalCount, pageSize);
         String pagingHTML = AppPagingUtil.getMngrPagingHtml(totalCount, pageNo, pageSize, pageBlock);
 
-        rs.put("SickBreakDTO", Sickbreakdto);
+        rs.put("BreakDTO", breakdto);
         rs.put("list", list);
         rs.put("totalCount", totalCount);
         rs.put("totalPageNo", totalPageNo);
@@ -110,8 +111,10 @@ public class SickBreakService {
 
     // 신청자 정보 + 휴가 데이터
     @Transactional(readOnly = true)
-    public SickBreakVO SickBreakView(SickBreakDTO sickbreakdto) throws Exception {
-        return sickBreakMapper.SickBreakVO(sickbreakdto);
+    public BreakVO SickBreakView(BreakDTO breakdto) throws Exception {
+        BreakVO breakvo = sickBreakMapper.breakVO(breakdto);
+        System.out.println("breakvo: " + breakvo.getEmpName());
+        return breakvo;
 
     }
 

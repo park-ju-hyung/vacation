@@ -1,10 +1,12 @@
 package com.example.vacation.mvc.controller.site;
 
+import com.example.vacation.mvc.dto.BreakDTO;
 import com.example.vacation.mvc.dto.EmployeeDTO;
 import com.example.vacation.mvc.dto.SickBreakDTO;
 import com.example.vacation.mvc.dto.SpecialBreakDTO;
 import com.example.vacation.mvc.service.site.BreakService;
 import com.example.vacation.mvc.service.site.SickBreakService;
+import com.example.vacation.mvc.vo.BreakVO;
 import com.example.vacation.mvc.vo.SickBreakVO;
 import com.example.vacation.mvc.vo.SpecialBreakVO;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +38,9 @@ public class UserSickBreakController {
 
     @PostMapping("/insertSickBreak")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> insertSickBreak(@RequestBody SickBreakDTO sickbreakdto) throws Exception {
+    public ResponseEntity<Map<String, Object>> insertSickBreak(@RequestBody BreakDTO breakdto) throws Exception {
         Map<String, Object> rs = new HashMap<>();
-        sickBreakService.insertSickBreak(sickbreakdto);
+        sickBreakService.insertSickBreak(breakdto);
         rs.put("result", "SUCCESS");
         return ResponseEntity.ok(rs);
     }
@@ -52,17 +54,17 @@ public class UserSickBreakController {
 
     @PostMapping("/site/UserSickBreak/list")
     @ResponseBody
-    public ResponseEntity<?> list(@RequestBody SickBreakDTO Sickbreakdto) throws Exception {
-        return new ResponseEntity<>(sickBreakService.SickBreakList(Sickbreakdto), HttpStatus.OK);
+    public ResponseEntity<?> list(@RequestBody BreakDTO breakdto) throws Exception {
+        return new ResponseEntity<>(sickBreakService.SickBreakList(breakdto), HttpStatus.OK);
     }
 
     /** 병가 신청 view **/
     @GetMapping("/site/UserSickBreak/view")
-    public String UserSickViewPage(SickBreakDTO Sickbreakdto, ModelMap modelMap) throws Exception {
-        SickBreakVO sickBreakVO = sickBreakService.SickBreakView(Sickbreakdto);
+    public String UserSickViewPage(BreakDTO breakdto, ModelMap modelMap) throws Exception {
+        BreakVO breakvo = sickBreakService.SickBreakView(breakdto);
 
-        modelMap.addAttribute("SickBreakDTO", Sickbreakdto);
-        modelMap.addAttribute("SickBreakVO", sickBreakVO);
+        modelMap.addAttribute("BreakDTO", breakdto);
+        modelMap.addAttribute("breakVO", breakvo);
 
         return "site/UserSickBreak/view";
     }

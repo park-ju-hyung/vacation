@@ -16,19 +16,19 @@ import java.util.List;
 @DBMapper
 @Repository
 public interface SickBreakMapper {
-	// 휴가 신청
-	public void insertSickBreak(SickBreakDTO sickbreakdto) throws Exception;
+	// 병가 신청
+	public void insertSickBreak(BreakDTO breakdto) throws Exception;
 
 	// 신청자 정보 가져오기
 	public EmployeeVO employeeVO(EmployeeDTO employeedto) throws Exception;
 
 	//list
-	public List<SickBreakVO> SickBreakList(SickBreakDTO Sickbreakdto) throws Exception;
+	public List<SickBreakVO> SickBreakList(BreakDTO breakdto) throws Exception;
 
-	public int SickBreakCount(SickBreakDTO Sickbreakdto) throws Exception;
+	public int SickBreakCount(BreakDTO breakdto) throws Exception;
 
 	// 신청자 정보 + 휴가 데이터 가져오기
-	public SickBreakVO SickBreakVO(SickBreakDTO sickbreakdto) throws Exception;
+	public BreakVO breakVO(BreakDTO breakdto) throws Exception;
 
 	// 휴가 삭제
 	public int SickBreakDelete(SickBreakDTO sickbreakdto) throws Exception;

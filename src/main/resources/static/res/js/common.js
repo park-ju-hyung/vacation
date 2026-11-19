@@ -1,10 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     const currentPath = window.location.pathname.toLowerCase();
     const menuLinks = document.querySelectorAll(".sidebar .menu li a");
+    console.log("currentPath + " + currentPath);
+    console.log("menuLinks + " + menuLinks);
 
     menuLinks.forEach(link => {
         // Thymeleaf가 렌더링한 href 속성 추출
         const linkPath = new URL(link.href, window.location.origin).pathname.toLowerCase();
+        console.log("linkPath + " + linkPath)
 
         // 1. 대분류 경로 추출 (예: /admin/Employee/list -> /admin/employee)
         // 공통 접두사 2단계 세그먼트를 기준으로 비교
@@ -12,12 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const baseMenuPath = pathSegments.length >= 2
             ? `/${pathSegments[0]}/${pathSegments[1]}`
             : linkPath;
+        console.log("pathSegments + " + pathSegments);
+        console.log("baseMenuPath + " + baseMenuPath);
 
         // 2. 현재 URL이 해당 메뉴의 기본 경로로 시작하면 active 부여
         // (예: 현재 URL이 /admin/employee/detail 이라도 /admin/employee와 매칭)
         if (currentPath.startsWith(baseMenuPath)) {
             // li 태그에 active 추가
             const parentLi = link.closest("li");
+            console.log(parentLi);
             if (parentLi) {
                 parentLi.classList.add("active");
             }

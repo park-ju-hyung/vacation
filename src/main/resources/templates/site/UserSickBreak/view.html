@@ -53,11 +53,11 @@
                 let searchData = new FormData(document.querySelector('[name="searchForm"]'));
                 console.log(searchData);
 
-                const sickId = document.querySelector('[name="sickId"]').value;
+                const holidayId = document.querySelector('[name="holidayId"]').value;
 
                 const formData = {
                     searchData: searchData,
-                    sickId: sickId
+                    holidayId: holidayId
                 };
 
                 await fetch('/delete', {
@@ -122,20 +122,20 @@
                 <!-- 검색 form -->
                 <form name="searchForm" method="post" onsubmit="return false;">
                     <!-- 검색 조건 -->
-                    <input type="hidden" name="sickId" th:value="${SickBreakVO.sickId}">
-                    <input type="hidden" name="empNo" th:value="${SickBreakVO.empNo}"> <!--사번-->
-                    <input type="hidden" name="empName" th:value="${SickBreakVO.empName}"> <!--이름-->
-                    <input type="hidden" name="department" th:value="${SickBreakVO.department}"> <!--부서-->
-                    <input type="hidden" name="position" th:value="${SickBreakVO.position}"> <!--직급-->
-                    <input type="hidden" name="regDate" th:value="${SickBreakVO.regDate}"> <!--신청일-->
-                    <input type="hidden" name="startDate" th:value="${SickBreakVO.startDate}"><!--휴가기간-->
-                    <input type="hidden" name="endDate" th:value="${SickBreakVO.endDate}"><!--휴가기간-->
-                    <input type="hidden" name="useDays" th:value="${SickBreakVO.useDays}"><!--신청일수-->
-                    <input type="hidden" name="rejectReason" th:value="${SickBreakVO.rejectReason}"><!--반려사유-->
+                    <input type="hidden" name="holidayId" th:value="${breakDTO.holidayId}">
+                    <input type="hidden" name="empNo" th:value="${breakDTO.empNo}"> <!--사번-->
+                    <input type="hidden" name="empName" th:value="${breakDTO.empName}"> <!--이름-->
+                    <input type="hidden" name="department" th:value="${breakDTO.department}"> <!--부서-->
+                    <input type="hidden" name="position" th:value="${breakDTO.position}"> <!--직급-->
+                    <input type="hidden" name="regDate" th:value="${breakDTO.regDate}"> <!--신청일-->
+                    <input type="hidden" name="startDate" th:value="${breakDTO.startDate}"><!--휴가기간-->
+                    <input type="hidden" name="endDate" th:value="${breakDTO.endDate}"><!--휴가기간-->
+                    <input type="hidden" name="useDays" th:value="${breakDTO.useDays}"><!--신청일수-->
+                    <input type="hidden" name="rejectReason" th:value="${breakDTO.rejectReason}"><!--반려사유-->
 
                     <!--페이지 네이션-->
-                    <input type="hidden" name="pageNo" th:value="${SickBreakDTO.pageNo}">
-                    <input type="hidden" name="pageBlock" th:value="${SickBreakDTO.pageBlock}">
+                    <input type="hidden" name="pageNo" th:value="${breakDTO.pageNo}">
+                    <input type="hidden" name="pageBlock" th:value="${breakDTO.pageBlock}">
                 </form>
 
                 <!--content-table-->
@@ -150,25 +150,25 @@
                             <th>
                                 이름
                             </th>
-                            <td th:text="${SickBreakVO.empName}"></td>
+                            <td th:text="${breakVO.empName}"></td>
                         </tr>
                         <tr>
                             <th>
                                 사번
                             </th>
-                            <td th:text="${SickBreakVO.empNo}"></td>
+                            <td th:text="${breakVO.empNo}"></td>
                         </tr>
                         <tr>
                             <th>
                                 부서
                             </th>
-                            <td th:text="${SickBreakVO.department}"></td>
+                            <td th:text="${breakVO.department}"></td>
                         </tr>
                         <tr>
                             <th>
                                 직급
                             </th>
-                            <td th:text="${SickBreakVO.position}"></td>
+                            <td th:text="${breakVO.position}"></td>
                         </tr>
 
                         <tr>
@@ -176,24 +176,24 @@
                                 신청일자
                             </th>
                             <td>
-                                <span th:text="${SickBreakVO.startDate}"></span>
+                                <span th:text="${breakVO.startDate}"></span>
                                 <span>~</span>
-                                <span th:text="${SickBreakVO.endDate}"></span>
-                                <span th:text="${SickBreakVO.useDays % 1 == 0} ? ${SickBreakVO.useDays.intValue()} : ${SickBreakVO.useDays}"></span>일
+                                <span th:text="${breakVO.endDate}"></span>
+                                <span th:text="${breakVO.useDays % 1 == 0} ? ${breakVO.useDays.intValue()} : ${breakVO.useDays}"></span>일
                             </td>
                         </tr>
                         <tr>
                             <th>
                                 사유
                             </th>
-                            <td th:text="${SickBreakVO.reason}">
+                            <td th:text="${breakVO.reason}">
                             </td>
                         </tr>
-                        <tr th:if="${SickBreakVO.approval == '반려'}">
+                        <tr th:if="${breakVO.approval == '반려'}">
                             <th>
                                 반려사유
                             </th>
-                            <td th:text="${SickBreakVO.rejectReason}">
+                            <td th:text="${breakVO.rejectReason}">
                             </td>
                         </tr>
                         <tr>

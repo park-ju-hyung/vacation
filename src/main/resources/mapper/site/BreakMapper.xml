@@ -49,6 +49,7 @@
 
 	<sql id="where">
 		WHERE 1=1
+		And vacationtype = '개인연차'
 		<if test="schDtStart != '' and schDtStart != null">
 			AND DATE_FORMAT(regDate, '%Y-%m-%d') <![CDATA[>=]]> #{schDtStart}
 		</if>

@@ -107,7 +107,7 @@
                     useDays: useDays, // input 없이 전역 변수 사용
                     'type': document.querySelector('input[name="type"]:checked')?.value || '연차',
                     'reason': document.querySelector('textarea[name="reason"]').value,
-                    /**'totalDays': document.querySelector('input[name="totalDays"]').value,**/
+                    'totalDays': document.querySelector('input[name="totalDays"]').value,
                     totalUseDays: totalUseDays
                 };
                 console.log(formData);
@@ -236,7 +236,7 @@
                     //주말 제외
                     var totCnt = excludeWeekendDate(date, date1, list);
                     $("#useDays").val(totCnt);//휴가일수 저장->마이페이지->계약사항조회에서 휴가사용현황 총 일수 보여주기 위해 새로 칼럼생성-2022-11-10
-                    console.log("totCnt" + totCnt);
+                    console.log("totCnt : " + totCnt);
                     $("#day").val((totCnt-1)+'박 '+totCnt+'일');
 
                 }).fail(function (xhr, status, error) {
@@ -418,8 +418,9 @@
                             </th>
                             <td th:text="${employeeVO.empName}"></td>
                         </tr>
-                        <input type="hidden" name="empId" th:value="${employeeDTO.empId}">
-                        <input type="hidden" name="empNo" th:value="${employeeDTO.empNo}">
+                        <input type="hidden" name="empId" th:value="${employeeVO.empId}">
+                        <input type="hidden" name="empNo" th:value="${employeeVO.empNo}">
+                        <input type="hidden" name="totalDays" th:value="${employeeVO.totalDays}">
                         <tr>
                             <th>
                                 사번
